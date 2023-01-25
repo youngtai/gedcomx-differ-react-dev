@@ -1,0 +1,38 @@
+{
+  "name": "gedcomx-differ",
+  "version": "0.2.4",
+  "description": "React component for visual diffing JSON GedcomX",
+  "author": "Young Tai Ahn",
+  "license": "ISC",
+  "main": "dist/VisualGedcomxDiffer.js",
+  "dependencies": {
+    "@emotion/react": ">= 11.11.1",
+    "@emotion/styled": ">= 11.11.0",
+    "@mui/icons-material": ">= 5.14.1",
+    "@mui/material": ">= 5.14.2",
+    "react-clipboard.js": "^2.0.16",
+    "react-draggable": "^4.4.5",
+    "react-file-drop": "^3.1.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.22.9",
+    "@babel/core": "^7.22.9",
+    "@babel/preset-env": "^7.22.9",
+    "@babel/preset-react": "^7.22.5"
+  },
+  "peerDependencies": {
+    "@emotion/react": ">= 11.11.1",
+    "@emotion/styled": ">= 11.11.0",
+    "@mui/icons-material": ">= 5.14.1",
+    "@mui/material": ">= 5.14.2",
+    "react": ">= 18.2.0",
+    "react-dom": ">= 18.2.0",
+    "react-clipboard.js": ">= 2.0.16",
+    "react-draggable": ">= 4.4.5",
+    "react-file-drop": ">= 3.1.6"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rm -rf dist && NODE_ENV=production babel ../src/gx-differ --out-dir dist --copy-files"
+  }
+}
