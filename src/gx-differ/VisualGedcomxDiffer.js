@@ -1,6 +1,6 @@
-import React from "react";
-import { styled } from "@mui/material/styles";
-import FileUpload from "./FileUpload";
+import React from 'react'
+import { styled } from '@mui/material/styles'
+import FileUpload from './FileUpload'
 import {
   Accordion,
   AccordionDetails,
@@ -18,68 +18,66 @@ import {
   Tabs,
   Tooltip,
   Typography,
-} from "@mui/material";
-import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
-import "./MainPage.css";
-import PersonsDiff, {
-  getPersonsIntersection,
-} from "./persons-diff/PersonsDiff";
+} from '@mui/material'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import './MainPage.css'
+import PersonsDiff, { getPersonsIntersection } from './persons-diff/PersonsDiff'
 import SourceDescriptionsDiff, {
   getRecordDataIntersection,
-} from "./sourceDescriptions-diff/SourceDescriptionsDiff";
+} from './sourceDescriptions-diff/SourceDescriptionsDiff'
 import RelationshipsDiff, {
   getRelationshipsIntersection,
-} from "./relationships-diff/RelationshipsDiff";
-import FieldsDiff, { getFieldsIntersection } from "./fields-diff/FieldsDiff";
-import { EMPTY_GEDCOMX } from "./constants";
+} from './relationships-diff/RelationshipsDiff'
+import FieldsDiff, { getFieldsIntersection } from './fields-diff/FieldsDiff'
+import { EMPTY_GEDCOMX } from './constants'
 import DocumentsDiff, {
   getDocumentsIntersection,
-} from "./documents-diff/DocumentsDiff";
-import GraphView from "./GraphView";
-import { FileDrop } from "react-file-drop";
-import { factIsEmpty } from "./persons-diff/EditableFactAttribute";
-import { AssertionsContext } from "./AssertionsContext";
-import Clipboard from "react-clipboard.js";
-import { relationshipCompareFunction } from "./Utils";
+} from './documents-diff/DocumentsDiff'
+import GraphView from './GraphView'
+import { FileDrop } from 'react-file-drop'
+import { factIsEmpty } from './persons-diff/EditableFactAttribute'
+import { AssertionsContext } from './AssertionsContext'
+import Clipboard from 'react-clipboard.js'
+import { relationshipCompareFunction } from './Utils'
 
-const RootContainer = styled("div")(({ theme }) => ({
+const RootContainer = styled('div')(({ theme }) => ({
   margin: theme.spacing(1),
   paddingTop: theme.spacing(2),
-}));
-const ItemContainer = styled("div")(({ theme }) => ({
+}))
+const ItemContainer = styled('div')(({ theme }) => ({
   margin: theme.spacing(1),
-}));
+}))
 
-const CACHE_KEY = "gedcomx-differ-data";
+const CACHE_KEY = 'gedcomx-differ-data'
 
 export function getGxIntersection(leftGx, rightGx, assertions) {
   const personsIntersection = getPersonsIntersection(
     leftGx.persons,
-    rightGx.persons,
-  );
+    rightGx.persons
+  )
   const relationshipsIntersection = getRelationshipsIntersection(
     leftGx.relationships,
     rightGx.relationships,
     leftGx.persons,
     rightGx.persons,
-    assertions,
-  );
+    assertions
+  )
   const recordDataIntersection = getRecordDataIntersection(
     leftGx.sourceDescriptions,
-    rightGx.sourceDescriptions,
-  );
+    rightGx.sourceDescriptions
+  )
   const fieldsIntersection = getFieldsIntersection(
     leftGx.fields,
-    rightGx.fields,
-  );
+    rightGx.fields
+  )
   const documentsIntersection = getDocumentsIntersection(
     leftGx.documents,
-    rightGx.documents,
-  );
+    rightGx.documents
+  )
   return {
     id: leftGx.id,
     attribution: {
-      contributor: { resource: "fs:AutomatedContentExtraction" },
+      contributor: { resource: 'fs:AutomatedContentExtraction' },
       created: new Date().toDateString(),
     },
     description: leftGx.description,
@@ -88,7 +86,7 @@ export function getGxIntersection(leftGx, rightGx, assertions) {
     sourceDescriptions: recordDataIntersection,
     fields: fieldsIntersection,
     documents: documentsIntersection,
-  };
+  }
 }
 
 export const leftRecordsData = (
@@ -97,7 +95,7 @@ export const leftRecordsData = (
   rightGx,
   setRightGx,
   finalGx,
-  setFinalGx,
+  setFinalGx
 ) => {
   return {
     gx: leftGx,
@@ -106,15 +104,15 @@ export const leftRecordsData = (
     setComparingToGx: setRightGx,
     finalGx: finalGx,
     setFinalGx: setFinalGx,
-  };
-};
+  }
+}
 export const rightRecordsData = (
   leftGx,
   setLeftGx,
   rightGx,
   setRightGx,
   finalGx,
-  setFinalGx,
+  setFinalGx
 ) => {
   return {
     gx: rightGx,
@@ -123,8 +121,8 @@ export const rightRecordsData = (
     setComparingToGx: setLeftGx,
     finalGx: finalGx,
     setFinalGx: setFinalGx,
-  };
-};
+  }
+}
 
 function normalizeGedcomx(gx) {
   function removeEmptyFactKeysOrFacts(fact) {
@@ -134,73 +132,73 @@ function normalizeGedcomx(gx) {
         fact[key] === undefined ||
         fact[key].length === 0
       ) {
-        delete fact[key];
+        delete fact[key]
       }
-    });
+    })
   }
 
   try {
     if (gx?.records && gx.records instanceof Array) {
-      gx = gx.records[0];
+      gx = gx.records[0]
     }
 
     gx?.persons?.forEach((person, personIndex) => {
       person.facts?.forEach((fact, factIndex) => {
-        removeEmptyFactKeysOrFacts(fact);
+        removeEmptyFactKeysOrFacts(fact)
         if (factIsEmpty(fact)) {
-          gx.persons[personIndex].facts.splice(factIndex, 1);
+          gx.persons[personIndex].facts.splice(factIndex, 1)
         } else {
           if (!fact.primary) {
-            fact.primary = false;
+            fact.primary = false
           }
         }
-      });
+      })
       if (person.facts?.length === 0) {
-        delete person.facts;
+        delete person.facts
       }
       if (person.fields?.length === 0) {
-        delete person.fields;
+        delete person.fields
       }
-    });
+    })
     gx?.relationships?.forEach((relationship, relationshipIndex) => {
       relationship.facts?.forEach((fact, factIndex) => {
-        removeEmptyFactKeysOrFacts(fact, factIndex, relationshipIndex);
+        removeEmptyFactKeysOrFacts(fact, factIndex, relationshipIndex)
         if (factIsEmpty(fact)) {
-          gx.relationships[relationshipIndex].facts.splice(factIndex, 1);
+          gx.relationships[relationshipIndex].facts.splice(factIndex, 1)
         } else {
           if (!fact.primary) {
-            fact.primary = false;
+            fact.primary = false
           }
         }
-      });
+      })
       if (relationship.facts?.length === 0) {
-        delete relationship.facts;
+        delete relationship.facts
       }
       if (relationship.fields?.length === 0) {
-        delete relationship.fields;
+        delete relationship.fields
       }
-    });
+    })
     gx?.relationships?.sort((a, b) =>
-      relationshipCompareFunction(a, b, gx?.persons),
-    );
+      relationshipCompareFunction(a, b, gx?.persons)
+    )
   } catch (error) {
     console.error(
-      "There was a problem normalizing the GedcomX during load.",
-      error,
-    );
+      'There was a problem normalizing the GedcomX during load.',
+      error
+    )
   }
-  return gx;
+  return gx
 }
 
 function gxIsEmpty(gx) {
   if (gx === null || gx === undefined) {
-    return true;
+    return true
   }
   return Object.keys(gx)
-    .filter((key) => key !== "id")
+    .filter((key) => key !== 'id')
     .every(
-      (key) => JSON.stringify(gx[key]) === JSON.stringify(EMPTY_GEDCOMX[key]),
-    );
+      (key) => JSON.stringify(gx[key]) === JSON.stringify(EMPTY_GEDCOMX[key])
+    )
 }
 
 export default function VisualGedcomxDiffer({
@@ -210,66 +208,66 @@ export default function VisualGedcomxDiffer({
   cacheData = true,
   assertionDefaults = null,
 }) {
-  const assertionsContext = React.useContext(AssertionsContext);
+  const assertionsContext = React.useContext(AssertionsContext)
   const [assertions, setAssertions] = React.useState(
-    assertionDefaults ? assertionDefaults : assertionsContext.assertions,
-  );
+    assertionDefaults ? assertionDefaults : assertionsContext.assertions
+  )
   const cachedData = localStorage.getItem(CACHE_KEY)
     ? JSON.parse(localStorage.getItem(CACHE_KEY))
-    : null;
+    : null
 
   const [leftGxOriginal, setLeftGxOriginal] = React.useState(
     leftData && leftData.gx
       ? leftData.gx
       : cachedData
         ? cachedData.leftGxOriginal
-        : EMPTY_GEDCOMX,
-  );
+        : EMPTY_GEDCOMX
+  )
   const [rightGxOriginal, setRightGxOriginal] = React.useState(
     rightData && rightData.gx
       ? rightData.gx
       : cachedData
         ? cachedData.rightGxOriginal
-        : EMPTY_GEDCOMX,
-  );
+        : EMPTY_GEDCOMX
+  )
   const [leftGx, setLeftGx] = React.useState(
     leftData && leftData.gx
       ? leftData.gx
       : cachedData
         ? cachedData.leftGx
-        : EMPTY_GEDCOMX,
-  );
+        : EMPTY_GEDCOMX
+  )
   const [rightGx, setRightGx] = React.useState(
     rightData && rightData.gx
       ? rightData.gx
       : cachedData
         ? cachedData.rightGx
-        : EMPTY_GEDCOMX,
-  );
+        : EMPTY_GEDCOMX
+  )
   const [finalGx, setFinalGx] = React.useState(
-    getGxIntersection(leftGx, rightGx, assertions),
-  );
+    getGxIntersection(leftGx, rightGx, assertions)
+  )
   const [leftFilename, setLeftFilename] = React.useState(
     leftData && leftData.filename
       ? leftData.filename
       : cachedData
         ? cachedData.leftFilename
-        : "",
-  );
+        : ''
+  )
   const [rightFilename, setRightFilename] = React.useState(
     rightData && rightData.filename
       ? rightData.filename
       : cachedData
         ? cachedData.rightFilename
-        : "",
-  );
+        : ''
+  )
 
-  const [leftTab, setLeftTab] = React.useState(0);
-  const [rightTab, setRightTab] = React.useState(0);
+  const [leftTab, setLeftTab] = React.useState(0)
+  const [rightTab, setRightTab] = React.useState(0)
 
   React.useEffect(() => {
     if (!cacheData) {
-      return;
+      return
     }
     try {
       localStorage.setItem(
@@ -282,10 +280,10 @@ export default function VisualGedcomxDiffer({
           finalGx: finalGx,
           leftFilename: leftFilename,
           rightFilename: rightFilename,
-        }),
-      );
+        })
+      )
     } catch (error) {
-      console.error(`Error caching data: ${error}`);
+      console.error(`Error caching data: ${error}`)
     }
   }, [
     leftGx,
@@ -296,115 +294,113 @@ export default function VisualGedcomxDiffer({
     leftGxOriginal,
     rightGxOriginal,
     cacheData,
-  ]);
+  ])
 
   React.useEffect(() => {
-    setFinalGx(getGxIntersection(leftGx, rightGx, assertions));
-  }, [assertions, leftGx, rightGx]);
+    setFinalGx(getGxIntersection(leftGx, rightGx, assertions))
+  }, [assertions, leftGx, rightGx])
 
   async function onFileUpload(files) {
     if (!files || files.length > 2) {
-      console.log("Problem with file(s), or too many files (2 max)");
+      console.log('Problem with file(s), or too many files (2 max)')
     } else {
       if (files.length === 2) {
-        let leftGxObject = JSON.parse(await files[0].fileObj.text());
+        let leftGxObject = JSON.parse(await files[0].fileObj.text())
         leftGxObject = leftGxObject.records
           ? leftGxObject.records[0]
-          : leftGxObject;
-        leftGxObject = normalizeGedcomx(leftGxObject);
-        let rightGxObject = JSON.parse(await files[1].fileObj.text());
+          : leftGxObject
+        leftGxObject = normalizeGedcomx(leftGxObject)
+        let rightGxObject = JSON.parse(await files[1].fileObj.text())
         rightGxObject = rightGxObject.records
           ? rightGxObject.records[0]
-          : rightGxObject;
-        rightGxObject = normalizeGedcomx(rightGxObject);
-        setLeftFilename(files[0].name);
-        setRightFilename(files[1].name);
+          : rightGxObject
+        rightGxObject = normalizeGedcomx(rightGxObject)
+        setLeftFilename(files[0].name)
+        setRightFilename(files[1].name)
 
-        setLeftGx(leftGxObject);
-        setRightGx(rightGxObject);
-        setLeftGxOriginal(structuredClone(leftGxObject));
-        setRightGxOriginal(structuredClone(rightGxObject));
+        setLeftGx(leftGxObject)
+        setRightGx(rightGxObject)
+        setLeftGxOriginal(structuredClone(leftGxObject))
+        setRightGxOriginal(structuredClone(rightGxObject))
       } else if (files.length === 1) {
         if (leftGx === EMPTY_GEDCOMX) {
-          let leftGxObject = JSON.parse(await files[0].fileObj.text());
+          let leftGxObject = JSON.parse(await files[0].fileObj.text())
           leftGxObject = leftGxObject.records
             ? leftGxObject.records[0]
-            : leftGxObject;
-          setLeftGx(leftGxObject);
-          setLeftGxOriginal(structuredClone(leftGxObject));
-          setLeftFilename(files[0].name);
+            : leftGxObject
+          setLeftGx(leftGxObject)
+          setLeftGxOriginal(structuredClone(leftGxObject))
+          setLeftFilename(files[0].name)
         } else {
-          let rightGxObject = JSON.parse(await files[0].fileObj.text());
+          let rightGxObject = JSON.parse(await files[0].fileObj.text())
           rightGxObject = rightGxObject.records
             ? rightGxObject.records[0]
-            : rightGxObject;
-          setRightFilename(files[0].name);
-          setRightGx(rightGxObject);
-          setRightGxOriginal(structuredClone(rightGxObject));
+            : rightGxObject
+          setRightFilename(files[0].name)
+          setRightGx(rightGxObject)
+          setRightGxOriginal(structuredClone(rightGxObject))
         }
       }
     }
   }
 
   async function handleRightFileDrop(files, setRightGx) {
-    let droppedGxObject = null;
+    let droppedGxObject = null
     if (!files || files.length > 1) {
-      console.log("Problem reading file, or too many files (max 1)");
+      console.log('Problem reading file, or too many files (max 1)')
     } else {
-      droppedGxObject = JSON.parse(await files[0].text());
+      droppedGxObject = JSON.parse(await files[0].text())
       droppedGxObject = droppedGxObject.records
         ? droppedGxObject.records[0]
-        : droppedGxObject;
-      droppedGxObject = normalizeGedcomx(droppedGxObject);
-      setRightGx(droppedGxObject);
-      setRightGxOriginal(droppedGxObject);
-      setRightFilename(files[0].name);
+        : droppedGxObject
+      droppedGxObject = normalizeGedcomx(droppedGxObject)
+      setRightGx(droppedGxObject)
+      setRightGxOriginal(droppedGxObject)
+      setRightFilename(files[0].name)
     }
   }
 
   async function handleLeftFileDrop(files, setLeftGx) {
-    let droppedGxObject = null;
+    let droppedGxObject = null
     if (!files || files.length > 1) {
-      console.log("Problem reading file, or too many files (max 1)");
+      console.log('Problem reading file, or too many files (max 1)')
     } else {
-      droppedGxObject = JSON.parse(await files[0].text());
+      droppedGxObject = JSON.parse(await files[0].text())
       droppedGxObject = droppedGxObject.records
         ? droppedGxObject.records[0]
-        : droppedGxObject;
-      droppedGxObject = normalizeGedcomx(droppedGxObject);
-      setLeftGx(droppedGxObject);
-      setLeftGxOriginal(droppedGxObject);
-      setLeftFilename(files[0].name);
+        : droppedGxObject
+      droppedGxObject = normalizeGedcomx(droppedGxObject)
+      setLeftGx(droppedGxObject)
+      setLeftGxOriginal(droppedGxObject)
+      setLeftFilename(files[0].name)
     }
   }
 
   function handleDownload(gx, suffix) {
-    const downloadLink = document.createElement("a");
-    const filename = `${leftFilename.substring(0, leftFilename.indexOf("."))}.${suffix}.json`;
-    downloadLink.setAttribute("download", filename);
-    const blob = new Blob([JSON.stringify(gx)], { type: "application/json" });
-    downloadLink.href = window.URL.createObjectURL(blob);
-    document.body.appendChild(downloadLink);
+    const downloadLink = document.createElement('a')
+    const filename = `${leftFilename.substring(0, leftFilename.indexOf('.'))}.${suffix}.json`
+    downloadLink.setAttribute('download', filename)
+    const blob = new Blob([JSON.stringify(gx)], { type: 'application/json' })
+    downloadLink.href = window.URL.createObjectURL(blob)
+    document.body.appendChild(downloadLink)
 
     window.requestAnimationFrame(() => {
-      downloadLink.dispatchEvent(new MouseEvent("click"));
-      document.body.removeChild(downloadLink);
-    });
+      downloadLink.dispatchEvent(new MouseEvent('click'))
+      document.body.removeChild(downloadLink)
+    })
   }
 
   function handleClearData() {
-    setLeftGx(EMPTY_GEDCOMX);
-    setRightGx(EMPTY_GEDCOMX);
-    setLeftGxOriginal(EMPTY_GEDCOMX);
-    setRightGxOriginal(EMPTY_GEDCOMX);
-    setLeftFilename("");
-    setRightFilename("");
+    setLeftGx(EMPTY_GEDCOMX)
+    setRightGx(EMPTY_GEDCOMX)
+    setLeftGxOriginal(EMPTY_GEDCOMX)
+    setRightGxOriginal(EMPTY_GEDCOMX)
+    setLeftFilename('')
+    setRightFilename('')
   }
 
   return (
-    <RootContainer
-      sx={{ background: "white", marginX: 2, overflowX: "hidden" }}
-    >
+    <RootContainer sx={{ marginX: 2, overflowX: 'hidden' }}>
       <FileDrop
         className="left-file-drop"
         onDrop={(files) => handleLeftFileDrop(files, setLeftGx)}
@@ -417,7 +413,7 @@ export default function VisualGedcomxDiffer({
       >
         Drop File Here
       </FileDrop>
-      <Paper variant="outlined" sx={{ background: "#f8faff", marginBottom: 2 }}>
+      <Paper variant="outlined" sx={{ marginBottom: 2 }}>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -429,7 +425,7 @@ export default function VisualGedcomxDiffer({
             <Stack direction="row" spacing={4} alignItems="center">
               <FileUpload
                 onChange={onFileUpload}
-                allowedExtensions={[".json"]}
+                allowedExtensions={['.json']}
               />
               <Button
                 onClick={handleClearData}
@@ -486,7 +482,7 @@ export default function VisualGedcomxDiffer({
             <ItemContainer>
               <DiffAccordion
                 defaultExpanded={true}
-                title={"Record Data"}
+                title={'Record Data'}
                 component={
                   <SourceDescriptionsDiff
                     leftGx={leftGx}
@@ -574,22 +570,22 @@ export default function VisualGedcomxDiffer({
                 onClick={() =>
                   handleDownload(
                     leftGx,
-                    `left.${leftTab === 0 ? "original" : "edit"}`,
+                    `left.${leftTab === 0 ? 'original' : 'edit'}`
                   )
                 }
-              >{`Download ${leftTab === 0 ? "Original" : "Edited"}`}</Button>
+              >{`Download ${leftTab === 0 ? 'Original' : 'Edited'}`}</Button>
               <Button variant="outlined">
                 <Clipboard
                   data-clipboard-text={JSON.stringify(leftGx)}
                   component="div"
-                >{`Copy ${leftTab === 0 ? "Original" : "Edited"}`}</Clipboard>
+                >{`Copy ${leftTab === 0 ? 'Original' : 'Edited'}`}</Clipboard>
               </Button>
             </Stack>
             <Stack direction="row" spacing={2}>
               <Button
                 variant="contained"
                 size="large"
-                onClick={() => handleDownload(finalGx, "final")}
+                onClick={() => handleDownload(finalGx, 'final')}
               >
                 Download
               </Button>
@@ -610,15 +606,15 @@ export default function VisualGedcomxDiffer({
                 onClick={() =>
                   handleDownload(
                     rightGx,
-                    `right.${rightTab === 0 ? "original" : "edit"}`,
+                    `right.${rightTab === 0 ? 'original' : 'edit'}`
                   )
                 }
-              >{`Download ${rightTab === 0 ? "Original" : "Edited"}`}</Button>
+              >{`Download ${rightTab === 0 ? 'Original' : 'Edited'}`}</Button>
               <Button variant="outlined">
                 <Clipboard
                   data-clipboard-text={JSON.stringify(rightGx)}
                   component="div"
-                >{`Copy ${rightTab === 0 ? "Original" : "Edited"}`}</Clipboard>
+                >{`Copy ${rightTab === 0 ? 'Original' : 'Edited'}`}</Clipboard>
               </Button>
             </Stack>
           </Stack>
@@ -673,13 +669,13 @@ export default function VisualGedcomxDiffer({
         </Stack>
       </Box>
     </RootContainer>
-  );
+  )
 }
 
 function DiffAccordion({ defaultExpanded = false, title, component }) {
-  const [expanded, setExpanded] = React.useState(defaultExpanded);
+  const [expanded, setExpanded] = React.useState(defaultExpanded)
 
-  const tooltipValue = expanded ? "Hide" : "Show";
+  const tooltipValue = expanded ? 'Hide' : 'Show'
 
   return (
     <Accordion
@@ -689,16 +685,16 @@ function DiffAccordion({ defaultExpanded = false, title, component }) {
     >
       <Tooltip
         title={`Click to ${tooltipValue}`}
-        placement={"top"}
+        placement={'top'}
         followCursor={true}
       >
         <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant={"h5"}>{title}</Typography>
+          <Typography variant={'h5'}>{title}</Typography>
         </AccordionSummary>
       </Tooltip>
       <AccordionDetails>{component}</AccordionDetails>
     </Accordion>
-  );
+  )
 }
 
 function PasteInputButtons({
@@ -711,47 +707,47 @@ function PasteInputButtons({
 }) {
   function pasteButton(setters, label) {
     return (
-      <Tooltip title={"Click to paste GedcomX from your clipboard"}>
+      <Tooltip title={'Click to paste GedcomX from your clipboard'}>
         <Button
           color="secondary"
           variant="outlined"
           onClick={async () => {
             try {
-              const gxText = await navigator.clipboard.readText();
-              if (!(gxText.startsWith("{") || gxText.startsWith("["))) {
-                return Promise.reject("Clipboard data is not valid JSON");
+              const gxText = await navigator.clipboard.readText()
+              if (!(gxText.startsWith('{') || gxText.startsWith('['))) {
+                return Promise.reject('Clipboard data is not valid JSON')
               }
-              let gx = JSON.parse(gxText);
-              gx = normalizeGedcomx(gx);
-              setters.setGx(gx);
-              setters.setGxOriginal(structuredClone(gx));
-              setters.setFilename("Pasted GedcomX");
+              let gx = JSON.parse(gxText)
+              gx = normalizeGedcomx(gx)
+              setters.setGx(gx)
+              setters.setGxOriginal(structuredClone(gx))
+              setters.setFilename('Pasted GedcomX')
             } catch (error) {
-              console.error("Problem reading clipboard data: ", error);
+              console.error('Problem reading clipboard data: ', error)
             }
           }}
         >
           {label}
         </Button>
       </Tooltip>
-    );
+    )
   }
 
   const leftSetters = {
     setGx: setLeftGx,
     setGxOriginal: setLeftGxOriginal,
     setFilename: setLeftFilename,
-  };
+  }
   const rightSetters = {
     setGx: setRightGx,
     setGxOriginal: setRightGxOriginal,
     setFilename: setRightFilename,
-  };
+  }
 
   return (
     <Stack direction="row" justifyContent="space-between" alignItems="center">
-      {pasteButton(leftSetters, "Paste Left GedcomX")}
-      {pasteButton(rightSetters, "Paste Right GedcomX")}
+      {pasteButton(leftSetters, 'Paste Left GedcomX')}
+      {pasteButton(rightSetters, 'Paste Right GedcomX')}
     </Stack>
-  );
+  )
 }

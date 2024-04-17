@@ -1,6 +1,6 @@
-import React from "react";
-import { RecordsDataContext } from "../RecordsContext";
-import { getFieldsIntersection } from "./FieldsDiff";
+import React from 'react'
+import { RecordsDataContext } from '../RecordsContext'
+import { getFieldsIntersection } from './FieldsDiff'
 import {
   Button,
   Grid,
@@ -10,67 +10,69 @@ import {
   Paper,
   Select,
   TextField,
-} from "@mui/material";
-import { Delete } from "@mui/icons-material";
-import { DIFF_BACKGROUND_COLOR, RECORD_FIELD_TYPE } from "../constants";
+  useTheme,
+} from '@mui/material'
+import { Delete } from '@mui/icons-material'
+import { RECORD_FIELD_TYPE } from '../constants'
 
 function hasMatchingField(field, comparingTo) {
-  const fieldString = JSON.stringify(field);
+  const fieldString = JSON.stringify(field)
   return (
     comparingTo.find((f) => JSON.stringify(f) === fieldString) !== undefined
-  );
+  )
 }
 
 export function updateFieldsData(recordsData) {
   recordsData.finalGx.fields = getFieldsIntersection(
     recordsData.gx.fields,
-    recordsData.comparingToGx.fields,
-  );
-  recordsData.setFinalGx(structuredClone(recordsData.finalGx));
+    recordsData.comparingToGx.fields
+  )
+  recordsData.setFinalGx(structuredClone(recordsData.finalGx))
 
-  recordsData.setGx(structuredClone(recordsData.gx));
+  recordsData.setGx(structuredClone(recordsData.gx))
 }
 
 export default function EditableRecordField({ field, fieldIndex }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [value, setValue] = React.useState(field.values[0].text);
-  const [type, setType] = React.useState(field.type);
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [value, setValue] = React.useState(field.values[0].text)
+  const [type, setType] = React.useState(field.type)
   const [hasMatch, setHasMatch] = React.useState(
-    hasMatchingField(field, recordsData.comparingToGx.fields),
-  );
+    hasMatchingField(field, recordsData.comparingToGx.fields)
+  )
 
-  const backgroundColor = hasMatch ? "white" : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? "black" : "red";
+  const backgroundColor = hasMatch ? null : theme.palette.diff.background
+  const textColor = hasMatch ? null : theme.palette.diff.color
 
   React.useEffect(() => {
-    setHasMatch(hasMatchingField(field, recordsData.comparingToGx.fields));
-  }, [field, recordsData.comparingToGx.fields]);
+    setHasMatch(hasMatchingField(field, recordsData.comparingToGx.fields))
+  }, [field, recordsData.comparingToGx.fields])
 
   function handleSave() {
-    setIsEditing(false);
+    setIsEditing(false)
     if (!value || !type) {
-      return;
+      return
     }
-    recordsData.gx.fields[fieldIndex].values[0].text = value;
-    recordsData.gx.fields[fieldIndex].type = type;
+    recordsData.gx.fields[fieldIndex].values[0].text = value
+    recordsData.gx.fields[fieldIndex].type = type
 
-    updateFieldsData(recordsData);
+    updateFieldsData(recordsData)
   }
 
   function handleEdit() {
-    setIsEditing(true);
+    setIsEditing(true)
   }
 
   function handleDelete() {
-    const fields = recordsData.gx.fields;
-    fields.splice(fieldIndex, 1);
-    recordsData.gx.fields = fields.filter((f) => f);
+    const fields = recordsData.gx.fields
+    fields.splice(fieldIndex, 1)
+    recordsData.gx.fields = fields.filter((f) => f)
     if (fields.length === 0) {
-      delete recordsData.gx.fields;
+      delete recordsData.gx.fields
     }
 
-    updateFieldsData(recordsData);
+    updateFieldsData(recordsData)
   }
 
   return isEditing ? (
@@ -121,11 +123,11 @@ export default function EditableRecordField({ field, fieldIndex }) {
             <Grid item>
               <ListItemText
                 primary={field.values[0].text}
-                secondary={"Field Value"}
+                secondary={'Field Value'}
               />
             </Grid>
             <Grid item>
-              <ListItemText primary={field.type} secondary={"Field Type"} />
+              <ListItemText primary={field.type} secondary={'Field Type'} />
             </Grid>
           </Grid>
         </Grid>
@@ -137,5 +139,5 @@ export default function EditableRecordField({ field, fieldIndex }) {
         </Grid>
       </Grid>
     </Paper>
-  );
+  )
 }

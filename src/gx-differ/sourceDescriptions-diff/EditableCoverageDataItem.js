@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   Grid,
@@ -6,48 +6,48 @@ import {
   ListItem,
   ListItemText,
   TextField,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { updateSourceDescriptionsData } from "./SourceDescriptionsDiff";
-import { RecordsDataContext } from "../RecordsContext";
-import { DIFF_BACKGROUND_COLOR } from "../constants";
+  useTheme,
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { updateSourceDescriptionsData } from './SourceDescriptionsDiff'
+import { RecordsDataContext } from '../RecordsContext'
 
 function hasMatchingCoverageDataItem(coverageItem, label, comparingTo) {
-  if (label === "Spatial") {
+  if (label === 'Spatial') {
     return (
       comparingTo
-        .filter((sd) => sd.resourceType === "http://gedcomx.org/Record")
+        .filter((sd) => sd.resourceType === 'http://gedcomx.org/Record')
         .map((sd) => sd.coverage)
         .flatMap((coverages) => coverages)
         .find(
           (coverage) =>
             coverage.spatial &&
-            coverage.spatial.original === coverageItem.original,
+            coverage.spatial.original === coverageItem.original
         ) !== undefined
-    );
-  } else if (label === "Temporal") {
+    )
+  } else if (label === 'Temporal') {
     return (
       comparingTo
-        .filter((sd) => sd.resourceType === "http://gedcomx.org/Record")
+        .filter((sd) => sd.resourceType === 'http://gedcomx.org/Record')
         .map((sd) => sd.coverage)
         .flatMap((coverages) => coverages)
         .find(
           (coverage) =>
             coverage.temporal &&
-            coverage.temporal.original === coverageItem.original,
+            coverage.temporal.original === coverageItem.original
         ) !== undefined
-    );
-  } else if (label === "Record Type") {
+    )
+  } else if (label === 'Record Type') {
     return (
       comparingTo
-        .filter((sd) => sd.resourceType === "http://gedcomx.org/Record")
+        .filter((sd) => sd.resourceType === 'http://gedcomx.org/Record')
         .map((sd) => sd.coverage)
         .flatMap((coverages) => coverages)
         .find(
           (coverage) =>
-            coverage.recordType && coverage.recordType === coverageItem,
+            coverage.recordType && coverage.recordType === coverageItem
         ) !== undefined
-    );
+    )
   }
 }
 
@@ -57,75 +57,76 @@ export default function EditableCoverageDataItem({
   label,
   sourceDescriptionIndex,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const sourceDescriptions = recordsData.gx.sourceDescriptions;
-  const comparingTo = recordsData.comparingToGx.sourceDescriptions;
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
+  const sourceDescriptions = recordsData.gx.sourceDescriptions
+  const comparingTo = recordsData.comparingToGx.sourceDescriptions
 
   const [editFieldValue, setEditFieldValue] = React.useState(
     coverageItem?.original
       ? coverageItem.original
       : coverageItem
         ? coverageItem
-        : "",
-  );
-  const [isEditing, setIsEditing] = React.useState(false);
+        : ''
+  )
+  const [isEditing, setIsEditing] = React.useState(false)
   const [hasMatch, setHasMatch] = React.useState(
-    hasMatchingCoverageDataItem(coverageItem, label, comparingTo),
-  );
+    hasMatchingCoverageDataItem(coverageItem, label, comparingTo)
+  )
 
-  const backgroundColor = hasMatch ? "white" : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? "black" : "red";
+  const backgroundColor = hasMatch ? null : theme.palette.diff.background
+  const textColor = hasMatch ? null : theme.palette.diff.color
 
   React.useEffect(() => {
-    setHasMatch(hasMatchingCoverageDataItem(coverageItem, label, comparingTo));
+    setHasMatch(hasMatchingCoverageDataItem(coverageItem, label, comparingTo))
     setEditFieldValue(
       coverageItem?.original
         ? coverageItem.original
         : coverageItem
           ? coverageItem
-          : "",
-    );
-  }, [coverageItem, label, comparingTo]);
+          : ''
+    )
+  }, [coverageItem, label, comparingTo])
 
   function handleOnEdit() {
-    setIsEditing(true);
+    setIsEditing(true)
   }
 
   function handleDelete() {
-    if (label === "Spatial") {
+    if (label === 'Spatial') {
       delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex]
-        .spatial;
+        .spatial
     }
-    if (label === "Temporal") {
+    if (label === 'Temporal') {
       delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex]
-        .temporal;
+        .temporal
     }
-    if (label === "Record Type") {
+    if (label === 'Record Type') {
       delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex]
-        .recordType;
+        .recordType
     }
-    updateSourceDescriptionsData(recordsData);
+    updateSourceDescriptionsData(recordsData)
   }
 
   function handleOnSave() {
-    setIsEditing(false);
-    if (label === "Spatial") {
-      coverageItem.original = editFieldValue;
+    setIsEditing(false)
+    if (label === 'Spatial') {
+      coverageItem.original = editFieldValue
       sourceDescriptions[sourceDescriptionIndex].coverage[
         coverageIndex
-      ].spatial = coverageItem;
-    } else if (label === "Temporal") {
-      coverageItem.original = editFieldValue;
+      ].spatial = coverageItem
+    } else if (label === 'Temporal') {
+      coverageItem.original = editFieldValue
       sourceDescriptions[sourceDescriptionIndex].coverage[
         coverageIndex
-      ].temporal = coverageItem;
-    } else if (label === "Record Type") {
-      coverageItem = editFieldValue;
+      ].temporal = coverageItem
+    } else if (label === 'Record Type') {
+      coverageItem = editFieldValue
       sourceDescriptions[sourceDescriptionIndex].coverage[
         coverageIndex
-      ].recordType = coverageItem;
+      ].recordType = coverageItem
     }
-    updateSourceDescriptionsData(recordsData);
+    updateSourceDescriptionsData(recordsData)
   }
 
   function item() {
@@ -147,7 +148,7 @@ export default function EditableCoverageDataItem({
             </Button>
           </Grid>
         </>
-      );
+      )
     } else {
       return (
         <>
@@ -161,7 +162,7 @@ export default function EditableCoverageDataItem({
             </IconButton>
           </Grid>
         </>
-      );
+      )
     }
   }
 
@@ -173,5 +174,5 @@ export default function EditableCoverageDataItem({
         {item()}
       </Grid>
     </ListItem>
-  );
+  )
 }

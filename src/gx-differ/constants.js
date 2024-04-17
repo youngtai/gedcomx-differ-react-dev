@@ -1,39 +1,39 @@
-import { generateLocalId } from "./Utils";
+import { generateLocalId } from './Utils'
 
 export const NAME_PART_TYPE = {
-  prefix: "http://gedcomx.org/Prefix",
-  given: "http://gedcomx.org/Given",
-  surname: "http://gedcomx.org/Surname",
-  suffix: "http://gedcomx.org/Suffix",
-};
+  prefix: 'http://gedcomx.org/Prefix',
+  given: 'http://gedcomx.org/Given',
+  surname: 'http://gedcomx.org/Surname',
+  suffix: 'http://gedcomx.org/Suffix',
+}
 
 export const KEY_TO_LABEL_MAP = {
-  type: "Type",
-  date: "Date",
-  place: "Place",
-  value: "Value",
-  primary: "Primary",
-};
+  type: 'Type',
+  date: 'Date',
+  place: 'Place',
+  value: 'Value',
+  primary: 'Primary',
+}
 
 export const GENDER = {
-  Male: "http://gedcomx.org/Male",
-  Female: "http://gedcomx.org/Female",
-  Unknown: "http://gedcomx.org/Unknown",
-};
+  Male: 'http://gedcomx.org/Male',
+  Female: 'http://gedcomx.org/Female',
+  Unknown: 'http://gedcomx.org/Unknown',
+}
 
 export const FACT_KEYS = {
-  type: "type",
-  date: "date",
-  place: "place",
-  value: "value",
-  primary: "primary",
-  qualifiers: "qualifiers",
-  id: "id",
-  fields: "fields",
-  confidence: "confidence",
-  formal: "formal",
-  description: "description",
-};
+  type: 'type',
+  date: 'date',
+  place: 'place',
+  value: 'value',
+  primary: 'primary',
+  qualifiers: 'qualifiers',
+  id: 'id',
+  fields: 'fields',
+  confidence: 'confidence',
+  formal: 'formal',
+  description: 'description',
+}
 
 export const IGNORED_FACT_KEYS = [
   FACT_KEYS.id,
@@ -41,20 +41,20 @@ export const IGNORED_FACT_KEYS = [
   FACT_KEYS.confidence,
   FACT_KEYS.formal,
   FACT_KEYS.description,
-];
+]
 
 export const COVERAGE_ATTRIBUTES = {
-  spatial: "spatial",
-  temporal: "temporal",
-  recordType: "recordType",
-};
+  spatial: 'spatial',
+  temporal: 'temporal',
+  recordType: 'recordType',
+}
 
-export const GEDCOMX_ORG_PREFIX = `http://gedcomx.org/`;
+export const GEDCOMX_ORG_PREFIX = `http://gedcomx.org/`
 
 export const FACT_QUALIFIER = {
   Age: `${GEDCOMX_ORG_PREFIX}Age`,
   Cause: `${GEDCOMX_ORG_PREFIX}Cause`,
-};
+}
 
 export const PERSON_NAME_TYPE = {
   BirthName: `${GEDCOMX_ORG_PREFIX}BirthName`,
@@ -63,10 +63,10 @@ export const PERSON_NAME_TYPE = {
   Nickname: `${GEDCOMX_ORG_PREFIX}Nickname`,
   FormalName: `${GEDCOMX_ORG_PREFIX}FormalName`,
   ReligiousName: `${GEDCOMX_ORG_PREFIX}ReligiousName`,
-};
+}
 
 const FAMILYSEARCH_TYPES_RELATIONSHIPS_PREFIX =
-  "http://familysearch.org/types/relationships/";
+  'http://familysearch.org/types/relationships/'
 
 export const RELATIONSHIP = {
   Couple: `${GEDCOMX_ORG_PREFIX}Couple`,
@@ -90,22 +90,21 @@ export const RELATIONSHIP = {
   Relative: `${FAMILYSEARCH_TYPES_RELATIONSHIPS_PREFIX}Relative`,
   NonRelative: `${FAMILYSEARCH_TYPES_RELATIONSHIPS_PREFIX}NonRelative`,
   Unknown: `${FAMILYSEARCH_TYPES_RELATIONSHIPS_PREFIX}Unknown`,
-};
+}
 
-const FAMILYSEARCH_TYPES_FIELDS_PREFIX =
-  "http://familysearch.org/types/fields/";
+const FAMILYSEARCH_TYPES_FIELDS_PREFIX = 'http://familysearch.org/types/fields/'
 
 export const RECORD_FIELD_TYPE = {
   DigitalFilmNbr: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}DigitalFilmNbr`,
   ImageNumber: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}ImageNumber`,
   RecordStyle: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}RecordStyle`,
   CrossType: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}CrossType`,
-};
+}
 
 export const PERSON_FIELD_TYPE = {
   Age: `${GEDCOMX_ORG_PREFIX}Age`,
   Role: `${GEDCOMX_ORG_PREFIX}Role`,
-};
+}
 
 export const FACT_TYPE = {
   Adoption: `${GEDCOMX_ORG_PREFIX}Adoption`,
@@ -179,7 +178,7 @@ export const FACT_TYPE = {
   Will: `${GEDCOMX_ORG_PREFIX}Will`,
   Visit: `${GEDCOMX_ORG_PREFIX}Visit`,
   Yahrzeit: `${GEDCOMX_ORG_PREFIX}Yahrzeit`,
-};
+}
 
 export const RELATIONSHIP_FACT_TYPE = {
   Annulment: `${GEDCOMX_ORG_PREFIX}Annulment`,
@@ -203,20 +202,19 @@ export const RELATIONSHIP_FACT_TYPE = {
   StepParent: `${GEDCOMX_ORG_PREFIX}StepParent`,
   SociologicalParent: `${GEDCOMX_ORG_PREFIX}SociologicalParent`,
   SurrogateParent: `${GEDCOMX_ORG_PREFIX}SurrogateParent`,
-};
+}
 
-export const GEDCOMX_ORIGINAL = `${GEDCOMX_ORG_PREFIX}Original`;
+export const GEDCOMX_ORIGINAL = `${GEDCOMX_ORG_PREFIX}Original`
 
-export const PERSON_FACT_BACKGROUND_COLOR = "#eeeeee";
-export const DIFF_BACKGROUND_COLOR = "#ffe9e9";
+export const PERSON_FACT_BACKGROUND_COLOR = '#eeeeee'
 
 export const EMPTY_GEDCOMX = {
   id: generateLocalId(),
   attribution: {},
-  description: "",
+  description: '',
   persons: [],
   relationships: [],
   sourceDescriptions: [],
   documents: [],
   fields: [],
-};
+}

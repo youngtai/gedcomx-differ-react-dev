@@ -2,12 +2,12 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import reportWebVitals from "./reportWebVitals";
-import VisualGedcomxDiffer from "./gx-differ/VisualGedcomxDiffer";
+import DifferApp from "./DifferApp";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <VisualGedcomxDiffer />
+    <DifferApp />
   </React.StrictMode>,
 );
 

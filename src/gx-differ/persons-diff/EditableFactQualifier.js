@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Box,
   Button,
@@ -9,46 +9,42 @@ import {
   Select,
   TextField,
   Typography,
-} from "@mui/material";
-import {
-  DIFF_BACKGROUND_COLOR,
-  FACT_KEYS,
-  FACT_QUALIFIER,
-  PERSON_FACT_BACKGROUND_COLOR,
-} from "../constants";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { RecordsDataContext } from "../RecordsContext";
-import { personsWithMatchingNames } from "./EditableFactAttribute";
-import { Add } from "@mui/icons-material";
+  useTheme,
+} from '@mui/material'
+import { FACT_KEYS, FACT_QUALIFIER } from '../constants'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { RecordsDataContext } from '../RecordsContext'
+import { personsWithMatchingNames } from './EditableFactAttribute'
+import { Add } from '@mui/icons-material'
 
 function hasMatchingQualifier(attributeData, parentObject, comparingTo) {
   if (parentObject?.person1 && parentObject?.person2) {
     //TODO implement this if needed (may not see qualifiers on relationships) - it can be hard to tell what is wrong
-    return true;
+    return true
   }
   const matchingPersonsByName = personsWithMatchingNames(
     parentObject,
-    comparingTo,
-  );
+    comparingTo
+  )
   if (matchingPersonsByName.length > 0) {
     for (const matchingPersonByName of matchingPersonsByName) {
       const factsWithMatchingKey = matchingPersonByName.facts?.filter(
-        (comparingFact) => comparingFact[attributeData.key],
-      );
+        (comparingFact) => comparingFact[attributeData.key]
+      )
       if (
         factsWithMatchingKey
           ?.flatMap((comparingFact) => comparingFact[attributeData.key])
           ?.find(
             (qualifier) =>
               JSON.stringify(qualifier) ===
-              JSON.stringify(attributeData.qualifier),
+              JSON.stringify(attributeData.qualifier)
           ) !== undefined
       ) {
-        return true;
+        return true
       }
     }
   }
-  return false;
+  return false
 }
 
 export default function EditableFactQualifier({
@@ -61,70 +57,71 @@ export default function EditableFactQualifier({
   comparingTo,
   updateData,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
 
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [isAdding, setIsAdding] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [isAdding, setIsAdding] = React.useState(false)
   const [value, setValue] = React.useState(
-    attributeData ? attributeData.qualifier.value : "",
-  );
-  const [newValue, setNewValue] = React.useState("");
-  const [newName, setNewName] = React.useState("");
+    attributeData ? attributeData.qualifier.value : ''
+  )
+  const [newValue, setNewValue] = React.useState('')
+  const [newName, setNewName] = React.useState('')
   const [hasMatch, setHasMatch] = React.useState(
-    hasMatchingQualifier(attributeData, parentObject, comparingTo),
-  );
+    hasMatchingQualifier(attributeData, parentObject, comparingTo)
+  )
 
   const backgroundColor = hasMatch
-    ? PERSON_FACT_BACKGROUND_COLOR
-    : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? "black" : "red";
+    ? theme.palette.fact.background
+    : theme.palette.diff.background
+  const textColor = hasMatch ? null : theme.palette.diff.color
 
   React.useEffect(() => {
-    setHasMatch(hasMatchingQualifier(attributeData, parentObject, comparingTo));
-    setValue(attributeData.qualifier.value);
-  }, [attributeData, parentObject, comparingTo]);
+    setHasMatch(hasMatchingQualifier(attributeData, parentObject, comparingTo))
+    setValue(attributeData.qualifier.value)
+  }, [attributeData, parentObject, comparingTo])
 
   function handleSave() {
-    setIsEditing(false);
+    setIsEditing(false)
     // GedcomX Editor saves ints as strings: 1 vs '1'
-    fact[FACT_KEYS.qualifiers][qualifierIndex].value = value.toString();
-    parentObject.facts.splice(factIndex, 1, fact);
-    updateData(parentObject, parentObjectIndex, recordsData);
+    fact[FACT_KEYS.qualifiers][qualifierIndex].value = value.toString()
+    parentObject.facts.splice(factIndex, 1, fact)
+    updateData(parentObject, parentObjectIndex, recordsData)
   }
 
   function handleAdd() {
-    setIsAdding(true);
+    setIsAdding(true)
   }
 
   function handleSaveAdd() {
-    setIsAdding(false);
+    setIsAdding(false)
     if (!newValue || !newName) {
-      return;
+      return
     }
     // GedcomX Editor saves ints as strings: 1 vs '1'
-    fact.qualifiers.push({ name: newName, value: newValue.toString() });
-    updateData(parentObject, parentObjectIndex, recordsData);
+    fact.qualifiers.push({ name: newName, value: newValue.toString() })
+    updateData(parentObject, parentObjectIndex, recordsData)
   }
 
   function handleEdit() {
-    setIsEditing(true);
+    setIsEditing(true)
   }
 
   function handleDelete() {
-    delete fact[FACT_KEYS.qualifiers][qualifierIndex];
-    fact[FACT_KEYS.qualifiers] = fact[FACT_KEYS.qualifiers].filter((e) => e); // Remove 'empty' elements
+    delete fact[FACT_KEYS.qualifiers][qualifierIndex]
+    fact[FACT_KEYS.qualifiers] = fact[FACT_KEYS.qualifiers].filter((e) => e) // Remove 'empty' elements
     if (fact[FACT_KEYS.qualifiers].length === 0) {
-      fact[FACT_KEYS.qualifiers] = null;
+      fact[FACT_KEYS.qualifiers] = null
     }
-    parentObject.facts.splice(factIndex, 1, fact);
-    updateData(parentObject, parentObjectIndex, recordsData);
+    parentObject.facts.splice(factIndex, 1, fact)
+    updateData(parentObject, parentObjectIndex, recordsData)
   }
 
   const editableQualifier = (
     <Grid item sx={{ background: backgroundColor, paddingLeft: 0 }}>
       <Typography
         variant="subtitle1"
-        sx={{ paddingLeft: 1, background: "#eaeaea" }}
+        sx={{ paddingLeft: 1, background: '#eaeaea' }}
         hidden={qualifierIndex !== 0}
       >
         Qualifiers
@@ -140,7 +137,7 @@ export default function EditableFactQualifier({
         <Grid item>
           <ListItemText
             primary={attributeData.qualifier.name}
-            secondary={"Name"}
+            secondary={'Name'}
             sx={{ color: textColor }}
           />
         </Grid>
@@ -158,7 +155,7 @@ export default function EditableFactQualifier({
         </Grid>
       </Grid>
     </Grid>
-  );
+  )
   const addQualifier = (
     <Box sx={{ padding: 1 }} hidden={!isAdding}>
       <Grid
@@ -196,7 +193,7 @@ export default function EditableFactQualifier({
         </Grid>
       </Grid>
     </Box>
-  );
+  )
   const qualifierItem = (
     <Grid
       container
@@ -209,14 +206,14 @@ export default function EditableFactQualifier({
       <Grid item>
         <ListItemText
           primary={attributeData.qualifier.name}
-          secondary={"Name"}
+          secondary={'Name'}
           sx={{ color: textColor }}
         />
       </Grid>
       <Grid item>
         <ListItemText
           primary={value}
-          secondary={"Value"}
+          secondary={'Value'}
           sx={{ color: textColor }}
         />
       </Grid>
@@ -227,14 +224,14 @@ export default function EditableFactQualifier({
         </IconButton>
       </Grid>
     </Grid>
-  );
+  )
 
   return isEditing ? (
     editableQualifier
   ) : (
     <Grid item sx={{ background: backgroundColor, paddingLeft: 0 }}>
       <Box
-        sx={{ paddingLeft: 1, background: "#eaeaea" }}
+        sx={{ paddingLeft: 1, background: '#eaeaea' }}
         hidden={qualifierIndex !== 0}
       >
         <Grid container justifyContent="space-between" alignItems="center">
@@ -251,5 +248,5 @@ export default function EditableFactQualifier({
       {addQualifier}
       {qualifierItem}
     </Grid>
-  );
+  )
 }

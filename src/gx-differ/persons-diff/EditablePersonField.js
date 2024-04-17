@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   Grid,
@@ -8,23 +8,20 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { updatePersonsData } from "./EditablePerson";
-import {
-  DIFF_BACKGROUND_COLOR,
-  PERSON_FACT_BACKGROUND_COLOR,
-  PERSON_FIELD_TYPE,
-} from "../constants";
-import { RecordsDataContext } from "../RecordsContext";
-import { haveSamePersonFields, isMatchingPerson } from "./PersonsDiff";
+  useTheme,
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { updatePersonsData } from './EditablePerson'
+import { PERSON_FIELD_TYPE } from '../constants'
+import { RecordsDataContext } from '../RecordsContext'
+import { haveSamePersonFields, isMatchingPerson } from './PersonsDiff'
 
 function hasMatchingField(person, comparingToPersons) {
   const matchingPerson = comparingToPersons.find((comparingToPerson) =>
-    isMatchingPerson(person, comparingToPerson),
-  );
+    isMatchingPerson(person, comparingToPerson)
+  )
   if (matchingPerson) {
-    return haveSamePersonFields(person?.fields, matchingPerson?.fields);
+    return haveSamePersonFields(person?.fields, matchingPerson?.fields)
   }
 }
 
@@ -34,50 +31,51 @@ export default function EditablePersonField({
   person,
   personIndex,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const persons = recordsData.gx.persons;
-  const comparingTo = recordsData.comparingToGx.persons;
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
+  const persons = recordsData.gx.persons
+  const comparingTo = recordsData.comparingToGx.persons
 
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false)
   const [editFieldType, setEditFieldType] = React.useState(
-    field && field.type ? field.type : "",
-  );
+    field && field.type ? field.type : ''
+  )
   const [editFieldValue, setEditFieldValue] = React.useState(
-    field ? field.values[0].text : "",
-  );
+    field ? field.values[0].text : ''
+  )
   const [hasMatch, setHasMatch] = React.useState(
-    hasMatchingField(person, comparingTo),
-  );
+    hasMatchingField(person, comparingTo)
+  )
 
   const backgroundColor = hasMatch
-    ? PERSON_FACT_BACKGROUND_COLOR
-    : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? "black" : "red";
+    ? theme.palette.fact.background
+    : theme.palette.diff.background
+  const textColor = hasMatch ? null : theme.palette.diff.color
 
   React.useEffect(() => {
-    setHasMatch(hasMatchingField(person, comparingTo));
-  }, [persons, comparingTo]);
+    setHasMatch(hasMatchingField(person, comparingTo))
+  }, [persons, comparingTo])
 
   function handleEdit() {
-    setIsEditing(true);
+    setIsEditing(true)
   }
 
   function handleDelete() {
-    const fields = person.fields;
-    delete fields[fieldIndex];
-    person.fields = fields.filter((e) => e);
+    const fields = person.fields
+    delete fields[fieldIndex]
+    person.fields = fields.filter((e) => e)
     if (fields.length === 0) {
-      delete person.fields;
+      delete person.fields
     }
-    updatePersonsData(person, personIndex, recordsData);
+    updatePersonsData(person, personIndex, recordsData)
   }
 
   function handleSave() {
-    setIsEditing(false);
-    field.values[0].text = editFieldValue;
-    field.type = editFieldType;
-    person.fields[fieldIndex] = field;
-    updatePersonsData(person, personIndex, recordsData);
+    setIsEditing(false)
+    field.values[0].text = editFieldValue
+    field.type = editFieldType
+    person.fields[fieldIndex] = field
+    updatePersonsData(person, personIndex, recordsData)
   }
 
   function editItem() {
@@ -119,7 +117,7 @@ export default function EditablePersonField({
             </Grid>
           </Grid>
         </Grid>
-      );
+      )
     } else {
       return (
         <Grid container alignItems="center" justifyContent="space-between">
@@ -141,7 +139,7 @@ export default function EditablePersonField({
             </Grid>
           </Grid>
         </Grid>
-      );
+      )
     }
   }
 
@@ -149,5 +147,5 @@ export default function EditablePersonField({
     <ListItem sx={{ paddingX: 2, marginTop: 1, background: backgroundColor }}>
       {editItem()}
     </ListItem>
-  );
+  )
 }

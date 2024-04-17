@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   FormControl,
@@ -8,46 +8,42 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {
-  DIFF_BACKGROUND_COLOR,
-  FACT_KEYS,
-  KEY_TO_LABEL_MAP,
-  PERSON_FACT_BACKGROUND_COLOR,
-} from "../constants";
-import { RecordsDataContext } from "../RecordsContext";
-import { isMatchingPerson } from "./PersonsDiff";
-import { relationshipPersonsAreEqual } from "../relationships-diff/RelationshipsDiff";
-import { Cancel } from "@mui/icons-material";
-import { AssertionsContext } from "../AssertionsContext";
+  useTheme,
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import { FACT_KEYS, KEY_TO_LABEL_MAP } from '../constants'
+import { RecordsDataContext } from '../RecordsContext'
+import { isMatchingPerson } from './PersonsDiff'
+import { relationshipPersonsAreEqual } from '../relationships-diff/RelationshipsDiff'
+import { Cancel } from '@mui/icons-material'
+import { AssertionsContext } from '../AssertionsContext'
 
 export function personsWithMatchingNames(person, comparingTo, assertions) {
-  return comparingTo.filter((p) => isMatchingPerson(p, person, assertions));
+  return comparingTo.filter((p) => isMatchingPerson(p, person, assertions))
 }
 
 function relationshipsWithSamePersonsAndType(
   relationship,
   comparingToRels,
   persons,
-  comparingToPersons,
+  comparingToPersons
 ) {
   return comparingToRels.filter((r) => {
     const person1Same = relationshipPersonsAreEqual(
       relationship.person1,
       r.person1,
       persons,
-      comparingToPersons,
-    );
+      comparingToPersons
+    )
     const person2Same = relationshipPersonsAreEqual(
       relationship.person2,
       r.person2,
       persons,
-      comparingToPersons,
-    );
-    const sameType = relationship.type === r.type;
-    return person1Same && person2Same && sameType;
-  });
+      comparingToPersons
+    )
+    const sameType = relationship.type === r.type
+    return person1Same && person2Same && sameType
+  })
 }
 
 function matchingAttributeExists(matchingParentObjects, attributeData, fact) {
@@ -55,7 +51,7 @@ function matchingAttributeExists(matchingParentObjects, attributeData, fact) {
     for (const matchingParentObject of matchingParentObjects) {
       const factsWithMatchingKey = matchingParentObject.facts
         ?.filter((comparingFact) => fact.type === comparingFact.type)
-        .filter((comparingFact) => comparingFact[attributeData.key]);
+        .filter((comparingFact) => comparingFact[attributeData.key])
       if (
         attributeData.key === FACT_KEYS.date ||
         attributeData.key === FACT_KEYS.place
@@ -63,34 +59,34 @@ function matchingAttributeExists(matchingParentObjects, attributeData, fact) {
         if (
           factsWithMatchingKey?.find(
             (comparingFact) =>
-              comparingFact[attributeData.key].original === attributeData.value,
+              comparingFact[attributeData.key].original === attributeData.value
           ) !== undefined
         ) {
-          return true;
+          return true
         }
       } else if (attributeData.key === FACT_KEYS.type) {
         if (
           factsWithMatchingKey?.find(
             (comparingFact) =>
-              comparingFact[attributeData.key] === attributeData.value,
+              comparingFact[attributeData.key] === attributeData.value
           ) !== undefined
         ) {
-          return true;
+          return true
         }
       } else {
         if (
           factsWithMatchingKey?.find(
             (comparingFact) =>
               comparingFact[attributeData.key].toLowerCase() ===
-              attributeData.value.toLowerCase(),
+              attributeData.value.toLowerCase()
           ) !== undefined
         ) {
-          return true;
+          return true
         }
       }
     }
   }
-  return false;
+  return false
 }
 
 function hasMatchingAttribute(
@@ -100,19 +96,19 @@ function hasMatchingAttribute(
   persons,
   comparingToParentObjects,
   comparingToPersons,
-  assertions,
+  assertions
 ) {
   function parentObjectIsARelationship(parentObject) {
-    return parentObject?.person1 && parentObject?.person2;
+    return parentObject?.person1 && parentObject?.person2
   }
 
   if (parentObjectIsARelationship(parentObject)) {
     if (
-      parentObject.type === "http://gedcomx.org/Marriage" &&
-      attributeData.key === "place" &&
-      attributeData.value === "São Pedro, Funchal, Madeira, Portugal"
+      parentObject.type === 'http://gedcomx.org/Marriage' &&
+      attributeData.key === 'place' &&
+      attributeData.value === 'São Pedro, Funchal, Madeira, Portugal'
     ) {
-      console.log(attributeData);
+      console.log(attributeData)
     }
   }
   // Get the matching parent objects (relationships or persons) from the compare side
@@ -121,23 +117,23 @@ function hasMatchingAttribute(
         parentObject,
         comparingToParentObjects,
         persons,
-        comparingToPersons,
+        comparingToPersons
       )
     : personsWithMatchingNames(
         parentObject,
         comparingToParentObjects,
-        assertions,
-      );
-  return matchingAttributeExists(matchingObjects, attributeData, fact);
+        assertions
+      )
+  return matchingAttributeExists(matchingObjects, attributeData, fact)
 }
 
 export function factIsEmpty(fact) {
-  const factKeys = Object.keys(fact).filter((key) => fact[key] !== null);
-  const factHasNoKeys = factKeys.length === 0;
-  const keysToExclude = [FACT_KEYS.primary, FACT_KEYS.id];
+  const factKeys = Object.keys(fact).filter((key) => fact[key] !== null)
+  const factHasNoKeys = factKeys.length === 0
+  const keysToExclude = [FACT_KEYS.primary, FACT_KEYS.id]
   const factHasNoContent =
-    factKeys.filter((k) => !keysToExclude.includes(k)).length === 0;
-  return factHasNoKeys || factHasNoContent;
+    factKeys.filter((k) => !keysToExclude.includes(k)).length === 0
+  return factHasNoKeys || factHasNoContent
 }
 
 export default function EditableFactAttribute({
@@ -150,13 +146,14 @@ export default function EditableFactAttribute({
   updateData,
   factTypes,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const assertions = React.useContext(AssertionsContext).assertions;
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
+  const assertions = React.useContext(AssertionsContext).assertions
 
-  const [isEditing, setIsEditing] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false)
   const [editFieldValue, setEditFieldValue] = React.useState(
-    attributeData ? attributeData.value : "",
-  );
+    attributeData ? attributeData.value : ''
+  )
   const [hasMatch, setHasMatch] = React.useState(
     hasMatchingAttribute(
       attributeData,
@@ -165,14 +162,14 @@ export default function EditableFactAttribute({
       recordsData.gx.persons,
       comparingTo,
       recordsData.comparingToGx.persons,
-      assertions,
-    ),
-  );
+      assertions
+    )
+  )
 
   const backgroundColor = hasMatch
-    ? PERSON_FACT_BACKGROUND_COLOR
-    : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? "black" : "red";
+    ? theme.palette.fact.background
+    : theme.palette.diff.background
+  const textColor = hasMatch ? null : theme.palette.diff.color
 
   React.useEffect(() => {
     setHasMatch(
@@ -183,10 +180,10 @@ export default function EditableFactAttribute({
         recordsData.gx.persons,
         comparingTo,
         recordsData.comparingToGx.persons,
-        assertions,
-      ),
-    );
-    setEditFieldValue(attributeData.value);
+        assertions
+      )
+    )
+    setEditFieldValue(attributeData.value)
   }, [
     attributeData,
     parentObject,
@@ -195,48 +192,48 @@ export default function EditableFactAttribute({
     recordsData.gx.persons,
     recordsData.comparingToGx.persons,
     assertions,
-  ]);
+  ])
 
   function handleSave() {
-    setIsEditing(false);
+    setIsEditing(false)
 
     // To update the fact for the current side I need the fact id and the attribute key.
     if (
       attributeData.key === FACT_KEYS.date ||
       attributeData.key === FACT_KEYS.place
     ) {
-      fact[attributeData.key].original = editFieldValue;
+      fact[attributeData.key].original = editFieldValue
     } else if (attributeData.key === FACT_KEYS.type) {
-      fact[attributeData.key] = editFieldValue;
+      fact[attributeData.key] = editFieldValue
     } else {
-      fact[attributeData.key] = editFieldValue;
+      fact[attributeData.key] = editFieldValue
     }
-    attributeData.value = editFieldValue;
-    parentObject.facts.splice(factIndex, 1, fact);
-    updateData(parentObject, parentObjectIndex, recordsData);
+    attributeData.value = editFieldValue
+    parentObject.facts.splice(factIndex, 1, fact)
+    updateData(parentObject, parentObjectIndex, recordsData)
   }
 
   function handleEdit() {
-    setIsEditing(true);
+    setIsEditing(true)
   }
 
   function handleDelete() {
-    delete fact[attributeData.key];
+    delete fact[attributeData.key]
     if (factIsEmpty(fact)) {
-      delete parentObject.facts[factIndex];
-      parentObject.facts = parentObject.facts.filter((e) => e); // Remove 'empty' elements after deleting a fact
+      delete parentObject.facts[factIndex]
+      parentObject.facts = parentObject.facts.filter((e) => e) // Remove 'empty' elements after deleting a fact
     } else {
-      parentObject.facts.splice(factIndex, 1, fact);
+      parentObject.facts.splice(factIndex, 1, fact)
     }
     // If there are no facts, rather than leaving fact: [] behind, just remove the fact key
     if (parentObject.facts.length === 0) {
-      delete parentObject.facts;
+      delete parentObject.facts
     }
-    updateData(parentObject, parentObjectIndex, recordsData);
+    updateData(parentObject, parentObjectIndex, recordsData)
   }
 
   const editableFactAttribute =
-    attributeData.key === "type" ? (
+    attributeData.key === 'type' ? (
       <Grid item sx={{ background: backgroundColor, paddingLeft: 2 }}>
         <Grid
           container
@@ -299,7 +296,7 @@ export default function EditableFactAttribute({
           </Grid>
         </Grid>
       </Grid>
-    );
+    )
 
   const factAttribute = (
     <Grid item sx={{ background: backgroundColor, paddingLeft: 2 }}>
@@ -319,7 +316,7 @@ export default function EditableFactAttribute({
         </Grid>
       </Grid>
     </Grid>
-  );
+  )
 
-  return isEditing ? editableFactAttribute : factAttribute;
+  return isEditing ? editableFactAttribute : factAttribute
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   Grid,
@@ -6,24 +6,25 @@ import {
   ListItem,
   ListItemText,
   Tooltip,
-} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import PersonNameEditDialog from "./PersonNameEditDialog";
-import { DIFF_BACKGROUND_COLOR, NAME_PART_TYPE } from "../constants";
-import { updatePersonsData, updateRecordsData } from "./EditablePerson";
-import { personsAreEqual } from "./PersonsDiff";
-import { RecordsDataContext } from "../RecordsContext";
-import { AssertionsContext } from "../AssertionsContext";
+  useTheme,
+} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import PersonNameEditDialog from './PersonNameEditDialog'
+import { NAME_PART_TYPE } from '../constants'
+import { updatePersonsData, updateRecordsData } from './EditablePerson'
+import { personsAreEqual } from './PersonsDiff'
+import { RecordsDataContext } from '../RecordsContext'
+import { AssertionsContext } from '../AssertionsContext'
 
 function hasMatchingPerson(person, comparingTo, assertions) {
   return (
     comparingTo.find((p) => personsAreEqual(person, p, assertions)) !==
     undefined
-  );
+  )
 }
 
 function getNamePartByType(parts, type) {
-  return parts.find((part) => part.type === type);
+  return parts.find((part) => part.type === type)
 }
 
 function getFullTextName(nameParts) {
@@ -33,8 +34,8 @@ function getFullTextName(nameParts) {
     nameParts?.surname?.value,
     nameParts?.suffix?.value,
   ]
-    .join(" ")
-    .trim();
+    .join(' ')
+    .trim()
 }
 
 function getNamePartsObject(parts) {
@@ -43,59 +44,60 @@ function getNamePartsObject(parts) {
     given: getNamePartByType(parts, NAME_PART_TYPE.given),
     surname: getNamePartByType(parts, NAME_PART_TYPE.surname),
     suffix: getNamePartByType(parts, NAME_PART_TYPE.suffix),
-  };
+  }
 }
 
 function makeQuestionableWhitespaceVisible(input) {
-  return input?.replace(/^\s+|\s{2,}|\s+$/g, "_");
+  return input?.replace(/^\s+|\s{2,}|\s+$/g, '_')
 }
 
 function ColoredNameParts({ nameParts, hasMatch }) {
-  const prefixColor = hasMatch ? "#8a5300" : "red";
-  const givenColor = hasMatch ? "#000000" : "red";
-  const surnameColor = hasMatch ? "#7518d2" : "red";
-  const suffixColor = hasMatch ? "#9c9c9c" : "red";
+  const theme = useTheme()
+  const prefixColor = hasMatch ? '#8a5300' : theme.palette.diff.color
+  const givenColor = hasMatch ? null : theme.palette.diff.color
+  const surnameColor = hasMatch ? '#7518d2' : theme.palette.diff.color
+  const suffixColor = hasMatch ? '#9c9c9c' : theme.palette.diff.color
 
   return (
     <Grid container spacing={1}>
       <Grid item>
         <ListItemText
           primary={makeQuestionableWhitespaceVisible(nameParts.prefix?.value)}
-          secondary={"Prefix"}
+          secondary={'Prefix'}
           sx={{ color: prefixColor }}
-          primaryTypographyProps={{ fontSize: "20px" }}
+          primaryTypographyProps={{ fontSize: '20px' }}
           hidden={!nameParts.prefix}
         />
       </Grid>
       <Grid item>
         <ListItemText
           primary={makeQuestionableWhitespaceVisible(nameParts.given?.value)}
-          secondary={"Given"}
+          secondary={'Given'}
           sx={{ color: givenColor }}
-          primaryTypographyProps={{ fontSize: "20px" }}
+          primaryTypographyProps={{ fontSize: '20px' }}
           hidden={!nameParts.given}
         />
       </Grid>
       <Grid item>
         <ListItemText
           primary={makeQuestionableWhitespaceVisible(nameParts.surname?.value)}
-          secondary={"Surname"}
+          secondary={'Surname'}
           sx={{ color: surnameColor }}
-          primaryTypographyProps={{ fontSize: "20px" }}
+          primaryTypographyProps={{ fontSize: '20px' }}
           hidden={!nameParts.surname}
         />
       </Grid>
       <Grid item>
         <ListItemText
           primary={makeQuestionableWhitespaceVisible(nameParts.suffix?.value)}
-          secondary={"Suffix"}
+          secondary={'Suffix'}
           sx={{ color: suffixColor }}
-          primaryTypographyProps={{ fontSize: "20px" }}
+          primaryTypographyProps={{ fontSize: '20px' }}
           hidden={!nameParts.suffix}
         />
       </Grid>
     </Grid>
-  );
+  )
 }
 
 export default function EditablePersonName({
@@ -104,44 +106,45 @@ export default function EditablePersonName({
   name,
   nameIndex,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const assertions = React.useContext(AssertionsContext).assertions;
-  const persons = recordsData.gx.persons;
-  const comparingTo = recordsData.comparingToGx.persons;
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
+  const assertions = React.useContext(AssertionsContext).assertions
+  const persons = recordsData.gx.persons
+  const comparingTo = recordsData.comparingToGx.persons
 
-  const parts = name?.nameForms[0]?.parts;
-  const nameParts = getNamePartsObject(parts);
-  const [isEditingPerson, setIsEditingPerson] = React.useState(false);
+  const parts = name?.nameForms[0]?.parts
+  const nameParts = getNamePartsObject(parts)
+  const [isEditingPerson, setIsEditingPerson] = React.useState(false)
   const [hasMatch, setHasMatch] = React.useState(
-    hasMatchingPerson(person, comparingTo, assertions),
-  );
+    hasMatchingPerson(person, comparingTo, assertions)
+  )
 
-  const backgroundColor = hasMatch ? "white" : DIFF_BACKGROUND_COLOR;
+  const backgroundColor = hasMatch ? null : theme.palette.diff.background
 
   React.useEffect(() => {
-    setHasMatch(hasMatchingPerson(person, comparingTo, assertions));
-  }, [person, comparingTo, assertions]);
+    setHasMatch(hasMatchingPerson(person, comparingTo, assertions))
+  }, [person, comparingTo, assertions])
 
   function handleDeletePerson() {
-    person.names.splice(nameIndex, 1);
+    person.names.splice(nameIndex, 1)
     if (!person.names || person.names.length === 0) {
-      persons.splice(personIndex, 1);
+      persons.splice(personIndex, 1)
     }
-    updateRecordsData(recordsData);
+    updateRecordsData(recordsData)
   }
 
   function handleDialogClose(nameParts, type, person) {
-    setIsEditingPerson(false);
-    person.names[nameIndex].type = !type ? null : type;
-    person.names[nameIndex].nameForms[0].parts = nameParts;
+    setIsEditingPerson(false)
+    person.names[nameIndex].type = !type ? null : type
+    person.names[nameIndex].nameForms[0].parts = nameParts
     person.names[nameIndex].nameForms[0].fullText = getFullTextName(
-      getNamePartsObject(nameParts),
-    );
-    updatePersonsData(person, personIndex, recordsData);
+      getNamePartsObject(nameParts)
+    )
+    updatePersonsData(person, personIndex, recordsData)
   }
 
   function handleEdit() {
-    setIsEditingPerson(true);
+    setIsEditingPerson(true)
   }
 
   return (
@@ -165,7 +168,7 @@ export default function EditablePersonName({
                 <Grid item>
                   <ListItemText
                     primary={name.type}
-                    secondary={"Type"}
+                    secondary={'Type'}
                     hidden={!name.type}
                     sx={{ margin: 1 }}
                   />
@@ -180,7 +183,7 @@ export default function EditablePersonName({
               <Button onClick={handleEdit}>Edit</Button>
             </Grid>
             <Grid item>
-              <Tooltip title={"Delete Person"} arrow>
+              <Tooltip title={'Delete Person'} arrow>
                 <IconButton onClick={handleDeletePerson}>
                   <DeleteIcon />
                 </IconButton>
@@ -197,5 +200,5 @@ export default function EditablePersonName({
         person={person}
       />
     </ListItem>
-  );
+  )
 }

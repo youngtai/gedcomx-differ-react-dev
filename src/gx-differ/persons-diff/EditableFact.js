@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Box,
   Button,
@@ -12,18 +12,15 @@ import {
   MenuItem,
   Select,
   TextField,
-} from "@mui/material";
-import EditableFactAttribute from "./EditableFactAttribute";
-import PrimaryFactSwitchItem from "./PrimaryFactSwitchItem";
-import {
-  FACT_KEYS,
-  FACT_QUALIFIER,
-  PERSON_FACT_BACKGROUND_COLOR,
-} from "../constants";
-import AddIcon from "@mui/icons-material/Add";
-import { RecordsDataContext } from "../RecordsContext";
-import EditableFactQualifier from "./EditableFactQualifier";
-import { Cancel } from "@mui/icons-material";
+  useTheme,
+} from '@mui/material'
+import EditableFactAttribute from './EditableFactAttribute'
+import PrimaryFactSwitchItem from './PrimaryFactSwitchItem'
+import { FACT_KEYS, FACT_QUALIFIER } from '../constants'
+import AddIcon from '@mui/icons-material/Add'
+import { RecordsDataContext } from '../RecordsContext'
+import EditableFactQualifier from './EditableFactQualifier'
+import { Cancel } from '@mui/icons-material'
 
 function createEditablePersonFactAttribute(
   attributeData,
@@ -34,7 +31,7 @@ function createEditablePersonFactAttribute(
   parentObjectIndex,
   comparingTo,
   updateData,
-  factTypes,
+  factTypes
 ) {
   return (
     <EditableFactAttribute
@@ -48,13 +45,13 @@ function createEditablePersonFactAttribute(
       updateData={updateData}
       factTypes={factTypes}
     />
-  );
+  )
 }
 
 function getMissingAttributes(presentAttributes) {
   return Object.keys(FACT_KEYS).filter(
-    (attribute) => !presentAttributes.includes(attribute),
-  );
+    (attribute) => !presentAttributes.includes(attribute)
+  )
 }
 
 export default function EditableFact({
@@ -66,26 +63,27 @@ export default function EditableFact({
   updateData,
   factTypes,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
 
-  const [isAddingAttribute, setIsAddingAttribute] = React.useState(false);
-  const [newAttributeKey, setNewAttributeKey] = React.useState("");
-  const [newAttributeValue, setNewAttributeValue] = React.useState("");
+  const [isAddingAttribute, setIsAddingAttribute] = React.useState(false)
+  const [newAttributeKey, setNewAttributeKey] = React.useState('')
+  const [newAttributeValue, setNewAttributeValue] = React.useState('')
 
-  const [newQualifierName, setNewQualifierName] = React.useState("");
+  const [newQualifierName, setNewQualifierName] = React.useState('')
 
-  const id = fact?.id;
-  const type = fact?.type;
-  const date = fact?.date?.original;
-  const place = fact?.place?.original;
-  const value = fact?.value;
-  const qualifiers = fact?.qualifiers;
-  const primary = fact?.primary;
-  const factAttributeElements = [];
-  const presentAttributes = ["primary", "id"];
+  const id = fact?.id
+  const type = fact?.type
+  const date = fact?.date?.original
+  const place = fact?.place?.original
+  const value = fact?.value
+  const qualifiers = fact?.qualifiers
+  const primary = fact?.primary
+  const factAttributeElements = []
+  const presentAttributes = ['primary', 'id']
 
   if (type) {
-    const attributeData = { key: FACT_KEYS.type, id: id, value: type };
+    const attributeData = { key: FACT_KEYS.type, id: id, value: type }
     factAttributeElements.push(
       createEditablePersonFactAttribute(
         attributeData,
@@ -96,13 +94,13 @@ export default function EditableFact({
         parentObjectIndex,
         comparingTo,
         updateData,
-        factTypes,
-      ),
-    );
-    presentAttributes.push(FACT_KEYS.type);
+        factTypes
+      )
+    )
+    presentAttributes.push(FACT_KEYS.type)
   }
   if (date) {
-    const attributeData = { key: FACT_KEYS.date, id: id, value: date };
+    const attributeData = { key: FACT_KEYS.date, id: id, value: date }
     factAttributeElements.push(
       createEditablePersonFactAttribute(
         attributeData,
@@ -113,13 +111,13 @@ export default function EditableFact({
         parentObjectIndex,
         comparingTo,
         updateData,
-        factTypes,
-      ),
-    );
-    presentAttributes.push(FACT_KEYS.date);
+        factTypes
+      )
+    )
+    presentAttributes.push(FACT_KEYS.date)
   }
   if (place) {
-    const attributeData = { key: FACT_KEYS.place, id: id, value: place };
+    const attributeData = { key: FACT_KEYS.place, id: id, value: place }
     factAttributeElements.push(
       createEditablePersonFactAttribute(
         attributeData,
@@ -130,13 +128,13 @@ export default function EditableFact({
         parentObjectIndex,
         comparingTo,
         updateData,
-        factTypes,
-      ),
-    );
-    presentAttributes.push(FACT_KEYS.place);
+        factTypes
+      )
+    )
+    presentAttributes.push(FACT_KEYS.place)
   }
   if (value) {
-    const attributeData = { key: FACT_KEYS.value, id: id, value: value };
+    const attributeData = { key: FACT_KEYS.value, id: id, value: value }
     factAttributeElements.push(
       createEditablePersonFactAttribute(
         attributeData,
@@ -147,10 +145,10 @@ export default function EditableFact({
         parentObjectIndex,
         comparingTo,
         updateData,
-        factTypes,
-      ),
-    );
-    presentAttributes.push(FACT_KEYS.value);
+        factTypes
+      )
+    )
+    presentAttributes.push(FACT_KEYS.value)
   }
   if (qualifiers) {
     qualifiers.forEach((qualifier, index) => {
@@ -158,7 +156,7 @@ export default function EditableFact({
         key: FACT_KEYS.qualifiers,
         id: id,
         qualifier: qualifier,
-      };
+      }
       factAttributeElements.push(
         <EditableFactQualifier
           key={`qualifier-${index}`}
@@ -170,10 +168,10 @@ export default function EditableFact({
           parentObjectIndex={parentObjectIndex}
           comparingTo={comparingTo}
           updateData={updateData}
-        />,
-      );
-      presentAttributes.push(FACT_KEYS.qualifiers);
-    });
+        />
+      )
+      presentAttributes.push(FACT_KEYS.qualifiers)
+    })
   }
   factAttributeElements.push(
     <PrimaryFactSwitchItem
@@ -184,37 +182,37 @@ export default function EditableFact({
       parentObject={parentObject}
       parentObjectIndex={parentObjectIndex}
       updateData={updateData}
-    />,
-  );
+    />
+  )
 
   function handleSaveNewAttribute() {
-    setIsAddingAttribute(false);
-    if (newAttributeValue === "") {
-      return;
+    setIsAddingAttribute(false)
+    if (newAttributeValue === '') {
+      return
     }
     if (
       newAttributeKey === FACT_KEYS.type ||
       newAttributeKey === FACT_KEYS.value
     ) {
-      fact[newAttributeKey] = newAttributeValue;
+      fact[newAttributeKey] = newAttributeValue
     } else if (
       newAttributeKey === FACT_KEYS.date ||
       newAttributeKey === FACT_KEYS.place
     ) {
-      fact[newAttributeKey] = { original: newAttributeValue };
+      fact[newAttributeKey] = { original: newAttributeValue }
     } else if (newAttributeKey === FACT_KEYS.qualifiers) {
       // GedcomX Editor saves ints as strings: 1 vs '1'
       fact[newAttributeKey] = [
         { name: newQualifierName, value: newAttributeValue.toString() },
-      ];
+      ]
     }
-    parentObject.facts.splice(factIndex, 1, fact);
-    updateData(parentObject, parentObjectIndex, recordsData);
-    setNewAttributeKey("");
+    parentObject.facts.splice(factIndex, 1, fact)
+    updateData(parentObject, parentObjectIndex, recordsData)
+    setNewAttributeKey('')
   }
 
   function handleAddFactAttribute() {
-    setIsAddingAttribute(true);
+    setIsAddingAttribute(true)
   }
 
   function editingComponent(newAttributeKey) {
@@ -253,7 +251,7 @@ export default function EditableFact({
             />
           </Grid>
         </Grid>
-      );
+      )
     } else if (newAttributeKey === FACT_KEYS.type) {
       return (
         <FormControl fullWidth>
@@ -270,7 +268,7 @@ export default function EditableFact({
             ))}
           </Select>
         </FormControl>
-      );
+      )
     } else {
       return (
         <TextField
@@ -279,18 +277,18 @@ export default function EditableFact({
           fullWidth={true}
           size="small"
         />
-      );
+      )
     }
   }
 
   const addAttributeItem = isAddingAttribute ? (
     <ListItem
       key={`fact-${factIndex}-add-attribute`}
-      sx={{ background: PERSON_FACT_BACKGROUND_COLOR }}
+      sx={{ background: theme.palette.fact.background }}
     >
-      <Grid container direction={"row"} alignItems={"center"} spacing={1}>
+      <Grid container direction={'row'} alignItems={'center'} spacing={1}>
         <Grid item xs={10}>
-          <Grid container direction={"row"} alignItems={"center"} spacing={1}>
+          <Grid container direction={'row'} alignItems={'center'} spacing={1}>
             <Grid item xs={3}>
               <FormControl fullWidth>
                 <Select
@@ -324,17 +322,17 @@ export default function EditableFact({
   ) : (
     <Box hidden={getMissingAttributes(presentAttributes).length === 0}>
       <ListItemButton
-        sx={{ marginTop: 0, background: PERSON_FACT_BACKGROUND_COLOR }}
-        color={"primary"}
+        sx={{ marginTop: 0, background: theme.palette.fact.background }}
+        color={'primary'}
         onClick={handleAddFactAttribute}
       >
         <ListItemIcon>
           <AddIcon />
         </ListItemIcon>
-        <ListItemText primary={"Add Fact Attribute"} />
+        <ListItemText primary={'Add Fact Attribute'} />
       </ListItemButton>
     </Box>
-  );
+  )
 
   return (
     <>
@@ -346,12 +344,12 @@ export default function EditableFact({
           container
           direction="column"
           key={`fact-${factIndex}-attributes`}
-          sx={{ background: PERSON_FACT_BACKGROUND_COLOR }}
+          sx={{ background: theme.palette.fact.background }}
         >
           {factAttributeElements}
         </Grid>
       </ListItem>
       {addAttributeItem}
     </>
-  );
+  )
 }

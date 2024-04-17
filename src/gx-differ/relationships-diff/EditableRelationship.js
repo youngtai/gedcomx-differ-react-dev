@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   Grid,
@@ -8,60 +8,62 @@ import {
   ListItemText,
   Paper,
   Tooltip,
-} from "@mui/material";
+  useTheme,
+} from '@mui/material'
 import {
   fullTextName,
   getPersonById,
   sideIncludesRel,
   updateRelationshipsData,
-} from "./RelationshipsDiff";
-import { Autorenew, Delete } from "@mui/icons-material";
-import { RecordsDataContext } from "../RecordsContext";
-import EditableRelationshipAttribute from "./EditableRelationshipAttribute";
-import { DIFF_BACKGROUND_COLOR, RELATIONSHIP_FACT_TYPE } from "../constants";
-import EditableFact from "../persons-diff/EditableFact";
-import AddIcon from "@mui/icons-material/Add";
-import AddFactOrFieldDialog from "../persons-diff/AddFactOrFieldDialog";
-import { updateRecordsData } from "../persons-diff/EditablePerson";
-import { AssertionsContext } from "../AssertionsContext";
+} from './RelationshipsDiff'
+import { Autorenew, Delete } from '@mui/icons-material'
+import { RecordsDataContext } from '../RecordsContext'
+import EditableRelationshipAttribute from './EditableRelationshipAttribute'
+import { RELATIONSHIP_FACT_TYPE } from '../constants'
+import EditableFact from '../persons-diff/EditableFact'
+import AddIcon from '@mui/icons-material/Add'
+import AddFactOrFieldDialog from '../persons-diff/AddFactOrFieldDialog'
+import { updateRecordsData } from '../persons-diff/EditablePerson'
+import { AssertionsContext } from '../AssertionsContext'
 
 function hasMatchingRelationship(
   comparingToRels,
   rel,
   comparingToPersons,
   persons,
-  assertions,
+  assertions
 ) {
   return sideIncludesRel(
     comparingToRels,
     rel,
     comparingToPersons,
     persons,
-    assertions,
-  );
+    assertions
+  )
 }
 
 export function EditableRelationship({ rel, relIndex, persons }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const assertions = React.useContext(AssertionsContext).assertions;
-  const rels = recordsData.gx.relationships;
-  const comparingToRels = recordsData.comparingToGx.relationships;
-  const comparingToPersons = recordsData.comparingToGx.persons;
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
+  const assertions = React.useContext(AssertionsContext).assertions
+  const rels = recordsData.gx.relationships
+  const comparingToRels = recordsData.comparingToGx.relationships
+  const comparingToPersons = recordsData.comparingToGx.persons
 
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [addFactOrField, setAddFactOrField] = React.useState(false);
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [addFactOrField, setAddFactOrField] = React.useState(false)
   const [hasMatch, setHasMatch] = React.useState(
     hasMatchingRelationship(
       comparingToRels,
       rel,
       comparingToPersons,
       persons,
-      assertions,
-    ),
-  );
+      assertions
+    )
+  )
 
-  const backgroundColor = hasMatch ? "white" : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? "black" : "red";
+  const backgroundColor = hasMatch ? null : theme.palette.diff.background
+  const textColor = hasMatch ? null : theme.palette.diff.color
 
   React.useEffect(() => {
     setHasMatch(
@@ -70,36 +72,36 @@ export function EditableRelationship({ rel, relIndex, persons }) {
         rel,
         comparingToPersons,
         persons,
-        assertions,
-      ),
-    );
-  }, [comparingToRels, rel, comparingToPersons, persons, assertions]);
+        assertions
+      )
+    )
+  }, [comparingToRels, rel, comparingToPersons, persons, assertions])
 
   function handleSwitchPerson() {
-    const person1Clone = structuredClone(rel.person1);
-    rel.person1 = structuredClone(rel.person2);
-    rel.person2 = person1Clone;
-    rels.splice(relIndex, 1, rel);
-    updateRelationshipsData(recordsData, assertions);
+    const person1Clone = structuredClone(rel.person1)
+    rel.person1 = structuredClone(rel.person2)
+    rel.person2 = person1Clone
+    rels.splice(relIndex, 1, rel)
+    updateRelationshipsData(recordsData, assertions)
   }
 
   function handleEdit() {
-    setIsEditing(true);
+    setIsEditing(true)
   }
 
   function handleDelete() {
-    rels.splice(relIndex, 1);
-    updateRelationshipsData(recordsData, assertions);
+    rels.splice(relIndex, 1)
+    updateRelationshipsData(recordsData, assertions)
   }
 
   function handleAddFactOrField() {
-    setAddFactOrField(true);
+    setAddFactOrField(true)
   }
 
   function factUpdateHandler(rel, relIndex, recordsData) {
-    recordsData.gx.relationships.splice(relIndex, 1, rel);
-    updateRecordsData(recordsData);
-    updateRelationshipsData(recordsData, assertions);
+    recordsData.gx.relationships.splice(relIndex, 1, rel)
+    updateRecordsData(recordsData)
+    updateRelationshipsData(recordsData, assertions)
   }
 
   return (
@@ -112,9 +114,9 @@ export function EditableRelationship({ rel, relIndex, persons }) {
                 <Grid item>
                   <ListItemText
                     primary={fullTextName(
-                      getPersonById(rel?.person1?.resourceId, persons),
+                      getPersonById(rel?.person1?.resourceId, persons)
                     )}
-                    secondary={"Person 1"}
+                    secondary={'Person 1'}
                   />
                 </Grid>
                 <Grid item>
@@ -128,9 +130,9 @@ export function EditableRelationship({ rel, relIndex, persons }) {
                 <Grid item>
                   <ListItemText
                     primary={fullTextName(
-                      getPersonById(rel?.person2?.resourceId, persons),
+                      getPersonById(rel?.person2?.resourceId, persons)
                     )}
-                    secondary={"Person 2"}
+                    secondary={'Person 2'}
                   />
                 </Grid>
               </Grid>
@@ -138,7 +140,7 @@ export function EditableRelationship({ rel, relIndex, persons }) {
             <Grid item xs={2}>
               <Grid container direction="column" alignItems="flex-end">
                 <Grid item>
-                  <Tooltip title={"Switch Persons"} arrow placement="left">
+                  <Tooltip title={'Switch Persons'} arrow placement="left">
                     <IconButton onClick={handleSwitchPerson}>
                       <Autorenew />
                     </IconButton>
@@ -148,7 +150,7 @@ export function EditableRelationship({ rel, relIndex, persons }) {
                   <Button onClick={handleEdit}>Edit</Button>
                 </Grid>
                 <Grid item>
-                  <Tooltip title={"Delete Relationship"} arrow placement="left">
+                  <Tooltip title={'Delete Relationship'} arrow placement="left">
                     <IconButton onClick={handleDelete}>
                       <Delete />
                     </IconButton>
@@ -171,10 +173,10 @@ export function EditableRelationship({ rel, relIndex, persons }) {
                 updateData={factUpdateHandler}
                 factTypes={RELATIONSHIP_FACT_TYPE}
               />
-            );
+            )
           })}
           <Button
-            variant={"outlined"}
+            variant={'outlined'}
             sx={{ margin: 1 }}
             onClick={handleAddFactOrField}
             startIcon={<AddIcon />}
@@ -192,5 +194,5 @@ export function EditableRelationship({ rel, relIndex, persons }) {
         </List>
       </Paper>
     </>
-  );
+  )
 }

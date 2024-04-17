@@ -1,40 +1,47 @@
-import React from "react";
-import { RecordsDataContext } from "../RecordsContext";
-import { Button, Grid, ListItemText, Paper, TextField } from "@mui/material";
-import { sideIncludesDocument } from "./DocumentsDiff";
-import { DIFF_BACKGROUND_COLOR } from "../constants";
+import React from 'react'
+import { RecordsDataContext } from '../RecordsContext'
+import {
+  Button,
+  Grid,
+  ListItemText,
+  Paper,
+  TextField,
+  useTheme,
+} from '@mui/material'
+import { sideIncludesDocument } from './DocumentsDiff'
 
 function hasMatchingDocumment(document, comparingTo) {
-  return sideIncludesDocument(document, comparingTo);
+  return sideIncludesDocument(document, comparingTo)
 }
 
 export default function EditableDocument({ document, documentIndex }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const [isEditing, setIsEditing] = React.useState(false);
-  const [text, setText] = React.useState(document.text);
-  const [hasMatch, setHasMatch] = React.useState(hasMatchingDocumment);
+  const theme = useTheme()
+  const recordsData = React.useContext(RecordsDataContext)
+  const [isEditing, setIsEditing] = React.useState(false)
+  const [text, setText] = React.useState(document.text)
+  const [hasMatch, setHasMatch] = React.useState(hasMatchingDocumment)
 
-  const backgroundColor = hasMatch ? "white" : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? "black" : "red";
+  const backgroundColor = hasMatch ? null : theme.palette.diff.background
+  const textColor = hasMatch ? null : theme.palette.diff.color
 
   React.useEffect(() => {
     setHasMatch(
-      hasMatchingDocumment(document, recordsData.comparingToGx.documents),
-    );
-  }, [document, recordsData.comparingToGx.documents]);
+      hasMatchingDocumment(document, recordsData.comparingToGx.documents)
+    )
+  }, [document, recordsData.comparingToGx.documents])
 
   function handleSave() {
-    setIsEditing(false);
+    setIsEditing(false)
     if (!text) {
-      return;
+      return
     }
-    recordsData.gx.documents[documentIndex].text = text;
+    recordsData.gx.documents[documentIndex].text = text
 
     // updateDocumentsData(recordsData);
   }
 
   function handleEdit() {
-    setIsEditing(true);
+    setIsEditing(true)
   }
 
   return isEditing ? (
@@ -48,7 +55,7 @@ export default function EditableDocument({ document, documentIndex }) {
         <Grid item xs={10}>
           <Grid container direction="column">
             <Grid item>
-              <ListItemText primary={document.id} secondary={"Id"} />
+              <ListItemText primary={document.id} secondary={'Id'} />
             </Grid>
             <Grid item>
               <TextField
@@ -78,10 +85,10 @@ export default function EditableDocument({ document, documentIndex }) {
         <Grid item xs={10}>
           <Grid container direction="column" sx={{ color: textColor }}>
             <Grid item>
-              <ListItemText primary={document.id} secondary={"Id"} />
+              <ListItemText primary={document.id} secondary={'Id'} />
             </Grid>
             <Grid item>
-              <ListItemText primary={document.text} secondary={"Text"} />
+              <ListItemText primary={document.text} secondary={'Text'} />
             </Grid>
           </Grid>
         </Grid>
@@ -90,5 +97,5 @@ export default function EditableDocument({ document, documentIndex }) {
         </Grid>
       </Grid>
     </Paper>
-  );
+  )
 }
