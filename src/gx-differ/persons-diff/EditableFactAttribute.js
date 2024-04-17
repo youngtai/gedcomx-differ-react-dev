@@ -1,15 +1,15 @@
-import React from "react";
-import {Button, FormControl, Grid, IconButton, ListItemText, MenuItem, Select, TextField} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {DIFF_BACKGROUND_COLOR, FACT_KEYS, KEY_TO_LABEL_MAP, PERSON_FACT_BACKGROUND_COLOR} from "../constants";
-import {RecordsDataContext} from "../RecordsContext";
-import {haveSameNames} from "./PersonsDiff";
-import {relationshipPersonsAreEqual} from "../relationships-diff/RelationshipsDiff";
-import {Cancel} from "@mui/icons-material";
-import {AssertionsContext} from "../AssertionsContext";
+import React from 'react'
+import {Button, FormControl, Grid, IconButton, ListItemText, MenuItem, Select, TextField} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import {DIFF_BACKGROUND_COLOR, FACT_KEYS, KEY_TO_LABEL_MAP, PERSON_FACT_BACKGROUND_COLOR} from '../constants'
+import {RecordsDataContext} from '../RecordsContext'
+import {isMatchingPerson} from './PersonsDiff'
+import {relationshipPersonsAreEqual} from '../relationships-diff/RelationshipsDiff'
+import {Cancel} from '@mui/icons-material'
+import {AssertionsContext} from '../AssertionsContext'
 
 export function personsWithMatchingNames(person, comparingTo, assertions) {
-  return comparingTo.filter(p => haveSameNames(p, person, assertions));
+  return comparingTo.filter(p => isMatchingPerson(p, person, assertions));
 }
 
 function relationshipsWithSamePersonsAndType(relationship, comparingToRels, persons, comparingToPersons) {

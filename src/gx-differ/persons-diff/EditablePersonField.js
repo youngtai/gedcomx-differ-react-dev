@@ -1,13 +1,13 @@
-import React from "react";
-import {Button, Grid, IconButton, ListItem, ListItemText, MenuItem, Select, TextField} from "@mui/material";
-import DeleteIcon from "@mui/icons-material/Delete";
-import {updatePersonsData} from "./EditablePerson";
-import {DIFF_BACKGROUND_COLOR, PERSON_FACT_BACKGROUND_COLOR, PERSON_FIELD_TYPE} from "../constants";
-import {RecordsDataContext} from "../RecordsContext";
-import {haveSameNames, haveSamePersonFields} from "./PersonsDiff";
+import React from 'react'
+import {Button, Grid, IconButton, ListItem, ListItemText, MenuItem, Select, TextField} from '@mui/material'
+import DeleteIcon from '@mui/icons-material/Delete'
+import {updatePersonsData} from './EditablePerson'
+import {DIFF_BACKGROUND_COLOR, PERSON_FACT_BACKGROUND_COLOR, PERSON_FIELD_TYPE} from '../constants'
+import {RecordsDataContext} from '../RecordsContext'
+import {haveSamePersonFields, isMatchingPerson} from './PersonsDiff'
 
 function hasMatchingField(person, comparingToPersons) {
-  const matchingPerson = comparingToPersons.find(comparingToPerson => haveSameNames(person, comparingToPerson))
+  const matchingPerson = comparingToPersons.find(comparingToPerson => isMatchingPerson(person, comparingToPerson))
   if (matchingPerson) {
     return haveSamePersonFields(person?.fields, matchingPerson?.fields)
   }
