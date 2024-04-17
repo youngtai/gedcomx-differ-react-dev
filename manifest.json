@@ -1,0 +1,15 @@
+{
+  "short_name": "ACE GedcomX Differ",
+  "name": "ACE GedcomX Differ",
+  "icons": [
+    {
+      "src": "letter-d.png",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
