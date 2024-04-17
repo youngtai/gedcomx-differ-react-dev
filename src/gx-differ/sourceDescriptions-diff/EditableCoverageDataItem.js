@@ -1,47 +1,90 @@
 import React from "react";
-import {Button, Grid, IconButton, ListItem, ListItemText, TextField} from "@mui/material";
+import {
+  Button,
+  Grid,
+  IconButton,
+  ListItem,
+  ListItemText,
+  TextField,
+} from "@mui/material";
 import DeleteIcon from "@mui/icons-material/Delete";
-import {updateSourceDescriptionsData} from "./SourceDescriptionsDiff";
-import {RecordsDataContext} from "../RecordsContext";
-import {DIFF_BACKGROUND_COLOR} from "../constants";
+import { updateSourceDescriptionsData } from "./SourceDescriptionsDiff";
+import { RecordsDataContext } from "../RecordsContext";
+import { DIFF_BACKGROUND_COLOR } from "../constants";
 
 function hasMatchingCoverageDataItem(coverageItem, label, comparingTo) {
-  if (label === 'Spatial') {
-    return comparingTo
-      .filter(sd => sd.resourceType === 'http://gedcomx.org/Record')
-      .map(sd => sd.coverage)
-      .flatMap(coverages => coverages)
-      .find(coverage => coverage.spatial && coverage.spatial.original === coverageItem.original) !== undefined;
-  } else if (label === 'Temporal') {
-    return comparingTo
-      .filter(sd => sd.resourceType === 'http://gedcomx.org/Record')
-      .map(sd => sd.coverage)
-      .flatMap(coverages => coverages)
-      .find(coverage => coverage.temporal && coverage.temporal.original === coverageItem.original) !== undefined;
-  } else if (label === 'Record Type') {
-    return comparingTo
-      .filter(sd => sd.resourceType === 'http://gedcomx.org/Record')
-      .map(sd => sd.coverage)
-      .flatMap(coverages => coverages)
-      .find(coverage => coverage.recordType && coverage.recordType === coverageItem) !== undefined;
+  if (label === "Spatial") {
+    return (
+      comparingTo
+        .filter((sd) => sd.resourceType === "http://gedcomx.org/Record")
+        .map((sd) => sd.coverage)
+        .flatMap((coverages) => coverages)
+        .find(
+          (coverage) =>
+            coverage.spatial &&
+            coverage.spatial.original === coverageItem.original,
+        ) !== undefined
+    );
+  } else if (label === "Temporal") {
+    return (
+      comparingTo
+        .filter((sd) => sd.resourceType === "http://gedcomx.org/Record")
+        .map((sd) => sd.coverage)
+        .flatMap((coverages) => coverages)
+        .find(
+          (coverage) =>
+            coverage.temporal &&
+            coverage.temporal.original === coverageItem.original,
+        ) !== undefined
+    );
+  } else if (label === "Record Type") {
+    return (
+      comparingTo
+        .filter((sd) => sd.resourceType === "http://gedcomx.org/Record")
+        .map((sd) => sd.coverage)
+        .flatMap((coverages) => coverages)
+        .find(
+          (coverage) =>
+            coverage.recordType && coverage.recordType === coverageItem,
+        ) !== undefined
+    );
   }
 }
 
-export default function EditableCoverageDataItem({coverageItem, coverageIndex, label, sourceDescriptionIndex}) {
+export default function EditableCoverageDataItem({
+  coverageItem,
+  coverageIndex,
+  label,
+  sourceDescriptionIndex,
+}) {
   const recordsData = React.useContext(RecordsDataContext);
   const sourceDescriptions = recordsData.gx.sourceDescriptions;
   const comparingTo = recordsData.comparingToGx.sourceDescriptions;
 
-  const [editFieldValue, setEditFieldValue] = React.useState(coverageItem?.original ? coverageItem.original : coverageItem ? coverageItem : '');
+  const [editFieldValue, setEditFieldValue] = React.useState(
+    coverageItem?.original
+      ? coverageItem.original
+      : coverageItem
+        ? coverageItem
+        : "",
+  );
   const [isEditing, setIsEditing] = React.useState(false);
-  const [hasMatch, setHasMatch] = React.useState(hasMatchingCoverageDataItem(coverageItem, label, comparingTo));
+  const [hasMatch, setHasMatch] = React.useState(
+    hasMatchingCoverageDataItem(coverageItem, label, comparingTo),
+  );
 
-  const backgroundColor = hasMatch ? 'white' : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? 'black' : 'red';
+  const backgroundColor = hasMatch ? "white" : DIFF_BACKGROUND_COLOR;
+  const textColor = hasMatch ? "black" : "red";
 
   React.useEffect(() => {
     setHasMatch(hasMatchingCoverageDataItem(coverageItem, label, comparingTo));
-    setEditFieldValue(coverageItem?.original ? coverageItem.original : coverageItem ? coverageItem : '');
+    setEditFieldValue(
+      coverageItem?.original
+        ? coverageItem.original
+        : coverageItem
+          ? coverageItem
+          : "",
+    );
   }, [coverageItem, label, comparingTo]);
 
   function handleOnEdit() {
@@ -49,29 +92,38 @@ export default function EditableCoverageDataItem({coverageItem, coverageIndex, l
   }
 
   function handleDelete() {
-    if (label === 'Spatial') {
-      delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex].spatial;
+    if (label === "Spatial") {
+      delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex]
+        .spatial;
     }
-    if (label === 'Temporal') {
-      delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex].temporal;
+    if (label === "Temporal") {
+      delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex]
+        .temporal;
     }
-    if (label === 'Record Type') {
-      delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex].recordType;
+    if (label === "Record Type") {
+      delete sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex]
+        .recordType;
     }
     updateSourceDescriptionsData(recordsData);
   }
 
   function handleOnSave() {
     setIsEditing(false);
-    if (label === 'Spatial') {
+    if (label === "Spatial") {
       coverageItem.original = editFieldValue;
-      sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex].spatial = coverageItem;
-    } else if (label === 'Temporal') {
+      sourceDescriptions[sourceDescriptionIndex].coverage[
+        coverageIndex
+      ].spatial = coverageItem;
+    } else if (label === "Temporal") {
       coverageItem.original = editFieldValue;
-      sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex].temporal = coverageItem;
-    } else if (label === 'Record Type') {
+      sourceDescriptions[sourceDescriptionIndex].coverage[
+        coverageIndex
+      ].temporal = coverageItem;
+    } else if (label === "Record Type") {
       coverageItem = editFieldValue;
-      sourceDescriptions[sourceDescriptionIndex].coverage[coverageIndex].recordType = coverageItem;
+      sourceDescriptions[sourceDescriptionIndex].coverage[
+        coverageIndex
+      ].recordType = coverageItem;
     }
     updateSourceDescriptionsData(recordsData);
   }
@@ -81,10 +133,18 @@ export default function EditableCoverageDataItem({coverageItem, coverageIndex, l
       return (
         <>
           <Grid item xs={10}>
-            <TextField value={editFieldValue} fullWidth={true} size='small' onChange={e => setEditFieldValue(e.target.value)} sx={{marginY: 1}}/>
+            <TextField
+              value={editFieldValue}
+              fullWidth={true}
+              size="small"
+              onChange={(e) => setEditFieldValue(e.target.value)}
+              sx={{ marginY: 1 }}
+            />
           </Grid>
           <Grid item xs={2}>
-            <Button onClick={handleOnSave} sx={{marginLeft: 2}}>Save</Button>
+            <Button onClick={handleOnSave} sx={{ marginLeft: 2 }}>
+              Save
+            </Button>
           </Grid>
         </>
       );
@@ -92,12 +152,12 @@ export default function EditableCoverageDataItem({coverageItem, coverageIndex, l
       return (
         <>
           <Grid item>
-            <ListItemText primary={editFieldValue} secondary={label}/>
+            <ListItemText primary={editFieldValue} secondary={label} />
           </Grid>
           <Grid item>
             <Button onClick={handleOnEdit}>Edit</Button>
             <IconButton onClick={handleDelete}>
-              <DeleteIcon/>
+              <DeleteIcon />
             </IconButton>
           </Grid>
         </>
@@ -106,8 +166,10 @@ export default function EditableCoverageDataItem({coverageItem, coverageIndex, l
   }
 
   return (
-    <ListItem sx={{padding: 1, background: backgroundColor, color: textColor}}>
-      <Grid container alignItems='center' justifyContent='space-between'>
+    <ListItem
+      sx={{ padding: 1, background: backgroundColor, color: textColor }}
+    >
+      <Grid container alignItems="center" justifyContent="space-between">
         {item()}
       </Grid>
     </ListItem>

@@ -1,24 +1,48 @@
 import React from "react";
-import {Grid} from "@mui/material";
-import {RecordsDataContext} from "../RecordsContext";
-import {leftRecordsData, rightRecordsData} from "../VisualGedcomxDiffer";
+import { Grid } from "@mui/material";
+import { RecordsDataContext } from "../RecordsContext";
+import { leftRecordsData, rightRecordsData } from "../VisualGedcomxDiffer";
 import RelationshipsList from "./RelationshipsList";
-import {haveSameFacts, personsAreEqual} from "../persons-diff/PersonsDiff";
+import { haveSameFacts, personsAreEqual } from "../persons-diff/PersonsDiff";
 
 export function getPersonById(id, persons) {
-  return persons?.find(person => person.id === id);
+  return persons?.find((person) => person.id === id);
 }
 
-export function relationshipPersonsAreEqual(sideARelPerson, sideBRelPerson, sideAPersons, sideBPersons, assertions) {
+export function relationshipPersonsAreEqual(
+  sideARelPerson,
+  sideBRelPerson,
+  sideAPersons,
+  sideBPersons,
+  assertions,
+) {
   const personA = getPersonById(sideBRelPerson.resourceId, sideBPersons);
   const personB = getPersonById(sideARelPerson.resourceId, sideAPersons);
   return personsAreEqual(personA, personB, assertions);
 }
 
-function relationshipsAreEqual(sideARel, sideBRel, sideAPersons, sideBPersons, assertions) {
+function relationshipsAreEqual(
+  sideARel,
+  sideBRel,
+  sideAPersons,
+  sideBPersons,
+  assertions,
+) {
   const typeIsEqual = sideBRel.type === sideARel.type;
-  const person1IsEqual = relationshipPersonsAreEqual(sideARel.person1, sideBRel.person1, sideAPersons, sideBPersons, assertions);
-  const person2IsEqual = relationshipPersonsAreEqual(sideARel.person2, sideBRel.person2, sideAPersons, sideBPersons, assertions);
+  const person1IsEqual = relationshipPersonsAreEqual(
+    sideARel.person1,
+    sideBRel.person1,
+    sideAPersons,
+    sideBPersons,
+    assertions,
+  );
+  const person2IsEqual = relationshipPersonsAreEqual(
+    sideARel.person2,
+    sideBRel.person2,
+    sideAPersons,
+    sideBPersons,
+    assertions,
+  );
   const factsAreEqual = haveSameFacts(sideARel?.facts, sideBRel?.facts);
   return typeIsEqual && person1IsEqual && person2IsEqual && factsAreEqual;
 }
@@ -32,13 +56,37 @@ function relationshipsAreEqual(sideARel, sideBRel, sideAPersons, sideBPersons, a
  * @param assertions optionally turn on/off comparing certain elements (depending on the input Gx and needs)
  * @returns {boolean} whether a relationship is present in a relationship array
  */
-export function sideIncludesRel(sideARels, sideBRel, sideAPersons, sideBPersons, assertions) {
-  return sideARels?.find(sideARel => relationshipsAreEqual(sideARel, sideBRel, sideAPersons, sideBPersons, assertions)) !== undefined;
+export function sideIncludesRel(
+  sideARels,
+  sideBRel,
+  sideAPersons,
+  sideBPersons,
+  assertions,
+) {
+  return (
+    sideARels?.find((sideARel) =>
+      relationshipsAreEqual(
+        sideARel,
+        sideBRel,
+        sideAPersons,
+        sideBPersons,
+        assertions,
+      ),
+    ) !== undefined
+  );
 }
 
 // Return intersection of left and right relationships
-export function getRelationshipsIntersection(leftRels, rightRels, leftPersons, rightPersons, assertions) {
-  return leftRels?.filter(rel => sideIncludesRel(rightRels, rel, leftPersons, rightPersons, assertions));
+export function getRelationshipsIntersection(
+  leftRels,
+  rightRels,
+  leftPersons,
+  rightPersons,
+  assertions,
+) {
+  return leftRels?.filter((rel) =>
+    sideIncludesRel(rightRels, rel, leftPersons, rightPersons, assertions),
+  );
 }
 
 // Return the complement of the intersection of {side} and center relationships (Ones without matches)
@@ -48,29 +96,66 @@ export function getRelationshipsIntersection(leftRels, rightRels, leftPersons, r
 
 export function fullTextName(person) {
   if (!person?.names) {
-    return 'Nameless Person';
+    return "Nameless Person";
   }
   return person.names[0]?.nameForms[0]?.fullText;
 }
 
 export function updateRelationshipsData(recordsData, assertions) {
-  recordsData.finalGx.relationships = getRelationshipsIntersection(recordsData.gx.relationships, recordsData.comparingToGx.relationships, recordsData.gx.persons, recordsData.comparingToGx.persons, assertions);
+  recordsData.finalGx.relationships = getRelationshipsIntersection(
+    recordsData.gx.relationships,
+    recordsData.comparingToGx.relationships,
+    recordsData.gx.persons,
+    recordsData.comparingToGx.persons,
+    assertions,
+  );
   recordsData.setFinalGx(structuredClone(recordsData.finalGx));
 
   recordsData.setGx(structuredClone(recordsData.gx));
 }
 
-export default function RelationshipsDiff({leftGx, setLeftGx, rightGx, setRightGx, finalGx, setFinalGx}) {
+export default function RelationshipsDiff({
+  leftGx,
+  setLeftGx,
+  rightGx,
+  setRightGx,
+  finalGx,
+  setFinalGx,
+}) {
   return (
-    <Grid container alignItems='flex-start' justifyContent='center'>
+    <Grid container alignItems="flex-start" justifyContent="center">
       <Grid item xs={6}>
-        <RecordsDataContext.Provider value={leftRecordsData(leftGx, setLeftGx, rightGx, setRightGx, finalGx, setFinalGx)}>
-          <RelationshipsList rels={leftGx.relationships} persons={leftGx.persons}/>
+        <RecordsDataContext.Provider
+          value={leftRecordsData(
+            leftGx,
+            setLeftGx,
+            rightGx,
+            setRightGx,
+            finalGx,
+            setFinalGx,
+          )}
+        >
+          <RelationshipsList
+            rels={leftGx.relationships}
+            persons={leftGx.persons}
+          />
         </RecordsDataContext.Provider>
       </Grid>
       <Grid item xs={6}>
-        <RecordsDataContext.Provider value={rightRecordsData(leftGx, setLeftGx, rightGx, setRightGx, finalGx, setFinalGx)}>
-          <RelationshipsList rels={rightGx.relationships} persons={rightGx.persons}/>
+        <RecordsDataContext.Provider
+          value={rightRecordsData(
+            leftGx,
+            setLeftGx,
+            rightGx,
+            setRightGx,
+            finalGx,
+            setFinalGx,
+          )}
+        >
+          <RelationshipsList
+            rels={rightGx.relationships}
+            persons={rightGx.persons}
+          />
         </RecordsDataContext.Provider>
       </Grid>
     </Grid>

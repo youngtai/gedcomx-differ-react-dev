@@ -1,12 +1,15 @@
 import React from "react";
-import {Box, Grid, ListItemText} from "@mui/material";
+import { Box, Grid, ListItemText } from "@mui/material";
 import EditableRecordSourceDescription from "./EditableRecordSourceDescription";
-import {RecordsDataContext} from "../RecordsContext";
-import {leftRecordsData, rightRecordsData} from "../VisualGedcomxDiffer";
+import { RecordsDataContext } from "../RecordsContext";
+import { leftRecordsData, rightRecordsData } from "../VisualGedcomxDiffer";
 
 export function updateSourceDescriptionsData(recordsData) {
   const sourceDescriptions = recordsData.gx.sourceDescriptions;
-  const intersection = getRecordDataIntersection(sourceDescriptions, recordsData.comparingToGx.sourceDescriptions);
+  const intersection = getRecordDataIntersection(
+    sourceDescriptions,
+    recordsData.comparingToGx.sourceDescriptions,
+  );
   const finalGx = recordsData.finalGx;
   finalGx.sourceDescriptions = intersection;
   recordsData.setFinalGx(structuredClone(finalGx));
@@ -17,8 +20,10 @@ export function updateSourceDescriptionsData(recordsData) {
 }
 
 function coverageElementsAreEqual(coverage1, coverage2) {
-  const equalSpatial = coverage1.spatial?.original === coverage2.spatial?.original;
-  const equalTemporal = coverage1.temporal?.original === coverage2.temporal?.original;
+  const equalSpatial =
+    coverage1.spatial?.original === coverage2.spatial?.original;
+  const equalTemporal =
+    coverage1.temporal?.original === coverage2.temporal?.original;
   const equalRecordType = coverage1.recordType === coverage2.recordType;
   return equalSpatial && equalTemporal && equalRecordType;
 }
@@ -31,15 +36,23 @@ function recordCoverageAreEqual(coverage1, coverage2) {
   if (coverage1.length !== coverage2.length) {
     return false;
   }
-  return coverage1.every((c, index) => coverageElementsAreEqual(c, coverage2[index]));
+  return coverage1.every((c, index) =>
+    coverageElementsAreEqual(c, coverage2[index]),
+  );
 }
 
 export function getRecordDataIntersection(left, right) {
-  return left?.filter(leftSD => {
-    if (leftSD.resourceType === 'http://gedcomx.org/Record') {
-      return right?.find(rightSD => recordCoverageAreEqual(rightSD.coverage, leftSD.coverage)) !== undefined;
-    } else if (leftSD.resourceType === 'http://gedcomx.org/DigitalArtifact') {
-      return right?.map(rightSD => JSON.stringify(rightSD))?.includes(JSON.stringify(leftSD));
+  return left?.filter((leftSD) => {
+    if (leftSD.resourceType === "http://gedcomx.org/Record") {
+      return (
+        right?.find((rightSD) =>
+          recordCoverageAreEqual(rightSD.coverage, leftSD.coverage),
+        ) !== undefined
+      );
+    } else if (leftSD.resourceType === "http://gedcomx.org/DigitalArtifact") {
+      return right
+        ?.map((rightSD) => JSON.stringify(rightSD))
+        ?.includes(JSON.stringify(leftSD));
     } else {
       return false;
     }
@@ -97,36 +110,75 @@ export function getRecordDataIntersection(left, right) {
 // }
 
 function getSourceDescriptionItem(sourceDescription, idx) {
-  if (sourceDescription.resourceType === 'http://gedcomx.org/DigitalArtifact') {
-    return <ListItemText key={`sourceDescription-${idx}`} primary={sourceDescription.about} secondary={'DigitalArtifact'}/>;
-  }
-  else if (sourceDescription.resourceType === 'http://gedcomx.org/Record') {
-    return <EditableRecordSourceDescription
-      key={`sourceDescription-${idx}`}
-      recordSourceDescription={sourceDescription}
-      sourceDescriptionIndex={idx}
-    />;
-  }
-  else {
-    return <Box key={`unknown-sd-${idx}`}>{`Source description of unhandled type: ${sourceDescription.resourceType}`}</Box>;
+  if (sourceDescription.resourceType === "http://gedcomx.org/DigitalArtifact") {
+    return (
+      <ListItemText
+        key={`sourceDescription-${idx}`}
+        primary={sourceDescription.about}
+        secondary={"DigitalArtifact"}
+      />
+    );
+  } else if (sourceDescription.resourceType === "http://gedcomx.org/Record") {
+    return (
+      <EditableRecordSourceDescription
+        key={`sourceDescription-${idx}`}
+        recordSourceDescription={sourceDescription}
+        sourceDescriptionIndex={idx}
+      />
+    );
+  } else {
+    return (
+      <Box
+        key={`unknown-sd-${idx}`}
+      >{`Source description of unhandled type: ${sourceDescription.resourceType}`}</Box>
+    );
   }
 }
 
 // Comparing sourceDescriptions of type Record (just comparing the coverage elements)
-export default function SourceDescriptionsDiff({leftGx, setLeftGx, rightGx, setRightGx, finalGx, setFinalGx}) {
+export default function SourceDescriptionsDiff({
+  leftGx,
+  setLeftGx,
+  rightGx,
+  setRightGx,
+  finalGx,
+  setFinalGx,
+}) {
   const left = leftGx.sourceDescriptions;
   const right = rightGx.sourceDescriptions;
 
   return (
-    <Grid container alignItems={'flex-start'} justifyContent={'center'}>
+    <Grid container alignItems={"flex-start"} justifyContent={"center"}>
       <Grid item xs={6}>
-        <RecordsDataContext.Provider value={leftRecordsData(leftGx, setLeftGx, rightGx, setRightGx, finalGx, setFinalGx)}>
-          {left?.map((sourceDescription, idx) => getSourceDescriptionItem(sourceDescription, idx))}
+        <RecordsDataContext.Provider
+          value={leftRecordsData(
+            leftGx,
+            setLeftGx,
+            rightGx,
+            setRightGx,
+            finalGx,
+            setFinalGx,
+          )}
+        >
+          {left?.map((sourceDescription, idx) =>
+            getSourceDescriptionItem(sourceDescription, idx),
+          )}
         </RecordsDataContext.Provider>
       </Grid>
       <Grid item xs={6}>
-        <RecordsDataContext.Provider value={rightRecordsData(leftGx, setLeftGx, rightGx, setRightGx, finalGx, setFinalGx)}>
-          {right?.map((sourceDescription, idx) => getSourceDescriptionItem(sourceDescription, idx))}
+        <RecordsDataContext.Provider
+          value={rightRecordsData(
+            leftGx,
+            setLeftGx,
+            rightGx,
+            setRightGx,
+            finalGx,
+            setFinalGx,
+          )}
+        >
+          {right?.map((sourceDescription, idx) =>
+            getSourceDescriptionItem(sourceDescription, idx),
+          )}
         </RecordsDataContext.Provider>
       </Grid>
     </Grid>

@@ -1,22 +1,30 @@
 import React from "react";
-import {getPersonsIntersection} from "./PersonsDiff";
-import {Button, Grid, IconButton, List, Paper, Stack, Tooltip} from "@mui/material";
-import FemaleIcon from '@mui/icons-material/Female';
-import MaleIcon from '@mui/icons-material/Male';
-import StarIcon from '@mui/icons-material/Star';
-import QuestionMarkIcon from '@mui/icons-material/QuestionMark';
+import { getPersonsIntersection } from "./PersonsDiff";
+import {
+  Button,
+  Grid,
+  IconButton,
+  List,
+  Paper,
+  Stack,
+  Tooltip,
+} from "@mui/material";
+import FemaleIcon from "@mui/icons-material/Female";
+import MaleIcon from "@mui/icons-material/Male";
+import StarIcon from "@mui/icons-material/Star";
+import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
 import EditableFact from "./EditableFact";
 import EditablePersonField from "./EditablePersonField";
 import AddIcon from "@mui/icons-material/Add";
 import AddFactOrFieldDialog from "./AddFactOrFieldDialog";
-import {FACT_TYPE, GENDER} from "../constants";
-import {RecordsDataContext} from "../RecordsContext";
-import {updateRelationshipsData} from "../relationships-diff/RelationshipsDiff";
-import {KeyboardArrowDown, KeyboardArrowUp} from "@mui/icons-material";
+import { FACT_TYPE, GENDER } from "../constants";
+import { RecordsDataContext } from "../RecordsContext";
+import { updateRelationshipsData } from "../relationships-diff/RelationshipsDiff";
+import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
 import EditablePersonName from "./EditablePersonName";
-import {generateLocalId} from "../Utils";
+import { generateLocalId } from "../Utils";
 import PersonNameEditDialog from "./PersonNameEditDialog";
-import {AssertionsContext} from "../AssertionsContext";
+import { AssertionsContext } from "../AssertionsContext";
 
 export function updateRecordsData(recordsData) {
   const persons = recordsData.gx.persons;
@@ -31,51 +39,56 @@ export function updateRecordsData(recordsData) {
 
 function getGenderIcon(person) {
   if (!person || !person.gender) {
-    return <QuestionMarkIcon/>;
+    return <QuestionMarkIcon />;
   }
   if (person.gender.type === GENDER.Male) {
-    return <MaleIcon sx={{color: '#0d4fff'}}/>;
+    return <MaleIcon sx={{ color: "#0d4fff" }} />;
   } else if (person.gender.type === GENDER.Female) {
-    return <FemaleIcon sx={{color: '#ff3ca3'}}/>;
+    return <FemaleIcon sx={{ color: "#ff3ca3" }} />;
   } else {
-    return <QuestionMarkIcon/>;
+    return <QuestionMarkIcon />;
   }
 }
 
 function getGenderString(person) {
   if (!person || !person.gender) {
-    return 'Unknown';
+    return "Unknown";
   }
   if (person.gender.type === GENDER.Male) {
-    return 'Male';
+    return "Male";
   } else if (person.gender.type === GENDER.Female) {
-    return 'Female';
+    return "Female";
   } else {
-    return 'Unknown';
+    return "Unknown";
   }
 }
 
 function getPrincipalIcon(person) {
   if (!person || !person.principal) {
-    return <StarIcon sx={{color: '#dadada'}} size='small'/>;
+    return <StarIcon sx={{ color: "#dadada" }} size="small" />;
   }
-  return <StarIcon sx={{color: '#009142'}}/>;
+  return <StarIcon sx={{ color: "#009142" }} />;
 }
 
 function getPrincipalState(person) {
   if (!person || !person.principal) {
-    return 'is not principal';
+    return "is not principal";
   }
-  return 'is principal';
+  return "is principal";
 }
 
-export function updatePersonsData(person, personIndex, recordsData, assertions) {
+export function updatePersonsData(
+  person,
+  personIndex,
+  recordsData,
+  assertions,
+) {
   recordsData.gx.persons.splice(personIndex, 1, person);
   updateRecordsData(recordsData);
   updateRelationshipsData(recordsData, assertions);
 }
 
-export default function EditablePerson({person, personIndex}) {
+export default function EditablePerson({ person, personIndex }) {
   const recordsData = React.useContext(RecordsDataContext);
   const assertions = React.useContext(AssertionsContext).assertions;
   const persons = recordsData.gx.persons;
@@ -120,7 +133,8 @@ export default function EditablePerson({person, personIndex}) {
   }
 
   function handleSetPrincipal() {
-    person.principal = person.principal === undefined || person.principal === false;
+    person.principal =
+      person.principal === undefined || person.principal === false;
     updatePersonsData(person, personIndex, recordsData, assertions);
   }
 
@@ -133,10 +147,15 @@ export default function EditablePerson({person, personIndex}) {
     const newName = {
       id: generateLocalId(),
       type: !type ? null : type,
-      nameForms: [{
-        fullText: parts.map(part => part.value).join(' ').trim(),
-        parts: parts
-      }]
+      nameForms: [
+        {
+          fullText: parts
+            .map((part) => part.value)
+            .join(" ")
+            .trim(),
+          parts: parts,
+        },
+      ],
     };
     if (recordsData.gx.persons[personIndex].names) {
       recordsData.gx.persons[personIndex].names.push(newName);
@@ -149,46 +168,73 @@ export default function EditablePerson({person, personIndex}) {
 
   return (
     <>
-      <Paper sx={{margin: 2}} square elevation={4}>
+      <Paper sx={{ margin: 2 }} square elevation={4}>
         <Grid container>
           <Grid item xs={1}>
-            <Stack sx={{marginY: 1}}>
-              <Tooltip title='Move person up' arrow placement='left'>
-                <IconButton onClick={handleMovePersonUp}><KeyboardArrowUp/></IconButton>
+            <Stack sx={{ marginY: 1 }}>
+              <Tooltip title="Move person up" arrow placement="left">
+                <IconButton onClick={handleMovePersonUp}>
+                  <KeyboardArrowUp />
+                </IconButton>
               </Tooltip>
-              <Tooltip title='Move person down' arrow placement='left'>
-                <IconButton onClick={handleMovePersonDown}><KeyboardArrowDown/></IconButton>
+              <Tooltip title="Move person down" arrow placement="left">
+                <IconButton onClick={handleMovePersonDown}>
+                  <KeyboardArrowDown />
+                </IconButton>
               </Tooltip>
             </Stack>
           </Grid>
           <Grid item xs={10}>
-            {person?.names?.map((name, nameIndex) => <EditablePersonName person={person} personIndex={personIndex} name={name} nameIndex={nameIndex} key={`name-${nameIndex}`}/>)}
+            {person?.names?.map((name, nameIndex) => (
+              <EditablePersonName
+                person={person}
+                personIndex={personIndex}
+                name={name}
+                nameIndex={nameIndex}
+                key={`name-${nameIndex}`}
+              />
+            ))}
           </Grid>
           <Grid item xs={1}>
-            <Grid container direction='column' alignItems='center' sx={{marginY: 1}}>
+            <Grid
+              container
+              direction="column"
+              alignItems="center"
+              sx={{ marginY: 1 }}
+            >
               <Grid item>
-                <Tooltip title={`Gender (${getGenderString(person)})`} arrow placement='left'>
+                <Tooltip
+                  title={`Gender (${getGenderString(person)})`}
+                  arrow
+                  placement="left"
+                >
                   <IconButton onClick={handleChangeGender}>
                     {genderIcon}
                   </IconButton>
                 </Tooltip>
               </Grid>
               <Grid item>
-                <Tooltip title={getPrincipalState(person)} arrow placement='left'>
+                <Tooltip
+                  title={getPrincipalState(person)}
+                  arrow
+                  placement="left"
+                >
                   <IconButton onClick={handleSetPrincipal}>
                     {principalIcon}
                   </IconButton>
                 </Tooltip>
               </Grid>
               <Grid item>
-                <Tooltip title={'Add another name'} arrow placement='left'>
-                  <IconButton onClick={handleAddName}><AddIcon/></IconButton>
+                <Tooltip title={"Add another name"} arrow placement="left">
+                  <IconButton onClick={handleAddName}>
+                    <AddIcon />
+                  </IconButton>
                 </Tooltip>
               </Grid>
             </Grid>
           </Grid>
         </Grid>
-        <List component='div' disablePadding dense>
+        <List component="div" disablePadding dense>
           {person?.facts?.map((fact, idx) => {
             return (
               <EditableFact
@@ -201,19 +247,27 @@ export default function EditablePerson({person, personIndex}) {
                 updateData={updatePersonsData}
                 factTypes={FACT_TYPE}
               />
-            )})}
-          {person && person.fields ? person.fields.map((field, idx) => {
-            return (
-              <EditablePersonField
-                key={`field-${idx}`}
-                field={field}
-                fieldIndex={idx}
-                person={person}
-                personIndex={personIndex}
-              />
             );
-          }) : null}
-          <Button variant={'outlined'} sx={{margin: 1}} onClick={handleAddFactOrField} startIcon={<AddIcon/>}>
+          })}
+          {person && person.fields
+            ? person.fields.map((field, idx) => {
+                return (
+                  <EditablePersonField
+                    key={`field-${idx}`}
+                    field={field}
+                    fieldIndex={idx}
+                    person={person}
+                    personIndex={personIndex}
+                  />
+                );
+              })
+            : null}
+          <Button
+            variant={"outlined"}
+            sx={{ margin: 1 }}
+            onClick={handleAddFactOrField}
+            startIcon={<AddIcon />}
+          >
             Add Fact or Role
           </Button>
           <AddFactOrFieldDialog
@@ -226,7 +280,12 @@ export default function EditablePerson({person, personIndex}) {
           />
         </List>
       </Paper>
-      <PersonNameEditDialog open={open} setOpen={setOpen} onClose={handleDialogClose} person={person}/>
+      <PersonNameEditDialog
+        open={open}
+        setOpen={setOpen}
+        onClose={handleDialogClose}
+        person={person}
+      />
     </>
   );
 }

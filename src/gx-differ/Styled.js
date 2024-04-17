@@ -1,7 +1,7 @@
 import React from "react";
-import {Paper} from "@mui/material";
+import { Paper } from "@mui/material";
 import Draggable from "react-draggable";
-import {styled} from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 
 export function PaperComponent(props) {
   return (
@@ -14,7 +14,7 @@ export function PaperComponent(props) {
   );
 }
 
-export const RootContainer = styled('div')(({ theme }) => ({
+export const RootContainer = styled("div")(({ theme }) => ({
   marginLeft: theme.spacing(4),
   marginRight: theme.spacing(4),
   marginTop: theme.spacing(4),

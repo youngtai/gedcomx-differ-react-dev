@@ -1,21 +1,47 @@
 import React from "react";
-import {Button, Grid, IconButton, List, ListItem, ListItemText, Paper, Tooltip} from "@mui/material";
-import {fullTextName, getPersonById, sideIncludesRel, updateRelationshipsData} from "./RelationshipsDiff";
-import {Autorenew, Delete} from "@mui/icons-material";
-import {RecordsDataContext} from "../RecordsContext";
+import {
+  Button,
+  Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Paper,
+  Tooltip,
+} from "@mui/material";
+import {
+  fullTextName,
+  getPersonById,
+  sideIncludesRel,
+  updateRelationshipsData,
+} from "./RelationshipsDiff";
+import { Autorenew, Delete } from "@mui/icons-material";
+import { RecordsDataContext } from "../RecordsContext";
 import EditableRelationshipAttribute from "./EditableRelationshipAttribute";
-import {DIFF_BACKGROUND_COLOR, RELATIONSHIP_FACT_TYPE} from "../constants";
+import { DIFF_BACKGROUND_COLOR, RELATIONSHIP_FACT_TYPE } from "../constants";
 import EditableFact from "../persons-diff/EditableFact";
 import AddIcon from "@mui/icons-material/Add";
 import AddFactOrFieldDialog from "../persons-diff/AddFactOrFieldDialog";
-import {updateRecordsData} from "../persons-diff/EditablePerson";
-import {AssertionsContext} from "../AssertionsContext";
+import { updateRecordsData } from "../persons-diff/EditablePerson";
+import { AssertionsContext } from "../AssertionsContext";
 
-function hasMatchingRelationship(comparingToRels, rel, comparingToPersons, persons, assertions) {
-  return sideIncludesRel(comparingToRels, rel, comparingToPersons, persons, assertions)
+function hasMatchingRelationship(
+  comparingToRels,
+  rel,
+  comparingToPersons,
+  persons,
+  assertions,
+) {
+  return sideIncludesRel(
+    comparingToRels,
+    rel,
+    comparingToPersons,
+    persons,
+    assertions,
+  );
 }
 
-export function EditableRelationship({rel, relIndex, persons}) {
+export function EditableRelationship({ rel, relIndex, persons }) {
   const recordsData = React.useContext(RecordsDataContext);
   const assertions = React.useContext(AssertionsContext).assertions;
   const rels = recordsData.gx.relationships;
@@ -24,13 +50,29 @@ export function EditableRelationship({rel, relIndex, persons}) {
 
   const [isEditing, setIsEditing] = React.useState(false);
   const [addFactOrField, setAddFactOrField] = React.useState(false);
-  const [hasMatch, setHasMatch] = React.useState(hasMatchingRelationship(comparingToRels, rel, comparingToPersons, persons, assertions));
+  const [hasMatch, setHasMatch] = React.useState(
+    hasMatchingRelationship(
+      comparingToRels,
+      rel,
+      comparingToPersons,
+      persons,
+      assertions,
+    ),
+  );
 
-  const backgroundColor = hasMatch ? 'white' : DIFF_BACKGROUND_COLOR;
-  const textColor = hasMatch ? 'black' : 'red';
+  const backgroundColor = hasMatch ? "white" : DIFF_BACKGROUND_COLOR;
+  const textColor = hasMatch ? "black" : "red";
 
   React.useEffect(() => {
-    setHasMatch(hasMatchingRelationship(comparingToRels, rel, comparingToPersons, persons, assertions));
+    setHasMatch(
+      hasMatchingRelationship(
+        comparingToRels,
+        rel,
+        comparingToPersons,
+        persons,
+        assertions,
+      ),
+    );
   }, [comparingToRels, rel, comparingToPersons, persons, assertions]);
 
   function handleSwitchPerson() {
@@ -62,28 +104,43 @@ export function EditableRelationship({rel, relIndex, persons}) {
 
   return (
     <>
-      <Paper sx={{margin: 2}} square elevation={4}>
-        <ListItem sx={{background: backgroundColor, color: textColor}}>
-          <Grid container direction='row' alignItems='center'>
+      <Paper sx={{ margin: 2 }} square elevation={4}>
+        <ListItem sx={{ background: backgroundColor, color: textColor }}>
+          <Grid container direction="row" alignItems="center">
             <Grid item xs={10}>
-              <Grid container direction='column'>
+              <Grid container direction="column">
                 <Grid item>
-                  <ListItemText primary={fullTextName(getPersonById(rel?.person1?.resourceId, persons))} secondary={'Person 1'}/>
+                  <ListItemText
+                    primary={fullTextName(
+                      getPersonById(rel?.person1?.resourceId, persons),
+                    )}
+                    secondary={"Person 1"}
+                  />
                 </Grid>
                 <Grid item>
-                  <EditableRelationshipAttribute rel={rel} relIndex={relIndex} isEditing={isEditing} setIsEditing={setIsEditing}/>
+                  <EditableRelationshipAttribute
+                    rel={rel}
+                    relIndex={relIndex}
+                    isEditing={isEditing}
+                    setIsEditing={setIsEditing}
+                  />
                 </Grid>
                 <Grid item>
-                  <ListItemText primary={fullTextName(getPersonById(rel?.person2?.resourceId, persons))} secondary={'Person 2'}/>
+                  <ListItemText
+                    primary={fullTextName(
+                      getPersonById(rel?.person2?.resourceId, persons),
+                    )}
+                    secondary={"Person 2"}
+                  />
                 </Grid>
               </Grid>
             </Grid>
             <Grid item xs={2}>
-              <Grid container direction='column' alignItems='flex-end'>
+              <Grid container direction="column" alignItems="flex-end">
                 <Grid item>
-                  <Tooltip title={'Switch Persons'} arrow placement='left'>
+                  <Tooltip title={"Switch Persons"} arrow placement="left">
                     <IconButton onClick={handleSwitchPerson}>
-                      <Autorenew/>
+                      <Autorenew />
                     </IconButton>
                   </Tooltip>
                 </Grid>
@@ -91,9 +148,9 @@ export function EditableRelationship({rel, relIndex, persons}) {
                   <Button onClick={handleEdit}>Edit</Button>
                 </Grid>
                 <Grid item>
-                  <Tooltip title={'Delete Relationship'} arrow placement='left'>
+                  <Tooltip title={"Delete Relationship"} arrow placement="left">
                     <IconButton onClick={handleDelete}>
-                      <Delete/>
+                      <Delete />
                     </IconButton>
                   </Tooltip>
                 </Grid>
@@ -116,7 +173,12 @@ export function EditableRelationship({rel, relIndex, persons}) {
               />
             );
           })}
-          <Button variant={'outlined'} sx={{margin: 1}} onClick={handleAddFactOrField} startIcon={<AddIcon/>}>
+          <Button
+            variant={"outlined"}
+            sx={{ margin: 1 }}
+            onClick={handleAddFactOrField}
+            startIcon={<AddIcon />}
+          >
             Add Fact or Role
           </Button>
           <AddFactOrFieldDialog

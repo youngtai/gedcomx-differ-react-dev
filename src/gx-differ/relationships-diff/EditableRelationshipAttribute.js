@@ -1,15 +1,28 @@
 import React from "react";
-import {RecordsDataContext} from "../RecordsContext";
-import {updateRelationshipsData} from "./RelationshipsDiff";
-import {Button, FormControl, Grid, IconButton, ListItemText, MenuItem, Select} from "@mui/material";
-import {AssertionsContext} from "../AssertionsContext";
-import {RELATIONSHIP} from "../constants";
-import {Cancel} from "@mui/icons-material";
+import { RecordsDataContext } from "../RecordsContext";
+import { updateRelationshipsData } from "./RelationshipsDiff";
+import {
+  Button,
+  FormControl,
+  Grid,
+  IconButton,
+  ListItemText,
+  MenuItem,
+  Select,
+} from "@mui/material";
+import { AssertionsContext } from "../AssertionsContext";
+import { RELATIONSHIP } from "../constants";
+import { Cancel } from "@mui/icons-material";
 
-export default function EditableRelationshipAttribute({rel, relIndex, isEditing, setIsEditing}) {
+export default function EditableRelationshipAttribute({
+  rel,
+  relIndex,
+  isEditing,
+  setIsEditing,
+}) {
   const recordsData = React.useContext(RecordsDataContext);
   const assertions = React.useContext(AssertionsContext).assertions;
-  const [editValue, setEditValue] = React.useState(rel?.type ? rel.type : '');
+  const [editValue, setEditValue] = React.useState(rel?.type ? rel.type : "");
 
   function handleSave() {
     setIsEditing(false);
@@ -21,11 +34,26 @@ export default function EditableRelationshipAttribute({rel, relIndex, isEditing,
   function editItem() {
     if (isEditing) {
       return (
-        <Grid container direction='row' spacing={1} justifyContent='space-between' alignItems='center'>
+        <Grid
+          container
+          direction="row"
+          spacing={1}
+          justifyContent="space-between"
+          alignItems="center"
+        >
           <Grid item xs={10}>
             <FormControl fullWidth>
-              <Select value={editValue} onChange={e => setEditValue(e.target.value)} size='small' sx={{margin: 1}}>
-                {Object.keys(RELATIONSHIP).map(key => <MenuItem key={`relType=${key}`} value={RELATIONSHIP[key]}>{key}</MenuItem>)}
+              <Select
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                size="small"
+                sx={{ margin: 1 }}
+              >
+                {Object.keys(RELATIONSHIP).map((key) => (
+                  <MenuItem key={`relType=${key}`} value={RELATIONSHIP[key]}>
+                    {key}
+                  </MenuItem>
+                ))}
               </Select>
             </FormControl>
           </Grid>
@@ -34,16 +62,16 @@ export default function EditableRelationshipAttribute({rel, relIndex, isEditing,
           </Grid>
           <Grid item xs={0.8}>
             <IconButton onClick={() => setIsEditing(false)}>
-              <Cancel/>
+              <Cancel />
             </IconButton>
           </Grid>
         </Grid>
       );
     } else {
       return (
-        <Grid container alignItems='center' justifyContent='space-between'>
+        <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <ListItemText primary={rel?.type} secondary={'Type'}/>
+            <ListItemText primary={rel?.type} secondary={"Type"} />
           </Grid>
         </Grid>
       );

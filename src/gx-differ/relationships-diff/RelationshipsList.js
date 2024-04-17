@@ -1,10 +1,10 @@
 import React from "react";
-import {Button, List} from "@mui/material";
-import {Add} from "@mui/icons-material";
+import { Button, List } from "@mui/material";
+import { Add } from "@mui/icons-material";
 import AddRelationshipDialog from "./AddRelationshipDialog";
-import {EditableRelationship} from "./EditableRelationship";
+import { EditableRelationship } from "./EditableRelationship";
 
-export default function RelationshipsList({rels, persons}) {
+export default function RelationshipsList({ rels, persons }) {
   const [open, setOpen] = React.useState(false);
 
   function handleAddRelationship() {
@@ -13,12 +13,24 @@ export default function RelationshipsList({rels, persons}) {
 
   return (
     <>
-      <Button variant={'outlined'} sx={{marginX: 2}} onClick={handleAddRelationship} startIcon={<Add/>}>
+      <Button
+        variant={"outlined"}
+        sx={{ marginX: 2 }}
+        onClick={handleAddRelationship}
+        startIcon={<Add />}
+      >
         Add Relationship
       </Button>
-      <AddRelationshipDialog open={open} setOpen={setOpen}/>
-      <List dense component='div'>
-        {rels?.map((rel, relIndex) => <EditableRelationship key={`rel-${relIndex}`} rel={rel} relIndex={relIndex} persons={persons}/>)}
+      <AddRelationshipDialog open={open} setOpen={setOpen} />
+      <List dense component="div">
+        {rels?.map((rel, relIndex) => (
+          <EditableRelationship
+            key={`rel-${relIndex}`}
+            rel={rel}
+            relIndex={relIndex}
+            persons={persons}
+          />
+        ))}
       </List>
     </>
   );
