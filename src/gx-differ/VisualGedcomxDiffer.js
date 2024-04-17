@@ -144,7 +144,7 @@ function normalizeGedcomx(gx) {
 }
 
 function gxIsEmpty(gx) {
-  if (gx === null || undefined) {
+  if (gx === null || gx === undefined) {
     return true
   }
   return Object.keys(gx)
