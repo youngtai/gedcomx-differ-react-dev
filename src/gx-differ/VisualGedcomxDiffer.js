@@ -144,6 +144,9 @@ function normalizeGedcomx(gx) {
 }
 
 function gxIsEmpty(gx) {
+  if (gx === null || undefined) {
+    return true
+  }
   return Object.keys(gx)
     .filter(key => key !== "id")
     .every(key => JSON.stringify(gx[key]) === JSON.stringify(EMPTY_GEDCOMX[key]));

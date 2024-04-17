@@ -1,6 +1,6 @@
 {
   "name": "gedcomx-differ-react",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "homepage": "https://youngtai.github.io/gedcomx-differ-react",
   "private": true,
   "dependencies": {
