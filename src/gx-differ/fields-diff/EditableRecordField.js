@@ -18,7 +18,7 @@ import { RECORD_FIELD_TYPE } from '../constants'
 function hasMatchingField(field, comparingTo) {
   const fieldString = JSON.stringify(field)
   return (
-    comparingTo.find((f) => JSON.stringify(f) === fieldString) !== undefined
+    comparingTo?.find((f) => JSON.stringify(f) === fieldString) !== undefined
   )
 }
 
