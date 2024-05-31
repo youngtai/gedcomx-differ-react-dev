@@ -1,6 +1,6 @@
-import React from "react";
-import { RecordsDataContext } from "../RecordsContext";
-import { updateRelationshipsData } from "./RelationshipsDiff";
+import React from 'react'
+import { RecordsDataContext } from '../RecordsContext'
+import { updateRelationshipsData } from './RelationshipsDiff'
 import {
   Button,
   FormControl,
@@ -9,10 +9,10 @@ import {
   ListItemText,
   MenuItem,
   Select,
-} from "@mui/material";
-import { AssertionsContext } from "../AssertionsContext";
-import { RELATIONSHIP } from "../constants";
-import { Cancel } from "@mui/icons-material";
+} from '@mui/material'
+import { AssertionsContext } from '../AssertionsContext'
+import { RELATIONSHIP } from '../constants'
+import { Cancel } from '@mui/icons-material'
 
 export default function EditableRelationshipAttribute({
   rel,
@@ -20,15 +20,15 @@ export default function EditableRelationshipAttribute({
   isEditing,
   setIsEditing,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const assertions = React.useContext(AssertionsContext).assertions;
-  const [editValue, setEditValue] = React.useState(rel?.type ? rel.type : "");
+  const recordsData = React.useContext(RecordsDataContext)
+  const assertions = React.useContext(AssertionsContext).assertions
+  const [editValue, setEditValue] = React.useState(rel?.type ? rel.type : '')
 
   function handleSave() {
-    setIsEditing(false);
-    rel.type = editValue;
-    recordsData.gx.relationships[relIndex] = rel;
-    updateRelationshipsData(recordsData, assertions);
+    setIsEditing(false)
+    rel.type = editValue
+    recordsData.gx.relationships[relIndex] = rel
+    updateRelationshipsData(recordsData, assertions)
   }
 
   function editItem() {
@@ -66,17 +66,21 @@ export default function EditableRelationshipAttribute({
             </IconButton>
           </Grid>
         </Grid>
-      );
+      )
     } else {
       return (
         <Grid container alignItems="center" justifyContent="space-between">
           <Grid item>
-            <ListItemText primary={rel?.type} secondary={"Type"} />
+            <ListItemText
+              primary={rel?.type}
+              secondary={'Type'}
+              primaryTypographyProps={{ fontWeight: 600 }}
+            />
           </Grid>
         </Grid>
-      );
+      )
     }
   }
 
-  return editItem();
+  return editItem()
 }

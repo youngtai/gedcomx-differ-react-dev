@@ -117,6 +117,7 @@ export function EditableRelationship({ rel, relIndex, persons }) {
                       getPersonById(rel?.person1?.resourceId, persons)
                     )}
                     secondary={'Person 1'}
+                    primaryTypographyProps={{ fontWeight: 600 }}
                   />
                 </Grid>
                 <Grid item>
@@ -133,6 +134,7 @@ export function EditableRelationship({ rel, relIndex, persons }) {
                       getPersonById(rel?.person2?.resourceId, persons)
                     )}
                     secondary={'Person 2'}
+                    primaryTypographyProps={{ fontWeight: 600 }}
                   />
                 </Grid>
               </Grid>

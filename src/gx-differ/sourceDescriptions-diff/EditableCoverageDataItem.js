@@ -153,7 +153,11 @@ export default function EditableCoverageDataItem({
       return (
         <>
           <Grid item>
-            <ListItemText primary={editFieldValue} secondary={label} />
+            <ListItemText
+              primary={editFieldValue}
+              secondary={label}
+              primaryTypographyProps={{ fontWeight: 600 }}
+            />
           </Grid>
           <Grid item>
             <Button onClick={handleOnEdit}>Edit</Button>

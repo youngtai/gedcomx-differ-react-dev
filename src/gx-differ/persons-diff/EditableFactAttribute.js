@@ -306,6 +306,7 @@ export default function EditableFactAttribute({
             primary={editFieldValue}
             secondary={KEY_TO_LABEL_MAP[attributeData.key]}
             sx={{ color: textColor }}
+            primaryTypographyProps={{ fontWeight: 600 }}
           />
         </Grid>
         <Grid item>

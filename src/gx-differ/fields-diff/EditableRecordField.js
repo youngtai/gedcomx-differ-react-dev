@@ -124,10 +124,15 @@ export default function EditableRecordField({ field, fieldIndex }) {
               <ListItemText
                 primary={field.values[0].text}
                 secondary={'Field Value'}
+                primaryTypographyProps={{ fontWeight: 600 }}
               />
             </Grid>
             <Grid item>
-              <ListItemText primary={field.type} secondary={'Field Type'} />
+              <ListItemText
+                primary={field.type}
+                secondary={'Field Type'}
+                primaryTypographyProps={{ fontWeight: 600 }}
+              />
             </Grid>
           </Grid>
         </Grid>

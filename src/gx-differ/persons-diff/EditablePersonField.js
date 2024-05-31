@@ -126,6 +126,7 @@ export default function EditablePersonField({
               primary={editFieldValue}
               secondary={field?.type}
               sx={{ color: textColor }}
+              primaryTypographyProps={{ fontWeight: 600 }}
             />
           </Grid>
           <Grid item>

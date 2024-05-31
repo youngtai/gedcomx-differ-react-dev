@@ -65,7 +65,7 @@ function ColoredNameParts({ nameParts, hasMatch }) {
           primary={makeQuestionableWhitespaceVisible(nameParts.prefix?.value)}
           secondary={'Prefix'}
           sx={{ color: prefixColor }}
-          primaryTypographyProps={{ fontSize: '20px' }}
+          primaryTypographyProps={{ fontSize: '20px', fontWeight: 600 }}
           hidden={!nameParts.prefix}
         />
       </Grid>
@@ -74,7 +74,7 @@ function ColoredNameParts({ nameParts, hasMatch }) {
           primary={makeQuestionableWhitespaceVisible(nameParts.given?.value)}
           secondary={'Given'}
           sx={{ color: givenColor }}
-          primaryTypographyProps={{ fontSize: '20px' }}
+          primaryTypographyProps={{ fontSize: '20px', fontWeight: 600 }}
           hidden={!nameParts.given}
         />
       </Grid>
@@ -83,7 +83,7 @@ function ColoredNameParts({ nameParts, hasMatch }) {
           primary={makeQuestionableWhitespaceVisible(nameParts.surname?.value)}
           secondary={'Surname'}
           sx={{ color: surnameColor }}
-          primaryTypographyProps={{ fontSize: '20px' }}
+          primaryTypographyProps={{ fontSize: '20px', fontWeight: 600 }}
           hidden={!nameParts.surname}
         />
       </Grid>
@@ -92,7 +92,7 @@ function ColoredNameParts({ nameParts, hasMatch }) {
           primary={makeQuestionableWhitespaceVisible(nameParts.suffix?.value)}
           secondary={'Suffix'}
           sx={{ color: suffixColor }}
-          primaryTypographyProps={{ fontSize: '20px' }}
+          primaryTypographyProps={{ fontSize: '20px', fontWeight: 600 }}
           hidden={!nameParts.suffix}
         />
       </Grid>
