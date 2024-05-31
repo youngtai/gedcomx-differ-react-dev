@@ -1,6 +1,6 @@
 {
   "name": "gedcomx-differ",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "React component for visual diffing JSON GedcomX",
   "author": "Young Tai Ahn",
   "license": "ISC",
