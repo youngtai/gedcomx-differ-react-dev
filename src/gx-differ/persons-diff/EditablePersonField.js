@@ -61,10 +61,10 @@ export default function EditablePersonField({
   }
 
   function handleDelete() {
-    const fields = person.fields
-    delete fields[fieldIndex]
-    person.fields = fields.filter((e) => e)
-    if (fields.length === 0) {
+    const fields = person?.fields?.filter(Boolean)
+    fields?.splice(fieldIndex, 1)
+    person.fields = fields
+    if (!fields || fields.length === 0) {
       delete person.fields
     }
     updatePersonsData(person, personIndex, recordsData)
