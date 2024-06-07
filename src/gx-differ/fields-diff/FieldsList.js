@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   Grid,
@@ -7,42 +7,56 @@ import {
   Paper,
   Select,
   TextField,
-} from "@mui/material";
-import { Add } from "@mui/icons-material";
-import EditableRecordField, { updateFieldsData } from "./EditableRecordField";
-import { RECORD_FIELD_TYPE } from "../constants";
-import { RecordsDataContext } from "../RecordsContext";
+} from '@mui/material'
+import { Add } from '@mui/icons-material'
+import EditableRecordField, { updateFieldsData } from './EditableRecordField'
+import {
+  GEDCOMX_INTERPRETED,
+  GEDCOMX_ORIGINAL,
+  RECORD_FIELD_TYPE,
+} from '../constants'
+import { RecordsDataContext } from '../RecordsContext'
 
 export default function FieldsList({ fields }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const [adding, setAdding] = React.useState(false);
-  const [value, setValue] = React.useState("");
-  const [type, setType] = React.useState("");
+  const recordsData = React.useContext(RecordsDataContext)
+  const [adding, setAdding] = React.useState(false)
+  const [value, setValue] = React.useState('')
+  const [type, setType] = React.useState('')
+
+  const valueType =
+    type === RECORD_FIELD_TYPE.CertificateNumber
+      ? GEDCOMX_ORIGINAL
+      : GEDCOMX_INTERPRETED
 
   function handleAddField() {
-    setAdding(true);
+    setAdding(true)
   }
 
   function handleSave() {
-    setAdding(false);
+    setAdding(false)
     if (!value || !type) {
-      return;
+      return
     }
     const newField = {
       type: type,
       values: [
         {
-          type: "http://gedcomx.org/Interpreted",
+          type: valueType,
           text: value,
         },
       ],
-    };
-    recordsData.gx.fields.push(newField);
+    }
+    if (recordsData.gx.fields) {
+      recordsData.gx.fields.push(newField)
+    } else {
+      recordsData.gx.fields = []
+      recordsData.gx.fields.push(newField)
+    }
 
-    updateFieldsData(recordsData);
+    updateFieldsData(recordsData)
 
-    setValue("");
-    setType("");
+    setValue('')
+    setType('')
   }
 
   return (
@@ -108,5 +122,5 @@ export default function FieldsList({ fields }) {
         ))}
       </List>
     </>
-  );
+  )
 }

@@ -99,6 +99,7 @@ export const RECORD_FIELD_TYPE = {
   ImageNumber: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}ImageNumber`,
   RecordStyle: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}RecordStyle`,
   CrossType: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}CrossType`,
+  CertificateNumber: `${FAMILYSEARCH_TYPES_FIELDS_PREFIX}SourceCertificateNbr`,
 }
 
 export const PERSON_FIELD_TYPE = {
@@ -205,6 +206,7 @@ export const RELATIONSHIP_FACT_TYPE = {
 }
 
 export const GEDCOMX_ORIGINAL = `${GEDCOMX_ORG_PREFIX}Original`
+export const GEDCOMX_INTERPRETED = `${GEDCOMX_ORG_PREFIX}Interpreted`
 
 export const PERSON_FACT_BACKGROUND_COLOR = '#eeeeee'
 
