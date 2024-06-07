@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   Dialog,
@@ -10,32 +10,32 @@ import {
   Select,
   Stack,
   Typography,
-} from "@mui/material";
-import { RecordsDataContext } from "../RecordsContext";
-import { fullTextName, updateRelationshipsData } from "./RelationshipsDiff";
-import { RELATIONSHIP } from "../constants";
-import { generateLocalId, relationshipCompareFunction } from "../Utils";
-import { PaperComponent } from "../Styled";
-import { AssertionsContext } from "../AssertionsContext";
+} from '@mui/material'
+import { RecordsDataContext } from '../RecordsContext'
+import { fullTextName, updateRelationshipsData } from './RelationshipsDiff'
+import { RELATIONSHIP } from '../constants'
+import { generateLocalId, relationshipCompareFunction } from '../Utils'
+import { PaperComponent } from '../Styled'
+import { AssertionsContext } from '../AssertionsContext'
 
 export default function AddRelationshipDialog({ open, setOpen }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const assertions = React.useContext(AssertionsContext).assertions;
-  const persons = recordsData.gx.persons;
+  const recordsData = React.useContext(RecordsDataContext)
+  const assertions = React.useContext(AssertionsContext).assertions
+  const persons = recordsData.gx.persons
   const personMenuItems = persons.map((person, idx) => (
     <MenuItem key={`person-item-${idx}`} value={person}>
       {fullTextName(person)}
     </MenuItem>
-  ));
+  ))
 
-  const [person1, setPerson1] = React.useState("");
-  const [person2, setPerson2] = React.useState("");
-  const [type, setType] = React.useState(RELATIONSHIP.Couple);
+  const [person1, setPerson1] = React.useState('')
+  const [person2, setPerson2] = React.useState('')
+  const [type, setType] = React.useState(RELATIONSHIP.Couple)
 
   function saveChanges() {
-    setOpen(false);
+    setOpen(false)
     if (!person1 || !person2 || !type) {
-      return;
+      return
     }
     const newRelationship = {
       id: `r_${generateLocalId()}`,
@@ -48,14 +48,20 @@ export default function AddRelationshipDialog({ open, setOpen }) {
         resource: `#${person2.id}`,
         resourceId: `${person2.id}`,
       },
-    };
-    recordsData.gx.relationships.push(newRelationship);
+    }
+
+    if (recordsData.gx.relationships) {
+      recordsData.gx.relationships.push(newRelationship)
+    } else {
+      recordsData.gx.relationships = []
+      recordsData.gx.relationships.push(newRelationship)
+    }
     recordsData.gx.relationships.sort((a, b) =>
-      relationshipCompareFunction(a, b, recordsData.gx.persons),
-    );
-    updateRelationshipsData(recordsData, assertions);
-    setPerson1("");
-    setPerson2("");
+      relationshipCompareFunction(a, b, recordsData.gx.persons)
+    )
+    updateRelationshipsData(recordsData, assertions)
+    setPerson1('')
+    setPerson2('')
   }
 
   return (
@@ -65,7 +71,7 @@ export default function AddRelationshipDialog({ open, setOpen }) {
       PaperComponent={PaperComponent}
       aria-labelledby="draggable-dialog-title"
     >
-      <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+      <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
         Add Relationship
       </DialogTitle>
       <DialogContent>
@@ -101,15 +107,15 @@ export default function AddRelationshipDialog({ open, setOpen }) {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Stack direction={"row"} spacing={2}>
-          <Button color={"secondary"} onClick={() => setOpen(false)}>
+        <Stack direction={'row'} spacing={2}>
+          <Button color={'secondary'} onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button color={"primary"} onClick={saveChanges}>
+          <Button color={'primary'} onClick={saveChanges}>
             Save
           </Button>
         </Stack>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
