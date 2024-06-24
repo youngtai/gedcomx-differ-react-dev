@@ -1,20 +1,8 @@
 import React from 'react'
-import {
-  Button,
-  Grid,
-  List,
-  MenuItem,
-  Paper,
-  Select,
-  TextField,
-} from '@mui/material'
+import { Button, Grid, List, MenuItem, Paper, Select, TextField } from '@mui/material'
 import { Add } from '@mui/icons-material'
 import EditableRecordField, { updateFieldsData } from './EditableRecordField'
-import {
-  GEDCOMX_INTERPRETED,
-  GEDCOMX_ORIGINAL,
-  RECORD_FIELD_TYPE,
-} from '../constants'
+import { GEDCOMX_INTERPRETED, GEDCOMX_ORIGINAL, RECORD_FIELD_TYPE } from '../constants'
 import { RecordsDataContext } from '../RecordsContext'
 
 export default function FieldsList({ fields }) {
@@ -76,7 +64,7 @@ export default function FieldsList({ fields }) {
                     value={value}
                     size="small"
                     fullWidth={true}
-                    onChange={(e) => setValue(e.target.value)}
+                    onChange={(event) => setValue(String(event.target.value))}
                     sx={{ marginY: 1 }}
                   />
                 </Grid>
