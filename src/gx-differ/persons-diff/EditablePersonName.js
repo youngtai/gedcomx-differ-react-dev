@@ -12,9 +12,9 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import PersonNameEditDialog from './PersonNameEditDialog'
 import { NAME_PART_TYPE } from '../constants'
 import { updatePersonsData, updateRecordsData } from './EditablePerson'
-import { personsAreEqual } from './PersonsDiff'
 import { RecordsDataContext } from '../RecordsContext'
 import { AssertionsContext } from '../AssertionsContext'
+import { personsAreEqual } from './PersonDiffUtils'
 
 function hasMatchingPerson(person, comparingTo, assertions) {
   return (

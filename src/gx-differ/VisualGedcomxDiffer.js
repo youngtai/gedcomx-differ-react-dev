@@ -21,7 +21,7 @@ import {
 } from '@mui/material'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import './MainPage.css'
-import PersonsDiff, { getPersonsIntersection } from './persons-diff/PersonsDiff'
+import PersonsDiff from './persons-diff/PersonsDiff'
 import SourceDescriptionsDiff, {
   getRecordDataIntersection,
 } from './sourceDescriptions-diff/SourceDescriptionsDiff'
@@ -39,6 +39,7 @@ import { factIsEmpty } from './persons-diff/EditableFactAttribute'
 import { AssertionsContext } from './AssertionsContext'
 import Clipboard from 'react-clipboard.js'
 import { relationshipCompareFunction } from './Utils'
+import { getPersonsIntersection } from './persons-diff/PersonDiffUtils'
 
 const RootContainer = styled('div')(({ theme }) => ({
   margin: theme.spacing(1),

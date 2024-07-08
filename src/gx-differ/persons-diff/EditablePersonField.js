@@ -14,7 +14,7 @@ import DeleteIcon from '@mui/icons-material/Delete'
 import { updatePersonsData } from './EditablePerson'
 import { PERSON_FIELD_TYPE } from '../constants'
 import { RecordsDataContext } from '../RecordsContext'
-import { haveSamePersonFields, isMatchingPerson } from './PersonsDiff'
+import { haveSamePersonFields, isMatchingPerson } from './PersonDiffUtils'
 
 function hasMatchingField(person, comparingToPersons) {
   const matchingPerson = comparingToPersons.find((comparingToPerson) =>

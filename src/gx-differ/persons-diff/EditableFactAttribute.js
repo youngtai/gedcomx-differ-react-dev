@@ -13,10 +13,10 @@ import {
 import DeleteIcon from '@mui/icons-material/Delete'
 import { FACT_KEYS, KEY_TO_LABEL_MAP } from '../constants'
 import { RecordsDataContext } from '../RecordsContext'
-import { haveSameNames } from './PersonsDiff'
 import { relationshipPersonsAreEqual } from '../relationships-diff/RelationshipsDiff'
 import { Cancel } from '@mui/icons-material'
 import { AssertionsContext } from '../AssertionsContext'
+import { haveSameNames } from './PersonDiffUtils'
 
 export function personsWithMatchingNames(person, comparingTo, assertions) {
   return comparingTo.filter((p) => haveSameNames(p, person, assertions))

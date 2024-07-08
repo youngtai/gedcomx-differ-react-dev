@@ -89,8 +89,8 @@ export default function EditableDocument({ document, documentIndex }) {
             </Grid>
             <Grid item>
               <ListItemText
-                primary={document?.text?.split('\n')?.map((piece) => (
-                  <div>{piece}</div>
+                primary={document?.text?.split('\n')?.map((piece, index) => (
+                  <div key={`piece-${index}`}>{piece}</div>
                 ))}
                 secondary={'Text'}
               />

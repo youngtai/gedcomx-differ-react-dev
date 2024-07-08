@@ -1,12 +1,12 @@
-import React from "react";
-import { Grid } from "@mui/material";
-import { RecordsDataContext } from "../RecordsContext";
-import { leftRecordsData, rightRecordsData } from "../VisualGedcomxDiffer";
-import RelationshipsList from "./RelationshipsList";
-import { haveSameFacts, personsAreEqual } from "../persons-diff/PersonsDiff";
+import React from 'react'
+import { Grid } from '@mui/material'
+import { RecordsDataContext } from '../RecordsContext'
+import { leftRecordsData, rightRecordsData } from '../VisualGedcomxDiffer'
+import RelationshipsList from './RelationshipsList'
+import { haveSameFacts, personsAreEqual } from '../persons-diff/PersonDiffUtils'
 
 export function getPersonById(id, persons) {
-  return persons?.find((person) => person.id === id);
+  return persons?.find((person) => person.id === id)
 }
 
 export function relationshipPersonsAreEqual(
@@ -14,11 +14,11 @@ export function relationshipPersonsAreEqual(
   sideBRelPerson,
   sideAPersons,
   sideBPersons,
-  assertions,
+  assertions
 ) {
-  const personA = getPersonById(sideBRelPerson.resourceId, sideBPersons);
-  const personB = getPersonById(sideARelPerson.resourceId, sideAPersons);
-  return personsAreEqual(personA, personB, assertions);
+  const personA = getPersonById(sideBRelPerson.resourceId, sideBPersons)
+  const personB = getPersonById(sideARelPerson.resourceId, sideAPersons)
+  return personsAreEqual(personA, personB, assertions)
 }
 
 function relationshipsAreEqual(
@@ -26,25 +26,25 @@ function relationshipsAreEqual(
   sideBRel,
   sideAPersons,
   sideBPersons,
-  assertions,
+  assertions
 ) {
-  const typeIsEqual = sideBRel.type === sideARel.type;
+  const typeIsEqual = sideBRel.type === sideARel.type
   const person1IsEqual = relationshipPersonsAreEqual(
     sideARel.person1,
     sideBRel.person1,
     sideAPersons,
     sideBPersons,
-    assertions,
-  );
+    assertions
+  )
   const person2IsEqual = relationshipPersonsAreEqual(
     sideARel.person2,
     sideBRel.person2,
     sideAPersons,
     sideBPersons,
-    assertions,
-  );
-  const factsAreEqual = haveSameFacts(sideARel?.facts, sideBRel?.facts);
-  return typeIsEqual && person1IsEqual && person2IsEqual && factsAreEqual;
+    assertions
+  )
+  const factsAreEqual = haveSameFacts(sideARel?.facts, sideBRel?.facts)
+  return typeIsEqual && person1IsEqual && person2IsEqual && factsAreEqual
 }
 
 /**
@@ -61,7 +61,7 @@ export function sideIncludesRel(
   sideBRel,
   sideAPersons,
   sideBPersons,
-  assertions,
+  assertions
 ) {
   return (
     sideARels?.find((sideARel) =>
@@ -70,10 +70,10 @@ export function sideIncludesRel(
         sideBRel,
         sideAPersons,
         sideBPersons,
-        assertions,
-      ),
+        assertions
+      )
     ) !== undefined
-  );
+  )
 }
 
 // Return intersection of left and right relationships
@@ -82,11 +82,11 @@ export function getRelationshipsIntersection(
   rightRels,
   leftPersons,
   rightPersons,
-  assertions,
+  assertions
 ) {
   return leftRels?.filter((rel) =>
-    sideIncludesRel(rightRels, rel, leftPersons, rightPersons, assertions),
-  );
+    sideIncludesRel(rightRels, rel, leftPersons, rightPersons, assertions)
+  )
 }
 
 // Return the complement of the intersection of {side} and center relationships (Ones without matches)
@@ -96,9 +96,9 @@ export function getRelationshipsIntersection(
 
 export function fullTextName(person) {
   if (!person?.names) {
-    return "Nameless Person";
+    return 'Nameless Person'
   }
-  return person.names[0]?.nameForms[0]?.fullText;
+  return person.names[0]?.nameForms[0]?.fullText
 }
 
 export function updateRelationshipsData(recordsData, assertions) {
@@ -107,11 +107,11 @@ export function updateRelationshipsData(recordsData, assertions) {
     recordsData.comparingToGx.relationships,
     recordsData.gx.persons,
     recordsData.comparingToGx.persons,
-    assertions,
-  );
-  recordsData.setFinalGx(structuredClone(recordsData.finalGx));
+    assertions
+  )
+  recordsData.setFinalGx(structuredClone(recordsData.finalGx))
 
-  recordsData.setGx(structuredClone(recordsData.gx));
+  recordsData.setGx(structuredClone(recordsData.gx))
 }
 
 export default function RelationshipsDiff({
@@ -132,7 +132,7 @@ export default function RelationshipsDiff({
             rightGx,
             setRightGx,
             finalGx,
-            setFinalGx,
+            setFinalGx
           )}
         >
           <RelationshipsList
@@ -149,7 +149,7 @@ export default function RelationshipsDiff({
             rightGx,
             setRightGx,
             finalGx,
-            setFinalGx,
+            setFinalGx
           )}
         >
           <RelationshipsList
@@ -159,5 +159,5 @@ export default function RelationshipsDiff({
         </RecordsDataContext.Provider>
       </Grid>
     </Grid>
-  );
+  )
 }

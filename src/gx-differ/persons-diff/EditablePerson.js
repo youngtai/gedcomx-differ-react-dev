@@ -1,5 +1,4 @@
-import React from "react";
-import { getPersonsIntersection } from "./PersonsDiff";
+import React from 'react'
 import {
   Button,
   Grid,
@@ -8,142 +7,143 @@ import {
   Paper,
   Stack,
   Tooltip,
-} from "@mui/material";
-import FemaleIcon from "@mui/icons-material/Female";
-import MaleIcon from "@mui/icons-material/Male";
-import StarIcon from "@mui/icons-material/Star";
-import QuestionMarkIcon from "@mui/icons-material/QuestionMark";
-import EditableFact from "./EditableFact";
-import EditablePersonField from "./EditablePersonField";
-import AddIcon from "@mui/icons-material/Add";
-import AddFactOrFieldDialog from "./AddFactOrFieldDialog";
-import { FACT_TYPE, GENDER } from "../constants";
-import { RecordsDataContext } from "../RecordsContext";
-import { updateRelationshipsData } from "../relationships-diff/RelationshipsDiff";
-import { KeyboardArrowDown, KeyboardArrowUp } from "@mui/icons-material";
-import EditablePersonName from "./EditablePersonName";
-import { generateLocalId } from "../Utils";
-import PersonNameEditDialog from "./PersonNameEditDialog";
-import { AssertionsContext } from "../AssertionsContext";
+} from '@mui/material'
+import FemaleIcon from '@mui/icons-material/Female'
+import MaleIcon from '@mui/icons-material/Male'
+import StarIcon from '@mui/icons-material/Star'
+import QuestionMarkIcon from '@mui/icons-material/QuestionMark'
+import EditableFact from './EditableFact'
+import EditablePersonField from './EditablePersonField'
+import AddIcon from '@mui/icons-material/Add'
+import AddFactOrFieldDialog from './AddFactOrFieldDialog'
+import { FACT_TYPE, GENDER } from '../constants'
+import { RecordsDataContext } from '../RecordsContext'
+import { updateRelationshipsData } from '../relationships-diff/RelationshipsDiff'
+import { KeyboardArrowDown, KeyboardArrowUp } from '@mui/icons-material'
+import EditablePersonName from './EditablePersonName'
+import { generateLocalId } from '../Utils'
+import PersonNameEditDialog from './PersonNameEditDialog'
+import { AssertionsContext } from '../AssertionsContext'
+import { getPersonsIntersection } from './PersonDiffUtils'
 
 export function updateRecordsData(recordsData) {
-  const persons = recordsData.gx.persons;
-  const comparingTo = recordsData.comparingToGx.persons;
+  const persons = recordsData.gx.persons
+  const comparingTo = recordsData.comparingToGx.persons
 
-  recordsData.finalGx.persons = getPersonsIntersection(persons, comparingTo);
-  recordsData.setFinalGx(structuredClone(recordsData.finalGx));
+  recordsData.finalGx.persons = getPersonsIntersection(persons, comparingTo)
+  recordsData.setFinalGx(structuredClone(recordsData.finalGx))
 
-  recordsData.gx.persons = persons;
-  recordsData.setGx(structuredClone(recordsData.gx));
+  recordsData.gx.persons = persons
+  recordsData.setGx(structuredClone(recordsData.gx))
 }
 
 function getGenderIcon(person) {
   if (!person || !person.gender) {
-    return <QuestionMarkIcon />;
+    return <QuestionMarkIcon />
   }
   if (person.gender.type === GENDER.Male) {
-    return <MaleIcon sx={{ color: "#0d4fff" }} />;
+    return <MaleIcon sx={{ color: '#0d4fff' }} />
   } else if (person.gender.type === GENDER.Female) {
-    return <FemaleIcon sx={{ color: "#ff3ca3" }} />;
+    return <FemaleIcon sx={{ color: '#ff3ca3' }} />
   } else {
-    return <QuestionMarkIcon />;
+    return <QuestionMarkIcon />
   }
 }
 
 function getGenderString(person) {
   if (!person || !person.gender) {
-    return "Unknown";
+    return 'Unknown'
   }
   if (person.gender.type === GENDER.Male) {
-    return "Male";
+    return 'Male'
   } else if (person.gender.type === GENDER.Female) {
-    return "Female";
+    return 'Female'
   } else {
-    return "Unknown";
+    return 'Unknown'
   }
 }
 
 function getPrincipalIcon(person) {
   if (!person || !person.principal) {
-    return <StarIcon sx={{ color: "#dadada" }} size="small" />;
+    return <StarIcon sx={{ color: '#dadada' }} size="small" />
   }
-  return <StarIcon sx={{ color: "#009142" }} />;
+  return <StarIcon sx={{ color: '#009142' }} />
 }
 
 function getPrincipalState(person) {
   if (!person || !person.principal) {
-    return "is not principal";
+    return 'is not principal'
   }
-  return "is principal";
+  return 'is principal'
 }
 
 export function updatePersonsData(
   person,
   personIndex,
   recordsData,
-  assertions,
+  assertions
 ) {
-  recordsData.gx.persons.splice(personIndex, 1, person);
-  updateRecordsData(recordsData);
-  updateRelationshipsData(recordsData, assertions);
+  recordsData.gx.persons.splice(personIndex, 1, person)
+  updateRecordsData(recordsData)
+  updateRelationshipsData(recordsData, assertions)
 }
 
 export default function EditablePerson({ person, personIndex }) {
-  const recordsData = React.useContext(RecordsDataContext);
-  const assertions = React.useContext(AssertionsContext).assertions;
-  const persons = recordsData.gx.persons;
+  const recordsData = React.useContext(RecordsDataContext)
+  const assertions = React.useContext(AssertionsContext).assertions
+  const persons = recordsData.gx.persons
 
-  const [open, setOpen] = React.useState(false);
-  const [addFactOrField, setAddFactOrField] = React.useState(false);
+  const [open, setOpen] = React.useState(false)
+  const [addFactOrField, setAddFactOrField] = React.useState(false)
 
   function handleAddFactOrField() {
-    setAddFactOrField(true);
+    setAddFactOrField(true)
   }
 
   function handleMovePersonDown() {
     if (personIndex === persons.length - 1) {
-      return;
+      return
     }
-    const removed = persons.splice(personIndex, 1)[0];
-    persons.splice(personIndex + 1, 0, removed);
-    updateRecordsData(recordsData);
+    const removed = persons.splice(personIndex, 1)[0]
+    persons.splice(personIndex + 1, 0, removed)
+    updateRecordsData(recordsData)
   }
 
   function handleMovePersonUp() {
     if (personIndex === 0) {
-      return;
+      return
     }
-    const removed = persons.splice(personIndex, 1)[0];
-    persons.splice(personIndex - 1, 0, removed);
-    updateRecordsData(recordsData);
+    const removed = persons.splice(personIndex, 1)[0]
+    persons.splice(personIndex - 1, 0, removed)
+    updateRecordsData(recordsData)
   }
 
-  const genderIcon = getGenderIcon(person);
-  const principalIcon = getPrincipalIcon(person);
+  const genderIcon = getGenderIcon(person)
+  const principalIcon = getPrincipalIcon(person)
 
   function handleChangeGender() {
     if (person.gender.type === GENDER.Male) {
-      person.gender.type = GENDER.Female;
+      person.gender.type = GENDER.Female
     } else if (person.gender.type === GENDER.Female) {
-      person.gender.type = GENDER.Unknown;
+      person.gender.type = GENDER.Unknown
     } else if (person.gender.type === GENDER.Unknown) {
-      person.gender.type = GENDER.Male;
+      person.gender.type = GENDER.Male
     }
-    updatePersonsData(person, personIndex, recordsData, assertions);
+    updatePersonsData(person, personIndex, recordsData, assertions)
   }
 
   function handleSetPrincipal() {
     person.principal =
-      person.principal === undefined || person.principal === false;
-    updatePersonsData(person, personIndex, recordsData, assertions);
+      person.principal === undefined || person.principal === false
+    updatePersonsData(person, personIndex, recordsData, assertions)
   }
 
   function handleAddName() {
-    setOpen(true);
+    setOpen(true)
   }
 
   function handleDialogClose(parts, type) {
-    setOpen(false);
+    setOpen(false)
     const newName = {
       id: generateLocalId(),
       type: !type ? null : type,
@@ -151,19 +151,19 @@ export default function EditablePerson({ person, personIndex }) {
         {
           fullText: parts
             .map((part) => part.value)
-            .join(" ")
+            .join(' ')
             .trim(),
           parts: parts,
         },
       ],
-    };
-    if (recordsData.gx.persons[personIndex].names) {
-      recordsData.gx.persons[personIndex].names.push(newName);
-    } else {
-      recordsData.gx.persons[personIndex].names = [];
-      recordsData.gx.persons[personIndex].names.push(newName);
     }
-    updateRecordsData(recordsData);
+    if (recordsData.gx.persons[personIndex].names) {
+      recordsData.gx.persons[personIndex].names.push(newName)
+    } else {
+      recordsData.gx.persons[personIndex].names = []
+      recordsData.gx.persons[personIndex].names.push(newName)
+    }
+    updateRecordsData(recordsData)
   }
 
   return (
@@ -225,7 +225,7 @@ export default function EditablePerson({ person, personIndex }) {
                 </Tooltip>
               </Grid>
               <Grid item>
-                <Tooltip title={"Add another name"} arrow placement="left">
+                <Tooltip title={'Add another name'} arrow placement="left">
                   <IconButton onClick={handleAddName}>
                     <AddIcon />
                   </IconButton>
@@ -247,7 +247,7 @@ export default function EditablePerson({ person, personIndex }) {
                 updateData={updatePersonsData}
                 factTypes={FACT_TYPE}
               />
-            );
+            )
           })}
           {person && person.fields
             ? person.fields.map((field, idx) => {
@@ -259,11 +259,11 @@ export default function EditablePerson({ person, personIndex }) {
                     person={person}
                     personIndex={personIndex}
                   />
-                );
+                )
               })
             : null}
           <Button
-            variant={"outlined"}
+            variant={'outlined'}
             sx={{ margin: 1 }}
             onClick={handleAddFactOrField}
             startIcon={<AddIcon />}
@@ -287,5 +287,5 @@ export default function EditablePerson({ person, personIndex }) {
         person={person}
       />
     </>
-  );
+  )
 }
