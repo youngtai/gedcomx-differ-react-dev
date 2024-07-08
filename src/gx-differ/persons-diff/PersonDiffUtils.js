@@ -168,7 +168,8 @@ function haveSameNames(personA, personB, assertions) {
 function isMatchingPerson(personA, personB) {
   return (
     haveSameNames(personA, personB) &&
-    haveSameFacts(personA.facts, personB.facts)
+    haveSameFacts(personA.facts, personB.facts) &&
+    haveSamePersonFields(personA.fields, personB.fields)
   )
 }
 
