@@ -63,7 +63,7 @@ export default function EditableCoverageDataItem({
   const comparingTo = recordsData.comparingToGx.sourceDescriptions
 
   const [editFieldValue, setEditFieldValue] = React.useState(
-    coverageItem?.original
+    coverageItem?.original !== undefined && coverageItem?.original !== null
       ? coverageItem.original
       : coverageItem
         ? coverageItem
@@ -80,7 +80,7 @@ export default function EditableCoverageDataItem({
   React.useEffect(() => {
     setHasMatch(hasMatchingCoverageDataItem(coverageItem, label, comparingTo))
     setEditFieldValue(
-      coverageItem?.original
+      coverageItem?.original !== undefined && coverageItem?.original !== null
         ? coverageItem.original
         : coverageItem
           ? coverageItem
