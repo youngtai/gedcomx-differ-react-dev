@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react'
 import {
   Button,
   Checkbox,
@@ -13,10 +13,10 @@ import {
   Stack,
   TextField,
   Typography,
-} from "@mui/material";
-import { FACT_KEYS, GEDCOMX_ORIGINAL, PERSON_FIELD_TYPE } from "../constants";
-import { RecordsDataContext } from "../RecordsContext";
-import { PaperComponent } from "../Styled";
+} from '@mui/material'
+import { FACT_KEYS, GEDCOMX_ORIGINAL, PERSON_FIELD_TYPE } from '../constants'
+import { RecordsDataContext } from '../RecordsContext'
+import { PaperComponent } from '../Styled'
 
 export default function AddFactOrFieldDialog({
   open,
@@ -26,73 +26,73 @@ export default function AddFactOrFieldDialog({
   factTypes,
   updateData,
 }) {
-  const recordsData = React.useContext(RecordsDataContext);
+  const recordsData = React.useContext(RecordsDataContext)
 
-  const [type, setType] = React.useState("");
-  const [date, setDate] = React.useState("");
-  const [place, setPlace] = React.useState("");
-  const [value, setValue] = React.useState("");
-  const [primary, setPrimary] = React.useState(false);
-  const [role, setRole] = React.useState("");
-  const [age, setAge] = React.useState("");
+  const [type, setType] = React.useState('')
+  const [date, setDate] = React.useState('')
+  const [place, setPlace] = React.useState('')
+  const [value, setValue] = React.useState('')
+  const [primary, setPrimary] = React.useState(false)
+  const [role, setRole] = React.useState('')
+  const [age, setAge] = React.useState('')
 
-  const newFact = {};
-  if (type !== "") {
-    newFact[FACT_KEYS.type] = type;
+  const newFact = {}
+  if (type !== '') {
+    newFact[FACT_KEYS.type] = type
   }
-  if (date !== "") {
-    newFact[FACT_KEYS.date] = { original: date };
+  if (date !== '') {
+    newFact[FACT_KEYS.date] = { original: date }
   }
-  if (place !== "") {
-    newFact[FACT_KEYS.place] = { original: place };
+  if (place !== '') {
+    newFact[FACT_KEYS.place] = { original: place }
   }
-  if (value !== "") {
-    newFact[FACT_KEYS.value] = value;
+  if (value !== '') {
+    newFact[FACT_KEYS.value] = value
   }
-  newFact[FACT_KEYS.primary] = primary;
+  newFact[FACT_KEYS.primary] = primary
   const newRole =
-    role !== ""
+    role !== ''
       ? { type: PERSON_FIELD_TYPE.Role, values: [{ text: role }] }
-      : null;
+      : null
   const newAge =
-    age !== ""
+    age !== ''
       ? {
           type: PERSON_FIELD_TYPE.Age,
           values: [{ type: GEDCOMX_ORIGINAL, text: age.toString() }],
         }
-      : null;
+      : null
 
   function saveChanges() {
-    setOpen(false);
+    setOpen(false)
     // Only add a new fact if it has more than just the 'primary' attribute
-    let added = null;
+    let added = null
     if (Object.keys(newFact).length > 1) {
       if (!parentObject.facts) {
-        parentObject["facts"] = [];
+        parentObject['facts'] = []
       }
-      added = parentObject.facts.push(newFact);
+      added = parentObject.facts.push(newFact)
     }
     if (newRole) {
       if (!parentObject.fields) {
-        parentObject["fields"] = [];
+        parentObject['fields'] = []
       }
-      added = parentObject.fields.push(newRole);
+      added = parentObject.fields.push(newRole)
     }
     if (newAge) {
       if (!parentObject.fields) {
-        parentObject["fields"] = [];
+        parentObject['fields'] = []
       }
-      added = parentObject.fields.push(newAge);
+      added = parentObject.fields.push(newAge)
     }
     if (added) {
-      updateData(parentObject, parentObjectIndex, recordsData);
-      setType("");
-      setDate("");
-      setPlace("");
-      setValue("");
-      setPrimary(false);
-      setRole("");
-      setAge("");
+      updateData(parentObject, parentObjectIndex, recordsData)
+      setType('')
+      setDate('')
+      setPlace('')
+      setValue('')
+      setPrimary(false)
+      setRole('')
+      setAge('')
     }
   }
 
@@ -103,7 +103,7 @@ export default function AddFactOrFieldDialog({
       PaperComponent={PaperComponent}
       aria-labelledby="draggable-dialog-title"
     >
-      <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
+      <DialogTitle style={{ cursor: 'move' }} id="draggable-dialog-title">
         Add Fact or Field
       </DialogTitle>
       <DialogContent>
@@ -154,7 +154,7 @@ export default function AddFactOrFieldDialog({
                   onChange={(event) => setPrimary(event.target.checked)}
                 />
               }
-              label={"Primary"}
+              label={'Primary'}
             />
           </Grid>
           <Grid item>
@@ -176,15 +176,15 @@ export default function AddFactOrFieldDialog({
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Stack direction={"row"} spacing={2}>
-          <Button color={"secondary"} onClick={() => setOpen(false)}>
+        <Stack direction={'row'} spacing={2}>
+          <Button color={'secondary'} onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button color={"primary"} onClick={saveChanges}>
+          <Button color={'primary'} onClick={saveChanges}>
             Save
           </Button>
         </Stack>
       </DialogActions>
     </Dialog>
-  );
+  )
 }
