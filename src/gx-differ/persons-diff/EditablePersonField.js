@@ -75,6 +75,7 @@ export default function EditablePersonField({
     field.values[0].text = editFieldValue
     field.type = editFieldType
     person.fields[fieldIndex] = field
+    person.fields.sort((a, b) => a.type.localeCompare(b.type))
     updatePersonsData(person, personIndex, recordsData)
   }
 

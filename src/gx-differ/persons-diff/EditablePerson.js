@@ -253,7 +253,7 @@ export default function EditablePerson({ person, personIndex }) {
             ? person.fields.map((field, idx) => {
                 return (
                   <EditablePersonField
-                    key={`field-${idx}`}
+                    key={`field-${field.type}-${idx}`}
                     field={field}
                     fieldIndex={idx}
                     person={person}

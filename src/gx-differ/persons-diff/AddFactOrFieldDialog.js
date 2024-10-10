@@ -88,6 +88,7 @@ export default function AddFactOrFieldDialog({
       added = parentObject.fields.push(newAge)
     }
     if (added) {
+      parentObject.fields.sort((a, b) => a.type.localeCompare(b.type))
       updateData(parentObject, parentObjectIndex, recordsData)
       setType('')
       setDate('')
