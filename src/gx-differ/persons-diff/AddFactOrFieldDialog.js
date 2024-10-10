@@ -52,7 +52,10 @@ export default function AddFactOrFieldDialog({
   newFact[FACT_KEYS.primary] = primary
   const newRole =
     role !== ''
-      ? { type: PERSON_FIELD_TYPE.Role, values: [{ text: role }] }
+      ? {
+          type: PERSON_FIELD_TYPE.Role,
+          values: [{ type: GEDCOMX_ORIGINAL, text: role }],
+        }
       : null
   const newAge =
     age !== ''
