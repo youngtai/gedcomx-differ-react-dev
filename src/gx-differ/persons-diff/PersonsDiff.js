@@ -2,7 +2,7 @@ import React from 'react'
 import { Grid } from '@mui/material'
 import PersonsList from './PersonsList'
 import { RecordsDataContext } from '../RecordsContext'
-import { leftRecordsData, rightRecordsData } from '../VisualGedcomxDiffer'
+import { leftRecordsData, rightRecordsData } from '../Utils'
 
 function PersonsDiff({
   leftGx,

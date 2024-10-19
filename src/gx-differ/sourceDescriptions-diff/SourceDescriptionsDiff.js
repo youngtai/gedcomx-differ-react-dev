@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Grid, ListItemText } from "@mui/material";
 import EditableRecordSourceDescription from "./EditableRecordSourceDescription";
 import { RecordsDataContext } from "../RecordsContext";
-import { leftRecordsData, rightRecordsData } from "../VisualGedcomxDiffer";
+import { leftRecordsData, rightRecordsData } from '../Utils';
 
 export function updateSourceDescriptionsData(recordsData) {
   const sourceDescriptions = recordsData.gx.sourceDescriptions;

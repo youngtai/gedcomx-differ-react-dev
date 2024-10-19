@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import { RecordsDataContext } from "../RecordsContext";
-import { leftRecordsData, rightRecordsData } from "../VisualGedcomxDiffer";
+import { leftRecordsData, rightRecordsData } from '../Utils';
 import FieldsList from "./FieldsList";
 
 export function getFieldsIntersection(leftFields, rightFields) {
