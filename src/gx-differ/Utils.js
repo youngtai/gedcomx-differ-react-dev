@@ -1,13 +1,9 @@
 import { EMPTY_GEDCOMX } from './constants'
-import { getDocumentsIntersection } from './documents-diff/DocumentsDiff'
-import { getFieldsIntersection } from './fields-diff/FieldsDiff'
-import { factIsEmpty } from './persons-diff/EditableFactAttribute'
+import { getDocumentsIntersection } from "./documents-diff/DocumentsDiffUtils"
+import { getFieldsIntersection } from "./fields-diff/FieldsDiffUtils"
 import { getPersonsIntersection } from './persons-diff/PersonDiffUtils'
-import {
-  getPersonById,
-  getRelationshipsIntersection,
-} from './relationships-diff/RelationshipsDiff'
-import { getRecordDataIntersection } from './sourceDescriptions-diff/SourceDescriptionsDiff'
+import { factIsEmpty, getPersonById, getRelationshipsIntersection } from './relationships-diff/RelationshipsDiffUtils'
+import { getRecordDataIntersection } from "./sourceDescriptions-diff/SourceDescriptionsDiffUtils"
 
 export const generateLocalId = () => Math.random().toString(36).substring(2, 9)
 

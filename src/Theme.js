@@ -1,95 +1,70 @@
-import { createTheme } from '@mui/material/styles'
+import { extendTheme } from "@mui/joy/styles";
 
-const lightTheme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#2196f3',
-      main2: '#9cd4ff',
-      main3: '#e2f0ff',
-    },
-    secondary: {
-      main: '#f50057',
-      main2: '#b6003f',
-    },
-    diff: {
-      background: '#fff6f6',
-      color: '#e50000',
-    },
-    fact: {
-      background: '#eeeeee',
-    },
+const commonLightPalette = {
+  fact: {
+    softBg: "#eeeeee",
   },
-  spacing: 6,
-})
+};
 
-const colorBlindLight = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#2196f3',
-      main2: '#9cd4ff',
-      main3: '#e2f0ff',
-    },
-    secondary: {
-      main: '#f50057',
-      main2: '#b6003f',
-    },
-    diff: {
-      background: '#fff1c8',
-      color: '#0C7BDC',
-    },
-    fact: {
-      background: '#eeeeee',
-    },
+const commonDarkPalette = {
+  fact: {
+    softBg: "#4f4f4f",
   },
-  spacing: 6,
-})
+};
 
-const darkTheme = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#3e849a',
-      main2: '#124757',
-      main3: '#181e1f',
+const themes = {
+  standard: extendTheme({
+    cssVarPrefix: 'mode-toggle',
+    colorSchemeSelector: '.demo_mode-toggle-%s',
+    colorSchemes: {
+      light: {
+        palette: {
+          ...commonLightPalette,
+          diff: {
+            background: "#fff6f6",
+            color: "#e50000",
+          },
+        },
+      },
+      dark: {
+        palette: {
+          ...commonDarkPalette,
+          diff: {
+            background: "#230000",
+            color: "#ffbebe",
+          },
+        },
+      },
     },
-    secondary: {
-      main: '#be1a51',
-      main2: '#851339',
-    },
-    diff: {
-      background: '#230000',
-      color: '#ffbebe',
-    },
-    fact: {
-      background: '#4f4f4f',
-    },
-  },
-  spacing: 6,
-})
+    spacing: 6,
+  }),
 
-const colorBlindDark = createTheme({
-  palette: {
-    mode: 'dark',
-    primary: {
-      main: '#3e849a',
-      main2: '#124757',
-      main3: '#181e1f',
+  colorBlind: extendTheme({
+    cssVarPrefix: 'mode-toggle',
+    colorSchemeSelector: '.demo_mode-toggle-%s',
+    colorSchemes: {
+      light: {
+        palette: {
+          ...commonLightPalette,
+          diff: {
+            background: "#fff1c8",
+            color: "#0C7BDC",
+          },
+        },
+      },
+      dark: {
+        palette: {
+          ...commonDarkPalette,
+          diff: {
+            background: "#4d3600",
+            color: "#5eb3fa",
+          },
+        },
+      },
     },
-    secondary: {
-      main: '#be1a51',
-      main2: '#851339',
-    },
-    diff: {
-      background: '#4d3600',
-      color: '#5eb3fa',
-    },
-    fact: {
-      background: '#4f4f4f',
-    },
-  },
-  spacing: 6,
-})
+    spacing: 6,
+  }),
+};
 
-export { lightTheme, darkTheme, colorBlindDark, colorBlindLight }
+export const { standard, colorBlind } =
+  themes;
