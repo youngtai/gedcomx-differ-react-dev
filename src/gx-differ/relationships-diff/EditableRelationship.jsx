@@ -84,20 +84,17 @@ export function EditableRelationship({ rel, relIndex, persons }) {
 
   return (
     <Sheet variant="outlined" sx={{ borderRadius: "sm" }}>
-      <Grid
-        container
-        spacing={1}
-        direction="row"
-        alignItems="center"
-        sx={{
-          background: backgroundColor,
-          color: textColor,
-          padding: 1,
-          borderRadius: "sm",
-        }}
-      >
+      <Grid container spacing={1} direction="row" alignItems="center">
         <Grid xs>
-          <Stack spacing={1}>
+          <Stack
+            spacing={1}
+            sx={{
+              background: backgroundColor,
+              color: textColor,
+              padding: 1,
+              borderRadius: "sm",
+            }}
+          >
             <div>
               <Typography fontWeight="600">
                 {fullTextName(getPersonById(rel?.person1?.resourceId, persons))}
@@ -124,13 +121,13 @@ export function EditableRelationship({ rel, relIndex, persons }) {
           <Stack>
             <Tooltip title="Switch Persons" arrow placement="left">
               <IconButton onClick={handleSwitchPerson}>
-                <SwapIcon/>
+                <SwapIcon />
               </IconButton>
             </Tooltip>
 
             <Tooltip title="Delete Relationship" arrow placement="left">
               <IconButton onClick={handleDelete}>
-                <DeleteIcon/>
+                <DeleteIcon />
               </IconButton>
             </Tooltip>
           </Stack>
