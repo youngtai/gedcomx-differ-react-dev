@@ -177,6 +177,8 @@ export default function VisualGedcomxDiffer({
         rightGx={rightGx}
         setLeftGx={setLeftGx}
         setRightGx={setRightGx}
+        setLeftGxOriginal={setLeftGxOriginal}
+        setRightGxOriginal={setRightGxOriginal}
         leftFilename={leftFilename}
         rightFilename={rightFilename}
         setLeftFilename={setLeftFilename}
@@ -196,6 +198,7 @@ export default function VisualGedcomxDiffer({
             value={{ assertions: assertions, setAssertions: setAssertions }}
           >
             <DiffAccordion
+              defaultExpanded={true}
               title={"Record Data"}
               component={
                 <SourceDescriptionsDiff
@@ -210,6 +213,7 @@ export default function VisualGedcomxDiffer({
             />
 
             <DiffAccordion
+              defaultExpanded={true}
               title="Record Fields"
               component={
                 <FieldsDiff
@@ -224,6 +228,7 @@ export default function VisualGedcomxDiffer({
             />
 
             <DiffAccordion
+              defaultExpanded={true}
               title="Persons"
               component={
                 <PersonsDiff
@@ -238,6 +243,7 @@ export default function VisualGedcomxDiffer({
             />
 
             <DiffAccordion
+              defaultExpanded={true}
               title="Relationships"
               component={
                 <RelationshipsDiff
@@ -252,6 +258,7 @@ export default function VisualGedcomxDiffer({
             />
 
             <DiffAccordion
+              defaultExpanded={true}
               title="Documents"
               component={
                 <DocumentsDiff

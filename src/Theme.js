@@ -22,7 +22,7 @@ const themes = {
           ...commonLightPalette,
           diff: {
             background: "#fff6f6",
-            color: "#e50000",
+            color: "#760000",
           },
         },
       },
@@ -48,7 +48,7 @@ const themes = {
           ...commonLightPalette,
           diff: {
             background: "#fff1c8",
-            color: "#0C7BDC",
+            color: "#0461b3",
           },
         },
       },
@@ -57,7 +57,7 @@ const themes = {
           ...commonDarkPalette,
           diff: {
             background: "#4d3600",
-            color: "#5eb3fa",
+            color: "#9bd2ff",
           },
         },
       },
