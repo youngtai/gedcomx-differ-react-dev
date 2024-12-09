@@ -1,22 +1,23 @@
-import React from "react";
 import {
   Button,
   Checkbox,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   FormControl,
   FormLabel,
-  Grid,
+  Input,
   Modal,
-  ModalDialog,
   ModalClose,
+  ModalDialog,
   Option,
   Select,
   Stack,
-  Input,
-  Typography,
 } from "@mui/joy";
+import PropTypes from "prop-types";
+import React from "react";
 import { FACT_KEYS, GEDCOMX_ORIGINAL, PERSON_FIELD_TYPE } from "../constants";
 import { RecordsDataContext } from "../RecordsContext";
-import PropTypes from "prop-types";
 
 export default function AddFactOrFieldDialog({
   open,
@@ -104,14 +105,12 @@ export default function AddFactOrFieldDialog({
     <Modal open={open} onClose={() => setOpen(false)}>
       <ModalDialog
         aria-labelledby="add-fact-field-dialog-title"
-        sx={{ maxWidth: 500 }}
+        sx={{ minWidth: 500 }}
       >
         <ModalClose />
-        <Typography id="add-fact-field-dialog-title" level="h2">
-          Add Fact or Field
-        </Typography>
-        <Grid container spacing={2} sx={{ mt: 1 }}>
-          <Grid xs={12}>
+        <DialogTitle>Add Fact or Field</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} padding={2}>
             <FormControl>
               <FormLabel>Type</FormLabel>
               <Select
@@ -125,35 +124,18 @@ export default function AddFactOrFieldDialog({
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid xs={12}>
             <FormControl>
               <FormLabel>Date</FormLabel>
-              <Input
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-              />
+              <Input value={date} onChange={(e) => setDate(e.target.value)} />
             </FormControl>
-          </Grid>
-          <Grid xs={12}>
             <FormControl>
               <FormLabel>Place</FormLabel>
-              <Input
-                value={place}
-                onChange={(e) => setPlace(e.target.value)}
-              />
+              <Input value={place} onChange={(e) => setPlace(e.target.value)} />
             </FormControl>
-          </Grid>
-          <Grid xs={12}>
             <FormControl>
               <FormLabel>Value</FormLabel>
-              <Input
-                value={value}
-                onChange={(e) => setValue(e.target.value)}
-              />
+              <Input value={value} onChange={(e) => setValue(e.target.value)} />
             </FormControl>
-          </Grid>
-          <Grid xs={12}>
             <FormControl>
               <Checkbox
                 label="Primary"
@@ -161,40 +143,24 @@ export default function AddFactOrFieldDialog({
                 onChange={(event) => setPrimary(event.target.checked)}
               />
             </FormControl>
-          </Grid>
-          <Grid xs={12}>
             <FormControl>
               <FormLabel>Age</FormLabel>
               <Input value={age} onChange={(e) => setAge(e.target.value)} />
             </FormControl>
-          </Grid>
-          <Grid xs={12}>
             <FormControl>
               <FormLabel>Role</FormLabel>
-              <Input
-                value={role}
-                onChange={(e) => setRole(e.target.value)}
-              />
+              <Input value={role} onChange={(e) => setRole(e.target.value)} />
             </FormControl>
-          </Grid>
-        </Grid>
-        <Stack
-          direction="row"
-          spacing={1}
-          justifyContent="flex-end"
-          sx={{ mt: 2 }}
-        >
-          <Button
-            variant="outlined"
-            color="neutral"
-            onClick={() => setOpen(false)}
-          >
+          </Stack>
+        </DialogContent>
+        <DialogActions>
+          <Button color="neutral" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button variant="solid" color="primary" onClick={saveChanges}>
+          <Button color="primary" onClick={saveChanges}>
             Save
           </Button>
-        </Stack>
+        </DialogActions>
       </ModalDialog>
     </Modal>
   );

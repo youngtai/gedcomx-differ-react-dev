@@ -1,23 +1,23 @@
-import React from "react";
 import {
   Button,
-  Modal,
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
-  MenuItem,
+  FormControl,
+  FormLabel,
+  Modal,
+  ModalClose,
+  ModalDialog,
+  Option,
   Select,
   Stack,
-  Typography,
-  Option,
-  ModalDialog,
 } from "@mui/joy";
-import { RecordsDataContext } from "../RecordsContext";
-import { RELATIONSHIP } from "../constants";
-import { generateLocalId, relationshipCompareFunction } from "../Utils";
-import { AssertionsContext } from "../AssertionsContext";
 import PropTypes from "prop-types";
+import React from "react";
+import { AssertionsContext } from "../AssertionsContext";
+import { RELATIONSHIP } from "../constants";
+import { RecordsDataContext } from "../RecordsContext";
+import { generateLocalId, relationshipCompareFunction } from "../Utils";
 import {
   fullTextName,
   updateRelationshipsData,
@@ -72,54 +72,47 @@ export default function AddRelationshipDialog({ open, setOpen }) {
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
       <ModalDialog>
+        <ModalClose />
         <DialogTitle>Add Relationship</DialogTitle>
         <DialogContent>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Typography>Person 1</Typography>
+          <Stack spacing={2} padding={2}>
+            <FormControl>
+              <FormLabel>Person 1</FormLabel>
               <Select
-              value={person1}
-              onChange={(e) => setPerson1(e.target.value)}
-              fullwidth
-            >
-              {personMenuItems}
-            </Select>
-            </Grid>
-            <Grid item>
-              <Typography>Relationship Type</Typography>
+                value={person1}
+                onChange={(_, value) => setPerson1(value)}
+              >
+                {personMenuItems}
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Relationship Type</FormLabel>
+              <Select value={type} onChange={(_, value) => setType(value)}>
+                {Object.entries(RELATIONSHIP).map((entry) => (
+                  <Option key={`type-${entry[0]}`} value={entry[1]}>
+                    {entry[0]}
+                  </Option>
+                ))}
+              </Select>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Person 2</FormLabel>
               <Select
-              value={type}
-              onChange={(e) => setType(e.target.value)}
-              fullwidth
-            >
-              {Object.keys(RELATIONSHIP).map((key) => (
-                <MenuItem key={`type-${key}`} value={RELATIONSHIP[key]}>
-                  {key}
-                </MenuItem>
-              ))}
-            </Select>
-            </Grid>
-            <Grid item>
-              <Typography>Person 2</Typography>
-              <Select
-              value={person2}
-              onChange={(e) => setPerson2(e.target.value)}
-              fullwidth
-            >
-              {personMenuItems}
-            </Select>
-            </Grid>
-          </Grid>
+                value={person2}
+                onChange={(_, value) => setPerson2(value)}
+              >
+                {personMenuItems}
+              </Select>
+            </FormControl>
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Stack direction="row" spacing={2}>
-            <Button color="danger" onClick={() => setOpen(false)}>
-              Cancel
-            </Button>
-            <Button color="primary" onClick={saveChanges}>
-              Save
-            </Button>
-          </Stack>
+          <Button color="neutral" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button color="primary" onClick={saveChanges}>
+            Save
+          </Button>
         </DialogActions>
       </ModalDialog>
     </Modal>

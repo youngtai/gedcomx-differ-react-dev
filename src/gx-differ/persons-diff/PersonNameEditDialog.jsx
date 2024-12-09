@@ -3,19 +3,18 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
-  Grid,
+  FormControl,
+  FormLabel,
   Input,
   Modal,
   ModalDialog,
   Option,
   Select,
   Stack,
-  Typography,
 } from "@mui/joy";
 import PropTypes from "prop-types";
 import React from "react";
 import { NAME_PART_TYPE, PERSON_NAME_TYPE } from "../constants";
-import { PaperComponent } from "../Styled";
 
 export default function PersonNameEditDialog({
   open,
@@ -65,84 +64,66 @@ export default function PersonNameEditDialog({
   ]);
 
   return (
-    <Modal
-      open={open}
-      onClose={() => onClose(parts, type, person)}
-      component={PaperComponent}
-      hideBackdrop
-      aria-labelledby="draggable-dialog-title"
-    >
-      <ModalDialog>
-        <DialogTitle style={{ cursor: "move" }} id="draggable-dialog-title">
-          Edit Name
-        </DialogTitle>
+    <Modal open={open} onClose={() => onClose(parts, type, person)}>
+      <ModalDialog sx={{ minWidth: 500 }}>
+        <DialogTitle>Edit Name</DialogTitle>
         <DialogContent>
-          <Grid container direction="column" spacing={2}>
-            <Grid item>
-              <Typography>Prefix</Typography>
+          <Stack spacing={2} padding={2}>
+            <FormControl>
+              <FormLabel>Prefix</FormLabel>
               <Input
                 value={prefix}
                 onChange={(e) => setPrefix(e.target.value)}
                 variant="outlined"
               />
-            </Grid>
-            <Grid item>
-              <Typography>Given Name</Typography>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Given Name</FormLabel>
               <Input
                 value={given}
                 onChange={(e) => setGiven(e.target.value)}
                 variant="outlined"
               />
-            </Grid>
-            <Grid item>
-              <Typography>Surname</Typography>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Surname</FormLabel>
               <Input
                 value={surname}
                 onChange={(e) => setSurname(e.target.value)}
                 variant="outlined"
               />
-            </Grid>
-            <Grid item>
-              <Typography>Suffix</Typography>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Suffix</FormLabel>
               <Input
                 value={suffix}
                 onChange={(e) => setSuffix(e.target.value)}
                 variant="outlined"
               />
-            </Grid>
-            <Grid item>
-              <Typography>Type</Typography>
+            </FormControl>
+            <FormControl>
+              <FormLabel>Type</FormLabel>
               <Select
-              value={type}
-              onChange={(event) => setType(event?.target?.value)}
-              placeholder="Name Type..."
-            >
-              {Object.keys(PERSON_NAME_TYPE).map((t) => (
-                <Option key={`type-item-${t}`} value={PERSON_NAME_TYPE[t]}>
-                  {t}
-                </Option>
-              ))}
-            </Select>
-            </Grid>
-          </Grid>
+                value={type}
+                onChange={(event) => setType(event?.target?.value)}
+                placeholder="Name Type..."
+              >
+                {Object.keys(PERSON_NAME_TYPE).map((t) => (
+                  <Option key={`type-item-${t}`} value={PERSON_NAME_TYPE[t]}>
+                    {t}
+                  </Option>
+                ))}
+              </Select>
+            </FormControl>
+          </Stack>
         </DialogContent>
         <DialogActions>
-          <Stack direction="row" spacing={2}>
-            <Button
-              variant="outlined"
-              color="neutral"
-              onClick={() => setOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="outlined"
-              color="primary"
-              onClick={() => onClose(parts, type, person)}
-            >
-              Save
-            </Button>
-          </Stack>
+          <Button color="neutral" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
+          <Button color="primary" onClick={() => onClose(parts, type, person)}>
+            Save
+          </Button>
         </DialogActions>
       </ModalDialog>
     </Modal>

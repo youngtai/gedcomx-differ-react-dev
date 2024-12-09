@@ -1,17 +1,18 @@
 import {
   Button,
   Checkbox,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
   FormControl,
   FormLabel,
-  Grid,
+  Input,
   Modal,
   ModalClose,
   ModalDialog,
   Option,
   Select,
   Stack,
-  Input,
-  Typography,
 } from "@mui/joy";
 import PropTypes from "prop-types";
 import React from "react";
@@ -44,7 +45,7 @@ export default function AddPersonDialog({ open, setOpen }) {
     parts.push({ type: NAME_PART_TYPE.suffix, value: suffix });
   }
 
-  function handleDialogClose(parts, principal, gender, type) {
+  function saveChanges() {
     setOpen(false);
     recordsData.gx.persons.push(createPerson(parts, principal, gender, type));
     updateRecordsData(recordsData);
@@ -52,18 +53,15 @@ export default function AddPersonDialog({ open, setOpen }) {
 
   return (
     <Modal open={open} onClose={() => setOpen(false)}>
-      <ModalDialog aria-labelledby="add-person-dialog-title" layout="center">
+      <ModalDialog
+        aria-labelledby="add-person-dialog-title"
+        layout="center"
+        sx={{ minWidth: 500 }}
+      >
         <ModalClose />
-        <Typography id="add-person-dialog-title" level="h2">
-          Add Person
-        </Typography>
-        <form
-          onSubmit={(event) => {
-            event.preventDefault();
-            handleDialogClose(parts, principal, gender, type);
-          }}
-        >
-          <Stack spacing={2}>
+        <DialogTitle>Add Person</DialogTitle>
+        <DialogContent>
+          <Stack spacing={2} padding={2}>
             <FormControl>
               <FormLabel>Prefix</FormLabel>
               <Input
@@ -73,10 +71,7 @@ export default function AddPersonDialog({ open, setOpen }) {
             </FormControl>
             <FormControl>
               <FormLabel>Given Name</FormLabel>
-              <Input
-                value={given}
-                onChange={(e) => setGiven(e.target.value)}
-              />
+              <Input value={given} onChange={(e) => setGiven(e.target.value)} />
             </FormControl>
             <FormControl>
               <FormLabel>Surname</FormLabel>
@@ -122,24 +117,16 @@ export default function AddPersonDialog({ open, setOpen }) {
                 ))}
               </Select>
             </FormControl>
-            <Grid container spacing={2} justifyContent="flex-end">
-              <Grid item>
-                <Button
-                  variant="plain"
-                  color="neutral"
-                  onClick={() => setOpen(false)}
-                >
-                  Cancel
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button type="submit" color="primary">
-                  Save
-                </Button>
-              </Grid>
-            </Grid>
+            <DialogActions>
+              <Button color="neutral" onClick={() => setOpen(false)}>
+                Cancel
+              </Button>
+              <Button type="submit" color="primary" onClick={saveChanges}>
+                Save
+              </Button>
+            </DialogActions>
           </Stack>
-        </form>
+        </DialogContent>
       </ModalDialog>
     </Modal>
   );
