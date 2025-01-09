@@ -6,8 +6,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Modal,
-  ModalDialog,
   Option,
   Select,
   Stack,
@@ -15,6 +13,7 @@ import {
 import PropTypes from "prop-types";
 import React from "react";
 import { NAME_PART_TYPE, PERSON_NAME_TYPE } from "../constants";
+import Dialog from "../Dialog";
 
 export default function PersonNameEditDialog({
   open,
@@ -64,69 +63,71 @@ export default function PersonNameEditDialog({
   ]);
 
   return (
-    <Modal open={open} onClose={() => onClose(parts, type, person)}>
-      <ModalDialog sx={{ minWidth: 500 }}>
-        <DialogTitle>Edit Name</DialogTitle>
-        <DialogContent>
-          <Stack spacing={2} padding={2}>
-            <FormControl>
-              <FormLabel>Prefix</FormLabel>
-              <Input
-                value={prefix}
-                onChange={(e) => setPrefix(e.target.value)}
-                variant="outlined"
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Given Name</FormLabel>
-              <Input
-                value={given}
-                onChange={(e) => setGiven(e.target.value)}
-                variant="outlined"
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Surname</FormLabel>
-              <Input
-                value={surname}
-                onChange={(e) => setSurname(e.target.value)}
-                variant="outlined"
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Suffix</FormLabel>
-              <Input
-                value={suffix}
-                onChange={(e) => setSuffix(e.target.value)}
-                variant="outlined"
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel>Type</FormLabel>
-              <Select
-                value={type}
-                onChange={(event) => setType(event?.target?.value)}
-                placeholder="Name Type..."
-              >
-                {Object.keys(PERSON_NAME_TYPE).map((t) => (
-                  <Option key={`type-item-${t}`} value={PERSON_NAME_TYPE[t]}>
-                    {t}
-                  </Option>
-                ))}
-              </Select>
-            </FormControl>
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button color="neutral" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
-          <Button color="primary" onClick={() => onClose(parts, type, person)}>
-            Save
-          </Button>
-        </DialogActions>
-      </ModalDialog>
-    </Modal>
+    <Dialog open={open} onClose={() => onClose(parts, type, person)}>
+      <DialogTitle>Edit Name</DialogTitle>
+      <DialogContent>
+        <Stack spacing={2} padding={2}>
+          <FormControl>
+            <FormLabel>Prefix</FormLabel>
+            <Input
+              value={prefix}
+              onChange={(e) => setPrefix(e.target.value)}
+              variant="outlined"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Given Name</FormLabel>
+            <Input
+              value={given}
+              onChange={(e) => setGiven(e.target.value)}
+              variant="outlined"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Surname</FormLabel>
+            <Input
+              value={surname}
+              onChange={(e) => setSurname(e.target.value)}
+              variant="outlined"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Suffix</FormLabel>
+            <Input
+              value={suffix}
+              onChange={(e) => setSuffix(e.target.value)}
+              variant="outlined"
+            />
+          </FormControl>
+          <FormControl>
+            <FormLabel>Type</FormLabel>
+            <Select
+              value={type}
+              onChange={(event) => setType(event?.target?.value)}
+              placeholder="Name Type..."
+            >
+              {Object.keys(PERSON_NAME_TYPE).map((t) => (
+                <Option key={`type-item-${t}`} value={PERSON_NAME_TYPE[t]}>
+                  {t}
+                </Option>
+              ))}
+            </Select>
+          </FormControl>
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Button color="neutral" onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+        <Button
+          color="primary"
+          onClick={() => onClose(parts, type, person)}
+          sx={{ marginRight: 2 }}
+        >
+          Save
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 

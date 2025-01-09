@@ -16,6 +16,21 @@ import { getGxIntersection, gxIsEmpty, normalizeGedcomx } from "./Utils";
 
 const CACHE_KEY = "gedcomx-differ-data";
 
+const globalStyles = `
+  body {
+    position: relative;
+  }
+  #dialog-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 1000;
+  }
+`;
+
 export default function VisualGedcomxDiffer({
   leftData = null,
   rightData = null,
@@ -170,6 +185,7 @@ export default function VisualGedcomxDiffer({
 
   return (
     <Box sx={{ padding: 2 }}>
+      <style>{globalStyles}</style>
       <InputOptions
         assertions={assertions}
         setAssertions={setAssertions}

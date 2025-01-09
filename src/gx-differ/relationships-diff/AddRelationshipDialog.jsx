@@ -5,9 +5,6 @@ import {
   DialogTitle,
   FormControl,
   FormLabel,
-  Modal,
-  ModalClose,
-  ModalDialog,
   Option,
   Select,
   Stack,
@@ -16,6 +13,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import { AssertionsContext } from "../AssertionsContext";
 import { RELATIONSHIP } from "../constants";
+import Dialog from "../Dialog";
 import { RecordsDataContext } from "../RecordsContext";
 import { generateLocalId, relationshipCompareFunction } from "../Utils";
 import {
@@ -70,52 +68,43 @@ export default function AddRelationshipDialog({ open, setOpen }) {
   }
 
   return (
-    <Modal open={open} onClose={() => setOpen(false)}>
-      <ModalDialog>
-        <ModalClose />
-        <DialogTitle>Add Relationship</DialogTitle>
-        <DialogContent>
-          <Stack spacing={2} padding={2}>
-            <FormControl>
-              <FormLabel>Person 1</FormLabel>
-              <Select
-                value={person1}
-                onChange={(_, value) => setPerson1(value)}
-              >
-                {personMenuItems}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Relationship Type</FormLabel>
-              <Select value={type} onChange={(_, value) => setType(value)}>
-                {Object.entries(RELATIONSHIP).map((entry) => (
-                  <Option key={`type-${entry[0]}`} value={entry[1]}>
-                    {entry[0]}
-                  </Option>
-                ))}
-              </Select>
-            </FormControl>
-            <FormControl>
-              <FormLabel>Person 2</FormLabel>
-              <Select
-                value={person2}
-                onChange={(_, value) => setPerson2(value)}
-              >
-                {personMenuItems}
-              </Select>
-            </FormControl>
-          </Stack>
-        </DialogContent>
-        <DialogActions>
-          <Button color="neutral" onClick={() => setOpen(false)}>
-            Cancel
-          </Button>
-          <Button color="primary" onClick={saveChanges}>
-            Save
-          </Button>
-        </DialogActions>
-      </ModalDialog>
-    </Modal>
+    <Dialog open={open} onClose={() => setOpen(false)}>
+      <DialogTitle>Add Relationship</DialogTitle>
+      <DialogContent>
+        <Stack spacing={2} padding={2}>
+          <FormControl>
+            <FormLabel>Person 1</FormLabel>
+            <Select value={person1} onChange={(_, value) => setPerson1(value)}>
+              {personMenuItems}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Relationship Type</FormLabel>
+            <Select value={type} onChange={(_, value) => setType(value)}>
+              {Object.entries(RELATIONSHIP).map((entry) => (
+                <Option key={`type-${entry[0]}`} value={entry[1]}>
+                  {entry[0]}
+                </Option>
+              ))}
+            </Select>
+          </FormControl>
+          <FormControl>
+            <FormLabel>Person 2</FormLabel>
+            <Select value={person2} onChange={(_, value) => setPerson2(value)}>
+              {personMenuItems}
+            </Select>
+          </FormControl>
+        </Stack>
+      </DialogContent>
+      <DialogActions>
+        <Button color="neutral" onClick={() => setOpen(false)}>
+          Cancel
+        </Button>
+        <Button color="primary" onClick={saveChanges} sx={{ marginRight: 2 }}>
+          Save
+        </Button>
+      </DialogActions>
+    </Dialog>
   );
 }
 
