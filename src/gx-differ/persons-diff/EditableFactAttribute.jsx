@@ -141,7 +141,7 @@ export default function EditableFactAttribute({
               value={editFieldValue}
               fullwidth
               size="sm"
-              onChange={(_event, newValue) => setEditFieldValue(newValue)}
+              onChange={(event) => setEditFieldValue(event.target.value)}
               sx={{ marginY: 1 }}
             />
           )}
@@ -149,7 +149,7 @@ export default function EditableFactAttribute({
         <Grid>
           <Tooltip title="Cancel" arrow>
             <IconButton onClick={() => setIsEditing(false)}>
-              <CancelIcon/>
+              <CancelIcon />
             </IconButton>
           </Tooltip>
           <Tooltip title="Save" arrow>

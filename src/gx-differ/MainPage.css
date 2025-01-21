@@ -1,9 +1,9 @@
 .left-file-drop {
-    position: absolute;
-    top: 55%;
+    position: fixed;
+    top: 50%;
     left: 25%;
     transform: translate(-50%, -50%);
-    height: 80%;
+    height: 80vh;
     width: 45%;
     background-color: rgba(213, 213, 213, 0);
     color: rgba(213, 213, 213, 0);
@@ -12,11 +12,11 @@
 }
 
 .right-file-drop {
-    position: absolute;
-    top: 55%;
+    position: fixed;
+    top: 50%;
     left: 75%;
     transform: translate(-50%, -50%);
-    height: 80%;
+    height: 80vh;
     width: 45%;
     background-color: rgba(213, 213, 213, 0);
     color: rgba(213, 213, 213, 0);
@@ -30,8 +30,8 @@
     left: 0;
     height: 100%;
     width: 100%;
-    border-radius: 5px;
-    font-size: large;
+    border-radius: 8px;
+    font-size: 32px;
 
     /* horizontally and vertically center all content */
     display: flex;
@@ -68,8 +68,8 @@
     left: 0;
     height: 100%;
     width: 100%;
-    border-radius: 5px;
-    font-size: large;
+    border-radius: 8px;
+    font-size: 32px;
 
     /* horizontally and vertically center all content */
     display: flex;
@@ -103,31 +103,39 @@
 .left-file-drop > .file-drop-target.file-drop-dragging-over-frame {
     /* overlay a black mask when dragging over the frame */
     border: none;
-    background-color: rgba(0, 0, 0, 0.78);
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
     box-shadow: none;
     z-index: 9999;
     opacity: 1;
     pointer-events: auto;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .right-file-drop > .file-drop-target.file-drop-dragging-over-frame {
     /* overlay a black mask when dragging over the frame */
     border: none;
-    background-color: rgba(0, 0, 0, 0.78);
+    background-color: rgba(0, 0, 0, 0.4);
     color: white;
     box-shadow: none;
     z-index: 9999;
     opacity: 1;
     pointer-events: auto;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
 }
 
 .left-file-drop > .file-drop-target.file-drop-dragging-over-target {
-    color: #020000;
-    background-color: #f3f3f3;
+    color: #001738;
+    font-size: 32px;
+    font-weight: bold;
+    background-color: #cee5fc;
 }
 
 .right-file-drop > .file-drop-target.file-drop-dragging-over-target {
-    color: #020000;
-    background-color: #f3f3f3;
+    color: #001738;
+    font-size: 32px;
+    font-weight: bold;
+    background-color: #cee5fc;
 }

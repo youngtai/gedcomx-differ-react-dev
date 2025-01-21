@@ -42,6 +42,7 @@ export default function Graphs({
           <DownloadCopyButtons
             data={leftGx}
             label={leftTab === 0 ? "Original" : "Edited"}
+            side="left"
             handleDownload={handleDownload}
           />
           <GedcomViewer
@@ -70,6 +71,7 @@ export default function Graphs({
           <DownloadCopyButtons
             data={rightGx}
             label={rightTab === 0 ? "Original" : "Edited"}
+            side="right"
             handleDownload={handleDownload}
           />
           <GedcomViewer

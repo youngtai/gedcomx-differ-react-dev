@@ -1,4 +1,12 @@
-import { Box, Grid, IconButton, Input, Tooltip, Typography, useTheme } from "@mui/joy";
+import {
+  Box,
+  Grid,
+  IconButton,
+  Input,
+  Tooltip,
+  Typography,
+  useTheme,
+} from "@mui/joy";
 import PropTypes from "prop-types";
 import React from "react";
 import { CancelIcon, DeleteIcon, EditIcon, SaveIcon } from "../Icons";
@@ -83,6 +91,8 @@ export default function EditableCoverageDataItem({
     updateSourceDescriptionsData(recordsData);
   }
 
+  console.log("editFieldValue", editFieldValue);
+
   function renderItem() {
     if (isEditing) {
       return (
@@ -136,7 +146,12 @@ export default function EditableCoverageDataItem({
         color: textColor,
       }}
     >
-      <Grid container alignItems="center" justifyContent="space-between" spacing={2}>
+      <Grid
+        container
+        alignItems="center"
+        justifyContent="space-between"
+        spacing={2}
+      >
         {renderItem()}
       </Grid>
     </Box>

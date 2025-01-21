@@ -103,7 +103,7 @@ export default function PersonNameEditDialog({
             <FormLabel>Type</FormLabel>
             <Select
               value={type}
-              onChange={(event) => setType(event?.target?.value)}
+              onChange={(_, value) => setType(value)}
               placeholder="Name Type..."
             >
               {Object.keys(PERSON_NAME_TYPE).map((t) => (

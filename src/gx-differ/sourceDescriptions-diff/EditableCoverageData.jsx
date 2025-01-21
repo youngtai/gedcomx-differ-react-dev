@@ -1,25 +1,27 @@
 import {
-  Box,
   Button,
+  FormControl,
   Grid,
+  IconButton,
   Input,
-  MenuItem,
+  Option,
   Select,
   Sheet,
   Stack,
+  Tooltip,
 } from "@mui/joy";
 import PropTypes from "prop-types";
 import React from "react";
 import { COVERAGE_ATTRIBUTES } from "../constants";
-import { AddIcon } from "../Icons";
+import { AddIcon, CancelIcon, SaveIcon } from "../Icons";
 import { RecordsDataContext } from "../RecordsContext";
 import EditableCoverageDataItem from "./EditableCoverageDataItem";
 import { updateSourceDescriptionsData } from "./SourceDescriptionsDiffUtils";
 
 function getMissingCoverageItem(presentItems) {
-  return Object.keys(COVERAGE_ATTRIBUTES).filter(
-    (attribute) => !presentItems.includes(attribute)
-  );
+  return Object.entries(COVERAGE_ATTRIBUTES)
+    .filter((attribute) => !presentItems.includes(attribute[0]))
+    .map((attribute) => attribute[1]);
 }
 
 export default function EditableCoverageData({
@@ -48,69 +50,80 @@ export default function EditableCoverageData({
     presentItems.push("recordType");
   }
 
-  function handleAddCoverageItem() {
-    setIsAddingCoverageItem(true);
-  }
-
   function handleSaveNewCoverageItem() {
     setIsAddingCoverageItem(false);
-    if (newCoverageItemValue === "") {
+    if (
+      newCoverageItemValue === "" ||
+      newCoverageItemValue === undefined ||
+      newCoverageItemValue === null
+    ) {
       return;
     }
+
+    const coverageCopy = structuredClone(coverage);
     if (
       newCoverageItemKey === COVERAGE_ATTRIBUTES.spatial ||
       newCoverageItemKey === COVERAGE_ATTRIBUTES.temporal
     ) {
-      coverage[newCoverageItemKey] = { original: newCoverageItemValue };
+      coverageCopy[newCoverageItemKey] = { original: newCoverageItemValue };
     } else if (newCoverageItemKey === COVERAGE_ATTRIBUTES.recordType) {
-      coverage[newCoverageItemKey] = newCoverageItemValue;
+      coverageCopy[newCoverageItemKey] = newCoverageItemValue;
     }
     recordsData.gx.sourceDescriptions[sourceDescriptionIndex].coverage.splice(
       coverageIndex,
       1,
-      coverage
+      coverageCopy
     );
     updateSourceDescriptionsData(recordsData);
     setNewCoverageItemKey("");
   }
 
   const addCoverageItem = isAddingCoverageItem ? (
-    <Grid container direction={"row"} alignItems={"center"} spacing={1}>
-      <Grid item xs={10}>
-        <Grid container direction={"row"} alignItems={"center"} spacing={1}>
-          <Grid item xs={3}>
+    <Grid container direction="row" spacing={1} alignItems="center">
+      <Grid xs>
+        <Stack direction="row" spacing={2}>
+          <FormControl fullwidth>
             <Select
               value={newCoverageItemKey}
-              onChange={(e) => setNewCoverageItemKey(e.target.value)}
-              variant="outlined" // Variant for Joy UI Select
-              fullwidth
+              onChange={(_, value) => setNewCoverageItemKey(value)}
+              placeholder="Coverage Type"
             >
-              {getMissingCoverageItem(presentItems).map((a, idx) => (
-                <MenuItem key={`coverage-option-${idx}`} value={a}>
-                  {a}
-                </MenuItem>
+              {getMissingCoverageItem(presentItems).map((item, idx) => (
+                <Option key={`coverage-option-${idx}`} value={item}>
+                  {item}
+                </Option>
               ))}
             </Select>
-          </Grid>
-          <Grid item xs={9}>
-            <Input
-              value={newCoverageItemValue}
-              onChange={(e) => setNewCoverageItemValue(e.target.value)}
-              fullwidth
-            />
-          </Grid>
-        </Grid>
+          </FormControl>
+          <Input
+            value={newCoverageItemValue}
+            onChange={(event) => setNewCoverageItemValue(event.target.value)}
+            fullwidth
+          />
+        </Stack>
       </Grid>
-      <Grid item xs={2}>
-        <Button onClick={handleSaveNewCoverageItem}>Save</Button>
+      <Grid>
+        <Tooltip title="Cancel" arrow>
+          <IconButton onClick={() => setIsAddingCoverageItem(false)}>
+            <CancelIcon />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Save" arrow>
+          <IconButton onClick={handleSaveNewCoverageItem}>
+            <SaveIcon />
+          </IconButton>
+        </Tooltip>
       </Grid>
     </Grid>
   ) : (
-    <Box hidden={coverageItems.length === 3}>
-      <Button onClick={handleAddCoverageItem} endDecorator={<AddIcon />}>
+    coverageItems.length < 3 && (
+      <Button
+        onClick={() => setIsAddingCoverageItem(true)}
+        endDecorator={<AddIcon />}
+      >
         Add Coverage Element
       </Button>
-    </Box>
+    )
   );
 
   return (
