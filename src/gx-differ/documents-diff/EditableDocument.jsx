@@ -1,4 +1,5 @@
 import {
+  Box,
   Grid,
   IconButton,
   Sheet,
@@ -61,7 +62,6 @@ export default function EditableDocument({ document, documentIndex }) {
             </div>
             <Textarea
               value={text}
-              fullwidth
               minRows={3}
               onChange={(e) => setText(e.target.value)}
             />
@@ -94,11 +94,11 @@ export default function EditableDocument({ document, documentIndex }) {
             </div>
 
             <div>
-              <Typography>
+              <Box>
                 {document?.text?.split("\n")?.map((piece, index) => (
-                  <div key={`piece-${index}`}>{piece}</div>
+                  <Typography key={`piece-${index}`}>{piece}</Typography>
                 ))}
-              </Typography>
+              </Box>
               <Typography variant="body-sm">Text</Typography>
             </div>
           </Stack>

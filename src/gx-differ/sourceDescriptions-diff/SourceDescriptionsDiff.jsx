@@ -1,8 +1,8 @@
-import PropTypes from "prop-types"
+import PropTypes from "prop-types";
 import { Box, Grid } from "@mui/joy";
 import EditableRecordSourceDescription from "./EditableRecordSourceDescription";
 import { RecordsDataContext } from "../RecordsContext";
-import { leftRecordsData, rightRecordsData } from '../Utils';
+import { leftRecordsData, rightRecordsData } from "../Utils";
 
 function getSourceDescriptionItem(sourceDescription, idx) {
   if (sourceDescription.resourceType === "http://gedcomx.org/DigitalArtifact") {
@@ -49,7 +49,7 @@ export default function SourceDescriptionsDiff({
 
   return (
     <Grid container spacing={2} justifyContent="center">
-      <Grid item xs={6}>
+      <Grid xs={6}>
         <RecordsDataContext.Provider
           value={leftRecordsData(
             leftGx,
@@ -57,15 +57,15 @@ export default function SourceDescriptionsDiff({
             rightGx,
             setRightGx,
             finalGx,
-            setFinalGx,
+            setFinalGx
           )}
         >
           {left?.map((sourceDescription, idx) =>
-            getSourceDescriptionItem(sourceDescription, idx),
+            getSourceDescriptionItem(sourceDescription, idx)
           )}
         </RecordsDataContext.Provider>
       </Grid>
-      <Grid item xs={6}>
+      <Grid xs={6}>
         <RecordsDataContext.Provider
           value={rightRecordsData(
             leftGx,
@@ -73,11 +73,11 @@ export default function SourceDescriptionsDiff({
             rightGx,
             setRightGx,
             finalGx,
-            setFinalGx,
+            setFinalGx
           )}
         >
           {right?.map((sourceDescription, idx) =>
-            getSourceDescriptionItem(sourceDescription, idx),
+            getSourceDescriptionItem(sourceDescription, idx)
           )}
         </RecordsDataContext.Provider>
       </Grid>

@@ -207,7 +207,7 @@ EditableFactAttribute.propTypes = {
   factIndex: PropTypes.number.isRequired,
   parentObject: PropTypes.object.isRequired,
   parentObjectIndex: PropTypes.number.isRequired,
-  comparingTo: PropTypes.object,
+  comparingTo: PropTypes.array,
   updateData: PropTypes.func.isRequired,
   factTypes: PropTypes.object.isRequired,
 };

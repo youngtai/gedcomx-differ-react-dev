@@ -3,7 +3,16 @@ import PropTypes from "prop-types";
 import React from "react";
 import { AssertionsContext } from "../AssertionsContext";
 import { FACT_TYPE, GENDER } from "../constants";
-import { AddIcon, ArrowDownIcon, ArrowUpIcon, FemaleIcon, MaleIcon, QuestionMarkIcon, StarIcon, StarOutlineIcon } from "../Icons";
+import {
+  AddIcon,
+  ArrowDownIcon,
+  ArrowUpIcon,
+  FemaleIcon,
+  MaleIcon,
+  QuestionMarkIcon,
+  StarIcon,
+  StarOutlineIcon,
+} from "../Icons";
 import { RecordsDataContext } from "../RecordsContext";
 import { generateLocalId } from "../Utils";
 import AddFactOrFieldDialog from "./AddFactOrFieldDialog";
@@ -15,7 +24,7 @@ import PersonNameEditDialog from "./PersonNameEditDialog";
 
 function getGenderIcon(person) {
   if (!person || !person.gender) {
-    return <QuestionMarkIcon/>;
+    return <QuestionMarkIcon />;
   }
   if (person.gender.type === GENDER.Male) {
     return <MaleIcon />;
@@ -139,7 +148,7 @@ export default function EditablePerson({ person, personIndex }) {
             <Stack spacing={1}>
               <Tooltip title="Move person up" placement="left">
                 <IconButton onClick={handleMovePersonUp} variant="plain">
-                  <ArrowUpIcon/>
+                  <ArrowUpIcon />
                 </IconButton>
               </Tooltip>
               <Tooltip title="Move person down" placement="left">

@@ -7,16 +7,10 @@ function makeQuestionableWhitespaceVisible(input) {
 
 export default function ColoredNameParts({ nameParts, hasMatch }) {
   const theme = useTheme();
-  const prefixColor = hasMatch
-    ? "#8a5300"
-    : theme.palette.diff.color;
+  const prefixColor = hasMatch ? "#8a5300" : theme.palette.diff.color;
   const givenColor = hasMatch ? null : theme.palette.diff.color;
-  const surnameColor = hasMatch
-    ? "#7518d2"
-    : theme.palette.diff.color;
-  const suffixColor = hasMatch
-    ? "#9c9c9c"
-    : theme.palette.diff.color;
+  const surnameColor = hasMatch ? "#7518d2" : theme.palette.diff.color;
+  const suffixColor = hasMatch ? "#9c9c9c" : theme.palette.diff.color;
 
   return (
     <Grid container spacing={2}>
@@ -41,7 +35,7 @@ const NamePart = ({ part, label, color }) =>
 NamePart.propTypes = {
   part: PropTypes.object,
   label: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  color: PropTypes.string,
 };
 
 ColoredNameParts.propTypes = {

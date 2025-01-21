@@ -157,7 +157,7 @@ export default function EditableCoverageDataItem({
 }
 
 EditableCoverageDataItem.propTypes = {
-  coverageItem: PropTypes.object,
+  coverageItem: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
   coverageIndex: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
   sourceDescriptionIndex: PropTypes.number.isRequired,
