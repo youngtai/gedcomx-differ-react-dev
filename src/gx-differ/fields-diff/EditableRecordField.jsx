@@ -77,14 +77,12 @@ export default function EditableRecordField({ field, fieldIndex }) {
             placeholder="Enter record field value..."
             value={value}
             onChange={(e) => setValue(e.target.value)}
-            fullwidth
           />
           <Box height={12} />
           <Select
             placeholder="Select record field type..."
             value={type}
             onChange={(_event, newValue) => setType(newValue)}
-            fullwidth
           >
             {Object.keys(RECORD_FIELD_TYPE).map((key) => (
               <Option key={`type-${key}`} value={RECORD_FIELD_TYPE[key]}>

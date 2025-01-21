@@ -91,8 +91,6 @@ export default function EditableCoverageDataItem({
     updateSourceDescriptionsData(recordsData);
   }
 
-  console.log("editFieldValue", editFieldValue);
-
   function renderItem() {
     if (isEditing) {
       return (

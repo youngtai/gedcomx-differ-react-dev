@@ -69,23 +69,17 @@ export default function FieldsList({ fields }) {
             padding: 2,
           }}
         >
-          <Grid
-            container
-            spacing={1}
-            alignItems="center"
-          >
+          <Grid container spacing={1} alignItems="center">
             <Grid xs>
               <Input
                 value={value}
-                fullwidth
                 onChange={(event) => setValue(event.target.value)}
                 placeholder="Enter record field value..."
               />
               <Box height={6} />
               <Select
                 value={type}
-                onChange={(newValue) => setType(newValue)}
-                fullwidth
+                onChange={(_, newValue) => setType(newValue)}
                 placeholder="Select record field type..."
               >
                 {Object.keys(RECORD_FIELD_TYPE).map((key) => (
