@@ -1,9 +1,9 @@
 import {
   Grid,
   IconButton,
-  Input,
   Sheet,
   Stack,
+  Textarea,
   Typography,
   useTheme,
 } from "@mui/joy";
@@ -59,10 +59,10 @@ export default function EditableDocument({ document, documentIndex }) {
               <Typography>{document.id}</Typography>
               <Typography variant="body-sm">Id</Typography>
             </div>
-            <Input
+            <Textarea
               value={text}
               fullwidth
-              multiline
+              minRows={3}
               onChange={(e) => setText(e.target.value)}
             />
           </Stack>
