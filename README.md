@@ -1,4 +1,10 @@
-Try it at https://youngtai.github.io/gedcomx-differ-react/
+# This is the development "branch" of `gedcomx-differ-react`
+
+Since wI'm using GitHub pages to serve the app for free and there is no way to deploy multiple versions of the app at the same time from, say different git branches, I've created this repo, which is a copy of `gedcomx-differ-react` and will deploy major updates with breaking changes and/or experiments here.
+
+---
+
+Try it at https://youngtai.github.io/gedcomx-differ-react-dev/
 
 This is a tool for visually diffing a pair of simple GedcomX JSON. The intent is _not_ to be able to diff all of the various fields and data that GedcomX can represent, but to make it easy to diff and edit a basic record with persons, relationships, and their facts.
 
