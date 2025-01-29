@@ -1,6 +1,8 @@
-# This is the development "branch" of `gedcomx-differ-react`
+# This is the development "branch" of [`gedcomx-differ-react`](https://github.com/youngtai/gedcomx-differ-react)
 
 Since I'm using GitHub pages to serve the app for free and there is no way to deploy multiple versions of the app at the same time from, say different git branches, I've created this repo, which is a copy of `gedcomx-differ-react` and will deploy major updates with breaking changes and/or experiments here.
+
+The "production" differ repo is [here](https://github.com/youngtai/gedcomx-differ-react)
 
 ---
 
