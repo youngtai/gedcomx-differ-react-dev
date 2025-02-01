@@ -55,4 +55,5 @@ NamePart.propTypes = {
 ColoredNameParts.propTypes = {
   nameParts: PropTypes.object.isRequired,
   hasMatch: PropTypes.bool.isRequired,
+  person: PropTypes.object.isRequired,
 };
